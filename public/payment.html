@@ -670,7 +670,11 @@
         
         const result = await response.json();
         if (result.success) {
-          alert('验证码已发送！请查看服务器控制台获取验证码');
+          let msg = '验证码已发送到您的邮箱，请查收';
+          if (result.code) {
+            msg = `邮件发送失败，您的验证码是：${result.code}`;
+          }
+          alert(msg);
           startCodeTimer(codeBtn);
         } else {
           alert(result.message);

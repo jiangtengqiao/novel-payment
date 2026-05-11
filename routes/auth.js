@@ -46,7 +46,7 @@ async function sendEmail(to, code) {
   }
 }
 
-router.post('/send-code', (req, res) => {
+router.post('/send-code', async (req, res) => {
   try {
     const { email } = req.body;
     
@@ -85,14 +85,24 @@ router.post('/send-code', (req, res) => {
     console.log(`有效期: 5分钟`);
     console.log(`==================`);
     
-    sendEmail(email, code).catch(console.error);
+    const emailSent = await sendEmail(email, code);
     
-    res.json({
-      success: true,
-      message: '验证码已发送到您的邮箱',
-      email,
-      expiresIn: 5 * 60
-    });
+    if (emailSent) {
+      res.json({
+        success: true,
+        message: '验证码已发送到您的邮箱',
+        email,
+        expiresIn: 5 * 60
+      });
+    } else {
+      res.json({
+        success: true,
+        message: '邮件发送失败，验证码已显示在下方',
+        email,
+        expiresIn: 5 * 60,
+        code: code
+      });
+    }
   } catch (error) {
     console.error('发送验证码失败:', error);
     res.status(500).json({ success: false, message: '发送失败' });
