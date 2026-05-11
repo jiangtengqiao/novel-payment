@@ -9,8 +9,9 @@ const lastSendTime = new Map();
 
 const transporter = nodemailer.createTransport({
   host: 'smtp.qq.com',
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false,
+  requireTLS: true,
   auth: {
     user: '2527469579@qq.com',
     pass: 'ibwcdqgjmxpfedcj'
