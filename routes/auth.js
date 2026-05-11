@@ -1,31 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
-const nodemailer = require('nodemailer');
+const https = require('https');
 
 const users = new Map();
 const verificationCodes = new Map();
 const lastSendTime = new Map();
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.qq.com',
-  port: 587,
-  secure: false,
-  requireTLS: true,
-  auth: {
-    user: '2527469579@qq.com',
-    pass: 'ibwcdqgjmxpfedcj'
-  }
-});
-
 async function sendEmail(to, code) {
-  try {
-    const info = await transporter.sendMail({
-      from: '"小说支付中心" <2527469579@qq.com>',
-      to: to,
+  return new Promise((resolve) => {
+    const postData = JSON.stringify({
+      personalizations: [{ to: [{ email: to }] }],
+      from: { email: 'noreply@novelpay.com', name: '小说支付中心' },
       subject: '【小说支付中心】验证码',
-      text: `您的验证码是：${code}\n\n有效期5分钟，请及时使用。\n\n如有疑问请联系客服。`,
-      html: `<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 400px; margin: 0 auto; padding: 20px; border-radius: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+      content: [
+        {
+          type: 'text/plain',
+          value: `您的验证码是：${code}\n\n有效期5分钟，请及时使用。\n\n如有疑问请联系客服。`
+        },
+        {
+          type: 'text/html',
+          value: `<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 400px; margin: 0 auto; padding: 20px; border-radius: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
   <div style="text-align: center; color: white;">
     <div style="font-size: 48px; margin-bottom: 15px;">📚</div>
     <h2 style="margin-bottom: 5px;">小说支付中心</h2>
@@ -38,13 +33,51 @@ async function sendEmail(to, code) {
   </div>
   <p style="text-align: center; color: rgba(255,255,255,0.8); font-size: 12px; margin-top: 15px;">如有疑问请联系客服</p>
 </div>`
+        }
+      ]
     });
-    console.log('邮件发送成功:', info.messageId);
-    return true;
-  } catch (error) {
-    console.error('邮件发送失败:', error);
-    return false;
-  }
+
+    const options = {
+      hostname: 'api.sendgrid.com',
+      port: 443,
+      path: '/v3/mail/send',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': postData.length,
+        'Authorization': 'Bearer SG.O95F6rZ8Q2y2q8wL2A9J7Q.5bKj3xMnY0fH8gD6sR2tN7mK1pQ9oL3eW5uZ4vT8bN6cM1xZ2w'
+      },
+      timeout: 10000
+    };
+
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk) => { data += chunk; });
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          console.log('邮件发送成功');
+          resolve(true);
+        } else {
+          console.error('邮件发送失败:', res.statusCode, data);
+          resolve(false);
+        }
+      });
+    });
+
+    req.on('error', (e) => {
+      console.error('邮件发送失败:', e.message);
+      resolve(false);
+    });
+
+    req.on('timeout', () => {
+      req.destroy();
+      console.error('邮件发送超时');
+      resolve(false);
+    });
+
+    req.write(postData);
+    req.end();
+  });
 }
 
 router.post('/send-code', async (req, res) => {
