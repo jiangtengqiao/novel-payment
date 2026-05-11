@@ -140,10 +140,12 @@
       margin-bottom: 12px; word-break: break-all;
     }
     .confirm-section { margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; }
-    .confirm-section p { color: #666; margin-bottom: 10px; font-size: 0.85rem; }
+    .confirm-section p { color: #666; margin-bottom: 8px; font-size: 0.85rem; }
+    .confirm-section .input-group { margin-bottom: 10px; }
+    .confirm-section .input-group label { display: block; font-size: 0.85rem; color: #333; margin-bottom: 4px; text-align: left; }
     .confirm-section input {
       width: 100%; padding: 10px; border: 2px solid #e0e0e0;
-      border-radius: 8px; font-size: 0.95rem; margin-bottom: 12px;
+      border-radius: 8px; font-size: 0.95rem;
     }
     .confirm-section input:focus { outline: none; border-color: #667eea; }
     .success-badge {
@@ -320,8 +322,15 @@
         <div class="order-no" id="pay-order-no">订单号：</div>
         
         <div class="confirm-section">
-          <p>✅ 支付完成后，请输入转账备注（订单号后6位）确认</p>
-          <input type="text" id="confirm-code" placeholder="请输入订单号后6位">
+          <p>✅ 支付完成后，请输入以下信息确认</p>
+          <div class="input-group">
+            <label>付款金额（元）</label>
+            <input type="number" id="paid-amount" placeholder="请输入实际付款金额" step="0.01">
+          </div>
+          <div class="input-group">
+            <label>转账备注（订单号后6位）</label>
+            <input type="text" id="confirm-code" placeholder="请输入订单号后6位">
+          </div>
           <button class="pay-button" onclick="confirmPayment()">确认到账</button>
         </div>
       </div>
@@ -455,10 +464,31 @@
     }
 
     async function confirmPayment() {
+      const paidAmount = document.getElementById('paid-amount').value.trim();
       const code = document.getElementById('confirm-code').value.trim();
+      
+      if (!paidAmount) {
+        alert('请输入付款金额');
+        return;
+      }
+      
       if (!code) {
         alert('请输入订单号后6位');
         return;
+      }
+      
+      const expectedCode = currentOrderData.orderNo.slice(-6);
+      if (code !== expectedCode) {
+        alert(`验证码错误！订单号后6位应为：${expectedCode}`);
+        return;
+      }
+      
+      const expectedAmount = parseFloat(currentOrderData.price);
+      const actualAmount = parseFloat(paidAmount);
+      if (Math.abs(actualAmount - expectedAmount) > 0.01) {
+        if (!confirm(`付款金额不匹配！应付 ¥${expectedAmount.toFixed(2)}，实际支付 ¥${actualAmount.toFixed(2)}，确定继续吗？`)) {
+          return;
+        }
       }
 
       try {
@@ -468,6 +498,7 @@
           body: JSON.stringify({
             orderNo: currentOrderData.orderNo,
             confirmCode: code,
+            paidAmount: paidAmount,
             productType: currentOrderData.type,
             price: currentOrderData.price,
             productId: currentOrderData.userId || currentOrderData.price,
@@ -493,7 +524,7 @@
               `恭喜！已成功开通${currentOrderData.duration}会员，额外获赠${currentOrderData.giftCoins}书币！`;
           }
         } else {
-          alert('确认失败，请稍后重试');
+          alert(result.message || '确认失败，请稍后重试');
         }
       } catch (error) {
         alert('网络错误，请稍后重试');

@@ -5,6 +5,18 @@ const { v4: uuidv4 } = require('uuid');
 const orders = new Map();
 const users = new Map();
 
+const ORDER_EXPIRE_TIME = 30 * 60 * 1000;
+
+setInterval(() => {
+  const now = Date.now();
+  orders.forEach((order, orderNo) => {
+    if (order.status === 'pending' && now - order.createdAt.getTime() > ORDER_EXPIRE_TIME) {
+      order.status = 'expired';
+      console.log('订单超时:', orderNo);
+    }
+  });
+}, 60000);
+
 router.post('/create', (req, res) => {
   try {
     const { subject, totalAmount, body, productType, productId } = req.body;
@@ -51,9 +63,9 @@ router.post('/create', (req, res) => {
 
 router.post('/confirm', (req, res) => {
   try {
-    const { orderNo, confirmCode, productType, price, productId, coins, gift, months, duration, giftCoins } = req.body;
+    const { orderNo, confirmCode, productType, price, productId, coins, gift, months, duration, giftCoins, paidAmount } = req.body;
 
-    if (!orderNo || !confirmCode) {
+    if (!orderNo || !confirmCode || !price) {
       return res.status(400).json({
         success: false,
         message: '缺少必要参数'
@@ -69,10 +81,32 @@ router.post('/confirm', (req, res) => {
       });
     }
 
+    if (order.status === 'expired') {
+      return res.status(400).json({
+        success: false,
+        message: '订单已过期，请重新下单'
+      });
+    }
+
     if (order.status === 'paid') {
       return res.json({
         success: true,
         message: '订单已支付'
+      });
+    }
+
+    const expectedCode = orderNo.slice(-6);
+    if (confirmCode !== expectedCode) {
+      return res.status(400).json({
+        success: false,
+        message: '订单验证码错误，请输入订单号后6位'
+      });
+    }
+
+    if (paidAmount && Math.abs(parseFloat(paidAmount) - parseFloat(order.totalAmount)) > 0.01) {
+      return res.status(400).json({
+        success: false,
+        message: `付款金额不匹配！应付 ${order.totalAmount} 元，实际支付 ${paidAmount} 元`
       });
     }
 
