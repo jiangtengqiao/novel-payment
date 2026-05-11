@@ -4,12 +4,64 @@ const { v4: uuidv4 } = require('uuid');
 
 const users = new Map();
 const verificationCodes = new Map();
+const lastSendTime = new Map();
+
+router.post('/send-code', (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ success: false, message: '请输入邮箱' });
+    }
+    
+    if (users.has(email)) {
+      return res.status(400).json({ success: false, message: '该邮箱已注册，请直接登录' });
+    }
+    
+    const now = Date.now();
+    const lastTime = lastSendTime.get(email) || 0;
+    
+    if (now - lastTime < 60 * 1000) {
+      const remaining = Math.ceil((60 * 1000 - (now - lastTime)) / 1000);
+      return res.status(400).json({ 
+        success: false, 
+        message: `请稍后再试，剩余${remaining}秒`,
+        remaining 
+      });
+    }
+    
+    const code = Math.random().toString(36).slice(-6).toUpperCase();
+    verificationCodes.set(email, {
+      code,
+      expiresAt: Date.now() + 5 * 60 * 1000,
+      tempPassword: ''
+    });
+    
+    lastSendTime.set(email, now);
+    
+    console.log(`=== 验证码发送 ===`);
+    console.log(`邮箱: ${email}`);
+    console.log(`验证码: ${code}`);
+    console.log(`有效期: 5分钟`);
+    console.log(`==================`);
+    
+    res.json({
+      success: true,
+      message: '验证码已发送（查看控制台获取验证码）',
+      email,
+      expiresIn: 5 * 60
+    });
+  } catch (error) {
+    console.error('发送验证码失败:', error);
+    res.status(500).json({ success: false, message: '发送失败' });
+  }
+});
 
 router.post('/register', (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, code } = req.body;
     
-    if (!email || !password) {
+    if (!email || !password || !code) {
       return res.status(400).json({ success: false, message: '缺少必要参数' });
     }
     
@@ -17,19 +69,39 @@ router.post('/register', (req, res) => {
       return res.status(400).json({ success: false, message: '邮箱已注册' });
     }
     
-    const code = Math.random().toString(36).slice(-6).toUpperCase();
-    verificationCodes.set(email, {
-      code,
-      expiresAt: Date.now() + 5 * 60 * 1000,
-      password
+    const verification = verificationCodes.get(email);
+    if (!verification) {
+      return res.status(400).json({ success: false, message: '未找到验证码，请先获取验证码' });
+    }
+    
+    if (Date.now() > verification.expiresAt) {
+      verificationCodes.delete(email);
+      return res.status(400).json({ success: false, message: '验证码已过期，请重新获取' });
+    }
+    
+    if (verification.code !== code.toUpperCase()) {
+      return res.status(400).json({ success: false, message: '验证码错误' });
+    }
+    
+    const userId = uuidv4().slice(0, 8);
+    users.set(email, {
+      userId,
+      email,
+      password,
+      coins: 0,
+      totalRecharged: 0,
+      vipExpireTime: null,
+      members: [],
+      createdAt: new Date()
     });
     
-    console.log(`发送验证码 ${code} 到 ${email}`);
+    verificationCodes.delete(email);
+    lastSendTime.delete(email);
     
     res.json({
       success: true,
-      message: '验证码已发送，有效期5分钟',
-      email
+      message: '注册成功',
+      data: { userId, email }
     });
   } catch (error) {
     console.error('注册失败:', error);
