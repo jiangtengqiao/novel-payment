@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require('multer');
 const paymentRoutes = require('./routes/payment');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -35,6 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/alipay', paymentRoutes);
+app.use('/api/auth', authRoutes);
 
 app.post('/api/upload', upload.single('qrcode'), (req, res) => {
   if (!req.file) {
