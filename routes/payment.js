@@ -2,10 +2,42 @@ const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 
-const orders = new Map();
-const users = new Map();
+const orders = global.orders || new Map();
+const users = global.users || new Map();
+const rebateRecords = new Map();
 
 const ORDER_EXPIRE_TIME = 30 * 60 * 1000;
+
+const COIN_RATE = 100;
+
+const RECHARGE_PACKAGES = [
+  { price: 1, coins: 100, gift: 0 },
+  { price: 6, coins: 600, gift: 0 },
+  { price: 30, coins: 3000, gift: 150 },
+  { price: 68, coins: 6800, gift: 544 },
+  { price: 128, coins: 12800, gift: 1280 },
+  { price: 328, coins: 32800, gift: 4920 },
+  { price: 648, coins: 64800, gift: 12960 },
+  { price: 1280, coins: 128000, gift: 32000 },
+  { price: 3280, coins: 328000, gift: 98400 }
+];
+
+const REBATE_RULES = [
+  { threshold: 50, reward: { type: 'gift', name: '小饰品', count: 1 } },
+  { threshold: 100, reward: { type: 'gift', name: '中饰品', count: 1 } },
+  { threshold: 158, reward: { type: 'lottery', name: '抽奖次数', count: 1 } },
+  { threshold: 218, reward: { type: 'gift', name: '情侣围巾', count: 2 } },
+  { threshold: 288, reward: { type: 'lottery', name: '抽奖次数', count: 2 } },
+  { threshold: 348, reward: { type: 'gift', name: '邮包', count: 1 } },
+  { threshold: 398, reward: { type: 'gift', name: '保温杯', count: 1 } },
+  { threshold: 488, reward: { type: 'lottery', name: '抽奖次数', count: 1 } },
+  { threshold: 578, reward: { type: 'lottery', name: '抽奖次数', count: 4 } },
+  { threshold: 658, reward: { type: 'lottery', name: '免费抽奖次数', count: 2 } },
+  { threshold: 1000, reward: { type: 'gift', name: '球鞋/板鞋', count: 1 } },
+  { threshold: 1488, reward: { type: 'gift', name: '鞋一双', count: 1 }, bonus: { type: 'video', name: '腾讯动漫剧场版票', count: 1 } },
+  { threshold: 1888, reward: { type: 'video', name: '腾讯视频SVIP年卡', count: 1 }, bonus: { type: 'music', name: '汽水音乐年SVIP', count: 1 } },
+  { threshold: 2888, reward: { type: 'video', name: '腾讯体育SVIP年卡', count: 1 }, bonus: { type: 'music', name: 'QQ音乐/酷狗音乐最高级年会员', count: 1 }, extraBonus: { type: 'gift', name: '专属礼盒', count: 1 } }
+];
 
 setInterval(() => {
   const now = Date.now();
@@ -16,6 +48,91 @@ setInterval(() => {
     }
   });
 }, 60000);
+
+router.get('/packages', (req, res) => {
+  try {
+    res.json({
+      success: true,
+      data: {
+        coinRate: COIN_RATE,
+        packages: RECHARGE_PACKAGES,
+        rebateRules: REBATE_RULES
+      }
+    });
+  } catch (error) {
+    console.error('获取充值档位失败:', error);
+    res.status(500).json({
+      success: false,
+      message: '获取充值档位失败'
+    });
+  }
+});
+
+router.get('/user/:userId/rebates', (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = users.get(userId);
+    
+    if (!user) {
+      return res.json({
+        success: true,
+        data: {
+          userId,
+          totalRecharged: 0,
+          currentRebateLevel: 0,
+          nextRebateLevel: null,
+          rebates: [],
+          rewards: []
+        }
+      });
+    }
+
+    const totalRecharged = user.totalRecharged || 0;
+    const userRebates = rebateRecords.get(userId) || [];
+    
+    let currentLevel = 0;
+    let nextLevel = null;
+    
+    for (let i = REBATE_RULES.length - 1; i >= 0; i--) {
+      if (totalRecharged >= REBATE_RULES[i].threshold) {
+        currentLevel = REBATE_RULES[i].threshold;
+        break;
+      }
+    }
+    
+    for (const rule of REBATE_RULES) {
+      if (totalRecharged < rule.threshold) {
+        nextLevel = rule;
+        break;
+      }
+    }
+
+    const earnedRewards = [];
+    for (const rule of REBATE_RULES) {
+      if (totalRecharged >= rule.threshold) {
+        earnedRewards.push(rule);
+      }
+    }
+
+    res.json({
+      success: true,
+      data: {
+        userId,
+        totalRecharged,
+        currentRebateLevel,
+        nextRebateLevel,
+        rebates: userRebates,
+        rewards: earnedRewards
+      }
+    });
+  } catch (error) {
+    console.error('查询返利记录失败:', error);
+    res.status(500).json({
+      success: false,
+      message: '查询返利记录失败'
+    });
+  }
+});
 
 router.post('/create', (req, res) => {
   try {
@@ -114,18 +231,22 @@ router.post('/confirm', (req, res) => {
     order.paidAt = new Date();
     order.confirmCode = confirmCode;
 
+    const userId = productId;
+    let user = users.get(userId);
+    if (!user) {
+      user = { coins: 0, totalRecharged: 0, members: [], vipExpireTime: null, lotteries: 0 };
+      users.set(userId, user);
+    }
+
+    const previousTotal = user.totalRecharged;
+
     if (productType === 'coin') {
       const totalCoins = (coins || 0) + (gift || 0);
-      let user = users.get(productId);
-      if (!user) {
-        user = { coins: 0, totalRecharged: 0, members: [], vipExpireTime: null };
-        users.set(productId, user);
-      }
       user.coins += totalCoins;
       user.totalRecharged += price;
 
       console.log('书币充值成功:', {
-        userId: productId,
+        userId: userId,
         amount: price,
         coins: coins,
         gift: gift,
@@ -133,13 +254,6 @@ router.post('/confirm', (req, res) => {
         totalRecharged: user.totalRecharged
       });
     } else if (productType === 'member') {
-      const userId = productId;
-      let user = users.get(userId);
-      if (!user) {
-        user = { coins: 0, totalRecharged: 0, members: [], vipExpireTime: null };
-        users.set(userId, user);
-      }
-      
       user.coins += (giftCoins || 0);
       user.totalRecharged += price;
       
@@ -170,9 +284,57 @@ router.post('/confirm', (req, res) => {
       });
     }
 
+    const earnedRewards = [];
+    for (const rule of REBATE_RULES) {
+      if (user.totalRecharged >= rule.threshold && previousTotal < rule.threshold) {
+        earnedRewards.push(rule);
+        
+        if (rule.reward.type === 'lottery') {
+          user.lotteries += rule.reward.count;
+        }
+        
+        const rebateRecord = {
+          orderNo,
+          threshold: rule.threshold,
+          rewards: [rule.reward],
+          createdAt: new Date()
+        };
+        
+        if (rule.bonus) {
+          rebateRecord.rewards.push(rule.bonus);
+          if (rule.bonus.type === 'lottery') {
+            user.lotteries += rule.bonus.count;
+          }
+        }
+        if (rule.extraBonus) {
+          rebateRecord.rewards.push(rule.extraBonus);
+          if (rule.extraBonus.type === 'lottery') {
+            user.lotteries += rule.extraBonus.count;
+          }
+        }
+        
+        let userRebates = rebateRecords.get(userId);
+        if (!userRebates) {
+          userRebates = [];
+          rebateRecords.set(userId, userRebates);
+        }
+        userRebates.push(rebateRecord);
+        
+        console.log('用户获得返利:', { userId, rule });
+      }
+    }
+
     res.json({
       success: true,
-      message: '支付确认成功'
+      message: '支付确认成功',
+      data: {
+        earnedRewards: earnedRewards,
+        userInfo: {
+          coins: user.coins,
+          totalRecharged: user.totalRecharged,
+          lotteries: user.lotteries
+        }
+      }
     });
   } catch (error) {
     console.error('确认支付失败:', error);
@@ -231,7 +393,8 @@ router.get('/user/:userId/info', (req, res) => {
           totalRecharged: 0,
           vipExpireTime: null,
           isVip: false,
-          members: []
+          members: [],
+          lotteries: 0
         }
       });
     }
@@ -247,7 +410,8 @@ router.get('/user/:userId/info', (req, res) => {
         totalRecharged: user.totalRecharged,
         vipExpireTime: user.vipExpireTime,
         isVip: isVip,
-        members: user.members
+        members: user.members,
+        lotteries: user.lotteries || 0
       }
     });
   } catch (error) {

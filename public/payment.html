@@ -198,6 +198,7 @@
     <div class="tabs">
       <button class="tab active" onclick="switchTab('coin')">💰 书币充值</button>
       <button class="tab" onclick="switchTab('member')">👑 会员开通</button>
+      <button class="tab" onclick="switchTab('rebate')">🎁 返利中心</button>
     </div>
 
     <div class="payment-card">
@@ -323,6 +324,48 @@
           </ul>
         </div>
       </div>
+
+      <div id="rebate-section" class="product-section">
+        <h2 class="section-title">🎁 累计返利中心</h2>
+        
+        <div id="user-rebate-info" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 15px; color: white; margin-bottom: 15px;">
+          <div style="display: flex; justify-content: space-around; text-align: center;">
+            <div>
+              <div style="font-size: 2rem; font-weight: bold;">¥<span id="total-recharged">0</span></div>
+              <div style="font-size: 0.8rem; opacity: 0.9;">累计充值</div>
+            </div>
+            <div>
+              <div style="font-size: 2rem; font-weight: bold;"><span id="current-level">0</span></div>
+              <div style="font-size: 0.8rem; opacity: 0.9;">当前档位</div>
+            </div>
+            <div>
+              <div style="font-size: 2rem; font-weight: bold;"><span id="lottery-count">0</span></div>
+              <div style="font-size: 0.8rem; opacity: 0.9;">抽奖次数</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="next-rebate" style="background: #fff3cd; border: 1px solid #ffeeba; border-radius: 10px; padding: 12px; margin-bottom: 15px;">
+          <p style="color: #856404; font-size: 0.9rem;">
+            🎯 距离下一返利档位还差 <strong>¥<span id="next-rebate-amount">0</span></strong>
+          </p>
+        </div>
+
+        <div id="rebate-rules">
+          <h3 style="font-size: 1rem; color: #333; margin-bottom: 12px;">📋 返利规则</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px;">
+          </div>
+        </div>
+
+        <div id="earned-rewards" style="margin-top: 15px;">
+          <h3 style="font-size: 1rem; color: #333; margin-bottom: 12px;">🏆 已获得奖励</h3>
+          <div id="earned-list" style="background: #f8f9fa; border-radius: 10px; padding: 12px; min-height: 60px;">
+            <p style="color: #999; text-align: center;">暂无奖励，充值后可获得返利</p>
+          </div>
+        </div>
+
+        <button class="pay-button" onclick="loadRebateInfo()" style="margin-top: 15px;">🔄 刷新返利信息</button>
+      </div>
     </div>
   </div>
 
@@ -426,10 +469,14 @@
         document.querySelector('.tab:nth-child(1)').classList.add('active');
         document.getElementById('coin-section').classList.add('active');
         currentProductType = 'coin';
-      } else {
+      } else if (tab === 'member') {
         document.querySelector('.tab:nth-child(2)').classList.add('active');
         document.getElementById('member-section').classList.add('active');
         currentProductType = 'member';
+      } else if (tab === 'rebate') {
+        document.querySelector('.tab:nth-child(3)').classList.add('active');
+        document.getElementById('rebate-section').classList.add('active');
+        loadRebateInfo();
       }
     }
 
@@ -771,6 +818,96 @@
         document.getElementById('logged-user').style.display = 'none';
         document.getElementById('login-btn').style.display = 'block';
       }
+    }
+
+    async function loadRebateInfo() {
+      if (!currentUser) {
+        alert('请先登录查看返利信息');
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/alipay/user/${currentUser.userId}/rebates`);
+        const result = await response.json();
+        
+        if (result.success) {
+          const data = result.data;
+          
+          document.getElementById('total-recharged').textContent = data.totalRecharged;
+          document.getElementById('current-level').textContent = data.currentRebateLevel;
+          document.getElementById('lottery-count').textContent = data.lotteries || 0;
+          
+          if (data.nextRebateLevel) {
+            const remaining = data.nextRebateLevel.threshold - data.totalRecharged;
+            document.getElementById('next-rebate-amount').textContent = remaining;
+            document.getElementById('next-rebate').style.display = 'block';
+          } else {
+            document.getElementById('next-rebate').style.display = 'none';
+          }
+          
+          renderEarnedRewards(data.rewards);
+          renderRebateRules();
+        }
+      } catch (error) {
+        console.error('加载返利信息失败:', error);
+      }
+    }
+
+    function renderRebateRules() {
+      const rules = [
+        { threshold: 50, reward: '小饰品' },
+        { threshold: 100, reward: '中饰品' },
+        { threshold: 158, reward: '抽奖次数x1' },
+        { threshold: 218, reward: '情侣围巾x2' },
+        { threshold: 288, reward: '抽奖次数x2' },
+        { threshold: 348, reward: '邮包一个' },
+        { threshold: 398, reward: '保温杯一个' },
+        { threshold: 488, reward: '抽奖次数x1' },
+        { threshold: 578, reward: '抽奖次数x4' },
+        { threshold: 658, reward: '免费抽奖x2' },
+        { threshold: 1000, reward: '球鞋/板鞋一双' },
+        { threshold: 1488, reward: '鞋+腾讯动漫剧场版票' },
+        { threshold: 1888, reward: '腾讯视频SVIP年卡+汽水音乐SVIP年' },
+        { threshold: 2888, reward: '腾讯体育SVIP+QQ音乐年会员+专属礼盒' }
+      ];
+
+      const container = document.querySelector('#rebate-rules > div');
+      container.innerHTML = '';
+      
+      rules.forEach(rule => {
+        const item = document.createElement('div');
+        item.style.border = '1px solid #e0e0e0';
+        item.style.borderRadius = '8px';
+        item.style.padding = '10px';
+        item.style.textAlign = 'center';
+        item.innerHTML = `<div style="font-size: 0.9rem; font-weight: bold; color: #667eea;">¥${rule.threshold}</div>
+                         <div style="font-size: 0.75rem; color: #666; margin-top: 4px;">${rule.reward}</div>`;
+        container.appendChild(item);
+      });
+    }
+
+    function renderEarnedRewards(rewards) {
+      const container = document.getElementById('earned-list');
+      
+      if (!rewards || rewards.length === 0) {
+        container.innerHTML = '<p style="color: #999; text-align: center;">暂无奖励，充值后可获得返利</p>';
+        return;
+      }
+
+      let html = '<ul style="list-style: none; padding: 0;">';
+      rewards.forEach((rule, index) => {
+        let rewardsText = rule.reward?.name || '';
+        if (rule.bonus) rewardsText += ` + ${rule.bonus.name}`;
+        if (rule.extraBonus) rewardsText += ` + ${rule.extraBonus.name}`;
+        
+        html += `<li style="padding: 8px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between;">
+                   <span>💰 ¥${rule.threshold}档位</span>
+                   <span style="color: #667eea; font-weight: bold;">${rewardsText}</span>
+                 </li>`;
+      });
+      html += '</ul>';
+      
+      container.innerHTML = html;
     }
 
     window.onclick = function(event) {

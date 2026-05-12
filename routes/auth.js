@@ -3,7 +3,7 @@ const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 const https = require('https');
 
-const users = new Map();
+const users = global.users || new Map();
 const verificationCodes = new Map();
 const lastSendTime = new Map();
 

@@ -2,11 +2,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require('multer');
-const paymentRoutes = require('./routes/payment');
-const authRoutes = require('./routes/auth');
+const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+const users = new Map();
+const orders = new Map();
+const verificationCodes = new Map();
+const lastSendTime = new Map();
+const rebateRecords = new Map();
+
+global.users = users;
+global.orders = orders;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
