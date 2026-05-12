@@ -717,11 +717,14 @@
         
         const result = await response.json();
         if (result.success) {
-          let msg = '验证码已发送到您的邮箱，请查收';
           if (result.code) {
-            msg = `邮件发送失败，您的验证码是：${result.code}`;
+            // 邮件发送失败，在页面上直接显示验证码
+            alert(`邮件发送失败，但您可以使用下面的验证码：${result.code}`);
+            // 自动填入验证码
+            document.getElementById('reg-code').value = result.code;
+          } else {
+            alert('验证码已发送到您的邮箱，请查收！');
           }
-          alert(msg);
           startCodeTimer(codeBtn);
         } else {
           alert(result.message);
