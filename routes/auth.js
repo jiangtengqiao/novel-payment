@@ -9,15 +9,17 @@ const lastSendTime = new Map();
 
 const SMTP_CONFIG = {
   host: 'smtp.163.com',
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false,
+  requireTLS: true,
   auth: {
     user: '13677735766@163.com',
     pass: 'XMrnbaBdEeHzjTq4'
   },
   tls: {
     rejectUnauthorized: false
-  }
+  },
+  family: 4  // 强制使用IPv4
 };
 
 let transporter = nodemailer.createTransport(SMTP_CONFIG);
