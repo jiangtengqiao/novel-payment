@@ -8,12 +8,12 @@ const verificationCodes = new Map();
 const lastSendTime = new Map();
 
 const SMTP_CONFIG = {
-  host: 'smtp.qq.com',
+  host: 'smtp.163.com',
   port: 465,
   secure: true,
   auth: {
-    user: '2527469579@qq.com',
-    pass: 'sdafarxfmqrwcgff'
+    user: '13677735766@163.com',
+    pass: 'XMrnbaBdEeHzjTq4'
   },
   tls: {
     rejectUnauthorized: false
@@ -28,7 +28,7 @@ async function sendEmail(to, code) {
     console.log(`🔑 验证码: ${code}`);
     
     const mailOptions = {
-      from: '"小说支付中心" <2527469579@qq.com>',
+      from: '"小说支付中心" <13677735766@163.com>',
       to: to,
       subject: '【小说支付中心】安全验证 - 验证码',
       text: `尊敬的用户：\n\n您正在进行账户注册验证，验证码为：${code}\n\n验证码有效期：5分钟\n\n请在注册页面输入此验证码完成验证。\n\n⚠️ 安全提示：\n- 此验证码仅供您本人使用，请妥善保管\n- 请勿将验证码告知他人\n- 如非本人操作，请忽略此邮件\n\n如有疑问，请联系客服。\n\n---\n小说支付中心`,
