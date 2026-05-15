@@ -6,7 +6,7 @@ const users = global.users || new Map();
 const verificationCodes = new Map();
 const lastSendTime = new Map();
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
+const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_EDy6uahn_LeRYvWZ9NyvwyNrvRGsKb72P';
 
 async function sendEmail(to, code) {
   if (!RESEND_API_KEY) {
