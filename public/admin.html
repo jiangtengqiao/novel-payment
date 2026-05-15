@@ -8,615 +8,536 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #f5f7fa;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
     }
-    .login-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
+    .admin-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 32px 40px;
+      color: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     }
-    .login-box {
-      background: white;
-      padding: 48px 40px;
-      border-radius: 24px;
-      box-shadow: 0 25px 80px rgba(0,0,0,0.3);
-      width: 100%;
-      max-width: 420px;
-      text-align: center;
-      animation: slideUp 0.5s ease;
-    }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(50px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .login-logo {
-      font-size: 64px;
-      margin-bottom: 20px;
-    }
-    .login-box h2 {
-      color: #1d1d1f;
-      font-size: 1.8rem;
-      margin-bottom: 10px;
-    }
-    .login-box > p {
-      color: #86868b;
-      font-size: 0.95rem;
+    .admin-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .admin-header p { color: rgba(255,255,255,0.8); font-size: 14px; }
+    .admin-container { max-width: 1400px; margin: 0 auto; padding: 32px 40px; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
       margin-bottom: 32px;
     }
-    .login-form input {
-      width: 100%;
-      padding: 16px;
-      border: 2px solid #e5e5ea;
-      border-radius: 12px;
-      font-size: 1rem;
-      margin-bottom: 16px;
-      outline: none;
-      transition: all 0.2s;
-    }
-    .login-form input:focus {
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
-    }
-    .login-submit {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      border: none;
-      border-radius: 12px;
-      color: white;
-      font-size: 1.05rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      margin-bottom: 16px;
-    }
-    .login-submit:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(102,126,234,0.4);
-    }
-    .login-hint {
-      font-size: 0.85rem;
-      color: #86868b;
-    }
-    .login-error {
-      color: #ff3b30;
-      font-size: 0.9rem;
-      margin-bottom: 16px;
-      display: none;
-    }
-
-    .container { 
-      max-width: 1100px; 
-      margin: 0 auto; 
-      display: none;
-    }
-    .container.show { display: block; }
-    .header {
-      background: white;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .header h1 {
-      font-size: 1.5rem;
-      color: #1d1d1f;
-    }
-    .back-btn {
-      padding: 10px 20px;
-      background: #f5f5f7;
-      color: #1d1d1f;
-      border: none;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .back-btn:hover { background: #e5e5ea; }
-    .logout-btn {
-      background: #ff3b30 !important;
-      color: white !important;
-    }
-    .logout-btn:hover { background: #e03127 !important; }
-    
-    .admin-user-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: #86868b;
-      font-size: 0.9rem;
-    }
-    .admin-user-info strong {
-      color: #1d1d1f;
-    }
-    
-    .admin-card {
+    .stat-card {
       background: white;
       border-radius: 16px;
       padding: 24px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-      margin-bottom: 16px;
+      transition: all 0.2s;
     }
-    
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .stat-label { font-size: 13px; color: #86868b; margin-bottom: 8px; }
+    .stat-value { font-size: 32px; font-weight: 700; color: #1d1d1f; }
+    .stat-change { font-size: 12px; margin-top: 8px; }
+    .stat-change.success { color: #34c759; }
+    .stat-change.warning { color: #ff9500; }
     .admin-tabs {
       display: flex;
       gap: 8px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
+      background: white;
+      padding: 8px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
     }
     .admin-tab {
-      padding: 12px 20px;
-      background: #f5f5f7;
-      border: none;
-      border-radius: 10px;
-      color: #86868b;
-      font-size: 0.95rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .admin-tab:hover { color: #1d1d1f; }
-    .admin-tab.active {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-    }
-    
-    .section-title {
-      font-size: 1.2rem;
-      color: #1d1d1f;
-      margin-bottom: 16px;
-      font-weight: 600;
-    }
-    
-    .order-item {
-      background: #fafafa;
-      border-radius: 12px;
-      padding: 18px;
-      margin-bottom: 12px;
-      border: 1px solid #e5e5e5;
-    }
-    .order-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .order-no {
-      font-weight: 600;
-      color: #1d1d1f;
-    }
-    .order-status {
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-    .status-pending { background: #fff3cd; color: #856404; }
-    .status-paid { background: #d4edda; color: #155724; }
-    .status-expired { background: #f8d7da; color: #721c24; }
-    .status-rejected { background: #f8d7da; color: #721c24; }
-    .status-review { background: #cce5ff; color: #004085; }
-    
-    .order-details {
-      font-size: 0.9rem;
-      color: #86868b;
-      line-height: 1.8;
-    }
-    .order-actions {
-      margin-top: 12px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .action-btn {
-      padding: 10px 18px;
+      flex: 1;
+      padding: 14px 20px;
       border: none;
       border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 500;
+      background: transparent;
+      color: #86868b;
+      font-size: 15px;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .approve-btn { background: #34c759; color: white; }
-    .approve-btn:hover { background: #28a745; }
-    .reject-btn { background: #ff3b30; color: white; }
-    .reject-btn:hover { background: #e03127; }
-    
-    .empty-state {
-      text-align: center;
-      padding: 40px;
-      color: #86868b;
+    .admin-tab:hover { color: #1d1d1f; background: #f5f5f7; }
+    .admin-tab.active { background: #007aff; color: white; }
+    .admin-panel {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      display: none;
     }
-    
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
+    .admin-panel.active { display: block; }
+    .panel-title { font-size: 20px; font-weight: 700; color: #1d1d1f; margin-bottom: 24px; }
+    .order-table { width: 100%; border-collapse: collapse; }
+    .order-table th {
+      background: #f5f5f7;
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 600;
+      color: #86868b;
+      border-radius: 8px 8px 0 0;
+    }
+    .order-table td {
+      padding: 16px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+      color: #1d1d1f;
+    }
+    .order-table tr:hover { background: #fafafa; }
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .status-pending { background: #fff3e0; color: #ff9800; }
+    .status-paid { background: #e8f5e9; color: #4caf50; }
+    .status-rejected { background: #ffebee; color: #f44336; }
+    .status-expired { background: #f5f5f5; color: #9e9e9e; }
+    .action-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-right: 8px;
+    }
+    .action-btn.approve { background: #34c759; color: white; }
+    .action-btn.approve:hover { background: #2db84d; }
+    .action-btn.reject { background: #ff3b30; color: white; }
+    .action-btn.reject:hover { background: #e03127; }
+    .action-btn:disabled { background: #c7c7cc; cursor: not-allowed; }
+    .refresh-btn {
+      padding: 10px 20px;
+      background: #007aff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
       margin-bottom: 20px;
     }
-    .stat-card {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      padding: 20px;
-      border-radius: 12px;
+    .refresh-btn:hover { background: #0066d6; }
+    .empty-state {
       text-align: center;
+      padding: 60px 20px;
+      color: #86868b;
     }
-    .stat-card.green { background: linear-gradient(135deg, #11998e, #38ef7d); }
-    .stat-card.orange { background: linear-gradient(135deg, #f093fb, #f5576c); }
-    .stat-card.blue { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-    .stat-card h3 { font-size: 2rem; margin-bottom: 5px; }
-    .stat-card p { font-size: 0.9rem; opacity: 0.9; }
-
-    @media (max-width: 600px) {
-      .header { flex-direction: column; gap: 12px; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .order-actions { flex-direction: column; }
+    .empty-state-icon { font-size: 64px; margin-bottom: 16px; }
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      animation: slideIn 0.3s ease;
+    }
+    @keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    .notification.show { display: flex; }
+    .notification.success { border-left: 4px solid #34c759; }
+    .notification.error { border-left: 4px solid #ff3b30; }
+    .notif-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .notification.success .notif-icon { background: #34c759; color: white; }
+    .notification.error .notif-icon { background: #ff3b30; color: white; }
+    .notif-content { flex: 1; }
+    .notif-title { font-size: 14px; font-weight: 600; color: #1d1d1f; }
+    .notif-message { font-size: 13px; color: #86868b; margin-top: 2px; }
+    @media (max-width: 768px) {
+      .admin-header { padding: 20px; }
+      .admin-container { padding: 20px; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .admin-tabs { flex-direction: column; }
+      .order-table { font-size: 12px; }
+      .order-table th, .order-table td { padding: 10px 8px; }
     }
   </style>
 </head>
 <body>
-  <div class="login-overlay" id="login-overlay">
-    <div class="login-box">
-      <div class="login-logo">🛡️</div>
-      <h2>工作人员登录</h2>
-      <p>请输入工作人员账号和密码</p>
-      <div class="login-error" id="login-error">账号或密码错误</div>
-      <div class="login-form">
-        <input type="text" id="admin-username" placeholder="工作人员账号">
-        <input type="password" id="admin-password" placeholder="登录密码">
-        <button class="login-submit" onclick="adminLogin()">登 录</button>
-      </div>
-      <p class="login-hint">如需开通工作人员账号请联系管理员</p>
+  <div class="notification" id="notification">
+    <div class="notif-icon">✓</div>
+    <div class="notif-content">
+      <div class="notif-title" id="notif-title">成功</div>
+      <div class="notif-message" id="notif-message">操作已完成</div>
     </div>
   </div>
 
-  <div class="container" id="main-content">
-    <div class="header">
-      <h1>🛡️ 管理后台</h1>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-        <div class="admin-user-info" id="admin-user-info" style="display:none;">
-          <span>工作人员:</span>
-          <strong id="admin-name"></strong>
-        </div>
-        <button class="back-btn logout-btn" onclick="adminLogout()" id="logout-btn">退出登录</button>
-        <button class="back-btn" onclick="window.location.href='/payment.html'">返回前台</button>
+  <div class="admin-header">
+    <h1>📊 小说支付中心 - 管理后台</h1>
+    <p>订单管理 · 用户管理 · 数据统计</p>
+  </div>
+
+  <div class="admin-container">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">待审核订单</div>
+        <div class="stat-value" id="stat-pending">0</div>
+        <div class="stat-change warning">⚡ 需要处理</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">已完成订单</div>
+        <div class="stat-value" id="stat-completed">0</div>
+        <div class="stat-change success">✓ 今日完成</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">注册用户</div>
+        <div class="stat-value" id="stat-users">0</div>
+        <div class="stat-change success">📈 持续增长</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">总收入</div>
+        <div class="stat-value" id="stat-revenue">¥0</div>
+        <div class="stat-change success">💰 累计收入</div>
       </div>
     </div>
 
-    <div class="admin-card">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <h3 id="stat-pending">0</h3>
-          <p>待审核订单</p>
-        </div>
-        <div class="stat-card green">
-          <h3 id="stat-completed">0</h3>
-          <p>已完成订单</p>
-        </div>
-        <div class="stat-card orange">
-          <h3 id="stat-users">0</h3>
-          <p>注册用户</p>
-        </div>
-        <div class="stat-card blue">
-          <h3 id="stat-revenue">¥0</h3>
-          <p>总收入</p>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchTab('orders')">📋 待审核订单</button>
+      <button class="admin-tab" onclick="switchTab('all-orders')">📦 全部订单</button>
+      <button class="admin-tab" onclick="switchTab('users')">👥 用户管理</button>
+    </div>
+
+    <div id="orders-panel" class="admin-panel active">
+      <h2 class="panel-title">待审核订单</h2>
+      <button class="refresh-btn" onclick="loadOrders()">🔄 刷新订单</button>
+      <div id="pending-orders">
+        <div class="empty-state">
+          <div class="empty-state-icon">📭</div>
+          <p>暂无待审核订单</p>
         </div>
       </div>
-      
-      <div class="admin-tabs">
-        <button class="admin-tab active" onclick="switchAdminTab('orders')">📋 待审核订单</button>
-        <button class="admin-tab" onclick="switchAdminTab('allOrders')">📊 全部订单</button>
-        <button class="admin-tab" onclick="switchAdminTab('users')">👥 用户管理</button>
+    </div>
+
+    <div id="all-orders-panel" class="admin-panel">
+      <h2 class="panel-title">全部订单记录</h2>
+      <button class="refresh-btn" onclick="loadAllOrders()">🔄 刷新订单</button>
+      <div id="all-orders">
+        <div class="empty-state">
+          <div class="empty-state-icon">📭</div>
+          <p>暂无订单记录</p>
+        </div>
       </div>
-      
-      <div id="orders-section" class="admin-section">
-        <h2 class="section-title">待审核订单</h2>
-        <div id="pending-orders-container"></div>
-      </div>
-      
-      <div id="allOrders-section" class="admin-section" style="display:none;">
-        <h2 class="section-title">全部订单</h2>
-        <div id="all-orders-container"></div>
-      </div>
-      
-      <div id="users-section" class="admin-section" style="display:none;">
-        <h2 class="section-title">用户列表</h2>
-        <div id="users-container"></div>
+    </div>
+
+    <div id="users-panel" class="admin-panel">
+      <h2 class="panel-title">注册用户列表</h2>
+      <button class="refresh-btn" onclick="loadUsers()">🔄 刷新用户</button>
+      <div id="user-list">
+        <div class="empty-state">
+          <div class="empty-state-icon">👥</div>
+          <p>暂无注册用户</p>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    let adminUser = null;
-    let allOrders = [];
-    let users = {};
-    
-    function adminLogin() {
-      const username = document.getElementById('admin-username').value.trim();
-      const password = document.getElementById('admin-password').value;
+    function showNotification(type, title, message) {
+      const notif = document.getElementById('notification');
+      const notifTitle = document.getElementById('notif-title');
+      const notifMsg = document.getElementById('notif-message');
+      const notifIcon = notif.querySelector('.notif-icon');
       
-      if (!username || !password) {
-        showError('请输入账号和密码');
-        return;
-      }
+      notif.className = 'notification ' + type;
+      notifTitle.textContent = title;
+      notifMsg.textContent = message;
       
-      fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          adminUser = data.admin;
-          localStorage.setItem('adminToken', data.token);
-          localStorage.setItem('adminUser', JSON.stringify(adminUser));
-          showMainContent();
-        } else {
-          showError(data.message || '账号或密码错误');
-        }
-      })
-      .catch(err => {
-        console.error('登录失败:', err);
-        showError('登录失败，请稍后重试');
-      });
+      if (type === 'success') notifIcon.textContent = '✓';
+      else notifIcon.textContent = '✕';
+      
+      notif.classList.add('show');
+      setTimeout(() => notif.classList.remove('show'), 3000);
     }
-    
-    function showError(msg) {
-      const errorEl = document.getElementById('login-error');
-      errorEl.textContent = msg;
-      errorEl.style.display = 'block';
-      setTimeout(() => errorEl.style.display = 'none', 3000);
-    }
-    
-    function showMainContent() {
-      document.getElementById('login-overlay').style.display = 'none';
-      document.getElementById('main-content').classList.add('show');
-      document.getElementById('admin-user-info').style.display = 'flex';
-      document.getElementById('admin-name').textContent = adminUser.name;
-      
-      loadData();
-    }
-    
-    function adminLogout() {
-      if (!confirm('确定要退出登录吗？')) return;
-      
-      adminUser = null;
-      localStorage.removeItem('adminToken');
-      localStorage.removeItem('adminUser');
-      
-      document.getElementById('login-overlay').style.display = 'flex';
-      document.getElementById('main-content').classList.remove('show');
-      document.getElementById('admin-user-info').style.display = 'none';
-      document.getElementById('admin-username').value = '';
-      document.getElementById('admin-password').value = '';
-    }
-    
-    function switchAdminTab(tab) {
-      document.querySelectorAll('.admin-tab').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.admin-section').forEach(el => el.style.display = 'none');
+
+    function switchTab(tab) {
+      document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
       
       if (tab === 'orders') {
         document.querySelector('.admin-tab:nth-child(1)').classList.add('active');
-        document.getElementById('orders-section').style.display = 'block';
-        loadPendingOrders();
-      } else if (tab === 'allOrders') {
+        document.getElementById('orders-panel').classList.add('active');
+      } else if (tab === 'all-orders') {
         document.querySelector('.admin-tab:nth-child(2)').classList.add('active');
-        document.getElementById('allOrders-section').style.display = 'block';
+        document.getElementById('all-orders-panel').classList.add('active');
         loadAllOrders();
       } else if (tab === 'users') {
         document.querySelector('.admin-tab:nth-child(3)').classList.add('active');
-        document.getElementById('users-section').style.display = 'block';
+        document.getElementById('users-panel').classList.add('active');
         loadUsers();
       }
     }
-    
-    function loadData() {
-      const token = localStorage.getItem('adminToken');
-      if (!token) return;
-      
-      fetch('/api/alipay/orders')
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            allOrders = data.orders;
-            updateStats();
-            loadPendingOrders();
-          }
-        })
-        .catch(err => console.error('加载订单失败:', err));
-      
-      fetch('/api/auth/users')
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            users = data.users;
-            updateStats();
-          }
-        })
-        .catch(err => console.error('加载用户失败:', err));
+
+    async function loadOrders() {
+      try {
+        const response = await fetch('/api/alipay/orders');
+        const result = await response.json();
+        
+        if (result.success) {
+          const pendingOrders = result.orders.filter(o => o.status === 'pending' || o.status === 'pending_review');
+          renderPendingOrders(pendingOrders);
+          updateStats(result.orders);
+        }
+      } catch (error) {
+        showNotification('error', '加载失败', '无法加载订单数据');
+      }
     }
-    
-    function updateStats() {
-      const pending = allOrders.filter(o => o.status === 'pending_review').length;
-      const completed = allOrders.filter(o => o.status === 'paid').length;
-      const userCount = Object.keys(users).length;
-      const revenue = allOrders.filter(o => o.status === 'paid').reduce((sum, o) => sum + (parseFloat(o.totalAmount) || 0), 0);
+
+    async function loadAllOrders() {
+      try {
+        const response = await fetch('/api/alipay/orders');
+        const result = await response.json();
+        
+        if (result.success) {
+          renderAllOrders(result.orders);
+        }
+      } catch (error) {
+        showNotification('error', '加载失败', '无法加载订单数据');
+      }
+    }
+
+    async function loadUsers() {
+      try {
+        const response = await fetch('/api/auth/users');
+        const result = await response.json();
+        
+        if (result.success) {
+          renderUsers(result.users);
+        }
+      } catch (error) {
+        showNotification('error', '加载失败', '无法加载用户数据');
+      }
+    }
+
+    function renderPendingOrders(orders) {
+      const container = document.getElementById('pending-orders');
       
+      if (!orders.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <p>暂无待审核订单</p>
+          </div>
+        `;
+        return;
+      }
+      
+      let html = `
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>订单号</th>
+              <th>用户邮箱</th>
+              <th>订单类型</th>
+              <th>金额</th>
+              <th>状态</th>
+              <th>时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      orders.forEach(order => {
+        const statusClass = order.status === 'pending_review' ? 'status-pending' : 'status-expired';
+        const statusText = order.status === 'pending_review' ? '待审核' : '待支付';
+        const typeText = order.type === 'coin' ? '书币充值' : '会员开通';
+        const time = order.createdAt ? new Date(order.createdAt).toLocaleString() : '-';
+        
+        html += `
+          <tr>
+            <td style="font-family:monospace;">${order.orderNo || order.outTradeNo}</td>
+            <td>${order.userEmail || order.userId || '-'}</td>
+            <td>${typeText}</td>
+            <td>¥${order.totalAmount || order.price}</td>
+            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+            <td style="font-size:12px;color:#86868b;">${time}</td>
+            <td>
+              <button class="action-btn approve" onclick="approveOrder('${order.orderNo || order.outTradeNo}')">通过</button>
+              <button class="action-btn reject" onclick="rejectOrder('${order.orderNo || order.outTradeNo}')">拒绝</button>
+            </td>
+          </tr>
+        `;
+      });
+      
+      html += '</tbody></table>';
+      container.innerHTML = html;
+    }
+
+    function renderAllOrders(orders) {
+      const container = document.getElementById('all-orders');
+      
+      if (!orders.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <p>暂无订单记录</p>
+          </div>
+        `;
+        return;
+      }
+      
+      let html = `
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>订单号</th>
+              <th>用户邮箱</th>
+              <th>订单类型</th>
+              <th>金额</th>
+              <th>状态</th>
+              <th>时间</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      orders.forEach(order => {
+        let statusClass, statusText;
+        if (order.status === 'paid') { statusClass = 'status-paid'; statusText = '已完成'; }
+        else if (order.status === 'rejected') { statusClass = 'status-rejected'; statusText = '已拒绝'; }
+        else if (order.status === 'expired') { statusClass = 'status-expired'; statusText = '已过期'; }
+        else { statusClass = 'status-pending'; statusText = '待审核'; }
+        
+        const typeText = order.type === 'coin' ? '书币充值' : '会员开通';
+        const time = order.createdAt ? new Date(order.createdAt).toLocaleString() : '-';
+        
+        html += `
+          <tr>
+            <td style="font-family:monospace;">${order.orderNo || order.outTradeNo}</td>
+            <td>${order.userEmail || order.userId || '-'}</td>
+            <td>${typeText}</td>
+            <td>¥${order.totalAmount || order.price}</td>
+            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+            <td style="font-size:12px;color:#86868b;">${time}</td>
+          </tr>
+        `;
+      });
+      
+      html += '</tbody></table>';
+      container.innerHTML = html;
+    }
+
+    function renderUsers(users) {
+      const container = document.getElementById('user-list');
+      const userArray = Object.values(users);
+      
+      if (!userArray.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">👥</div>
+            <p>暂无注册用户</p>
+          </div>
+        `;
+        return;
+      }
+      
+      let html = `
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>用户邮箱</th>
+              <th>用户ID</th>
+              <th>书币余额</th>
+              <th>累计充值</th>
+              <th>会员状态</th>
+              <th>注册时间</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      userArray.forEach(user => {
+        const isVip = user.vipExpireTime && new Date(user.vipExpireTime) > new Date();
+        const vipStatus = isVip ? `<span class="status-badge status-paid">VIP</span>` : `<span class="status-badge status-expired">普通</span>`;
+        const regTime = user.createdAt ? new Date(user.createdAt).toLocaleString() : '-';
+        
+        html += `
+          <tr>
+            <td style="font-weight:600;">${user.email}</td>
+            <td style="font-family:monospace;font-size:12px;">${user.userId}</td>
+            <td>${user.coins || 0}</td>
+            <td>¥${user.totalRecharged || 0}</td>
+            <td>${vipStatus}</td>
+            <td style="font-size:12px;color:#86868b;">${regTime}</td>
+          </tr>
+        `;
+      });
+      
+      html += '</tbody></table>';
+      container.innerHTML = html;
+    }
+
+    function updateStats(orders) {
+      const pending = orders.filter(o => o.status === 'pending' || o.status === 'pending_review').length;
+      const completed = orders.filter(o => o.status === 'paid').length;
       document.getElementById('stat-pending').textContent = pending;
       document.getElementById('stat-completed').textContent = completed;
-      document.getElementById('stat-users').textContent = userCount;
-      document.getElementById('stat-revenue').textContent = '¥' + revenue.toFixed(2);
     }
-    
-    function loadPendingOrders() {
-      const container = document.getElementById('pending-orders-container');
-      const pending = allOrders.filter(o => o.status === 'pending_review');
+
+    async function approveOrder(orderNo) {
+      if (!confirm('确认通过此订单？用户将获得相应权益。')) return;
       
-      if (!pending.length) {
-        container.innerHTML = '<div class="empty-state">🎉 暂无待审核订单</div>';
-        return;
-      }
-      
-      container.innerHTML = pending.map(order => `
-        <div class="order-item">
-          <div class="order-header">
-            <span class="order-no">订单号: ${order.orderNo || order.outTradeNo}</span>
-            <span class="order-status status-review">待审核</span>
-          </div>
-          <div class="order-details">
-            <div><strong>用户:</strong> ${order.userEmail || '未登录'}</div>
-            <div><strong>类型:</strong> ${order.type === 'coin' ? '书币充值' : '会员开通'}</div>
-            <div><strong>金额:</strong> ¥${order.totalAmount}</div>
-            <div><strong>详情:</strong> ${order.type === 'coin' ? (order.coins || '-') + '书币' + (order.gift ? ' +' + order.gift + '赠送' : '') : (order.name || '-')}</div>
-            ${order.transactionId ? `<div><strong>交易号:</strong> ${order.transactionId}</div>` : ''}
-            <div><strong>提交时间:</strong> ${new Date(order.submittedAt || order.createdAt).toLocaleString()}</div>
-          </div>
-          <div class="order-actions">
-            <button class="action-btn approve-btn" onclick="approveOrder('${order.orderNo || order.outTradeNo}')">✅ 审核通过</button>
-            <button class="action-btn reject-btn" onclick="rejectOrder('${order.orderNo || order.outTradeNo}')">❌ 审核拒绝</button>
-          </div>
-        </div>
-      `).join('');
-    }
-    
-    function loadAllOrders() {
-      const container = document.getElementById('all-orders-container');
-      
-      if (!allOrders.length) {
-        container.innerHTML = '<div class="empty-state">暂无订单记录</div>';
-        return;
-      }
-      
-      container.innerHTML = allOrders.map(order => {
-        let statusClass = 'status-pending';
-        let statusText = '待支付';
-        if (order.status === 'paid') { statusClass = 'status-paid'; statusText = '已完成'; }
-        else if (order.status === 'expired') { statusClass = 'status-expired'; statusText = '已过期'; }
-        else if (order.status === 'rejected') { statusClass = 'status-rejected'; statusText = '已拒绝'; }
-        else if (order.status === 'pending_review') { statusClass = 'status-review'; statusText = '待审核'; }
+      try {
+        const response = await fetch(`/api/alipay/orders/${orderNo}/approve`, {
+          method: 'POST'
+        });
+        const result = await response.json();
         
-        return `
-        <div class="order-item">
-          <div class="order-header">
-            <span class="order-no">订单号: ${order.orderNo || order.outTradeNo}</span>
-            <span class="order-status ${statusClass}">${statusText}</span>
-          </div>
-          <div class="order-details">
-            <div><strong>用户:</strong> ${order.userEmail || '未登录'}</div>
-            <div><strong>类型:</strong> ${order.type === 'coin' ? '书币充值' : '会员开通'}</div>
-            <div><strong>金额:</strong> ¥${order.totalAmount}</div>
-            <div><strong>创建时间:</strong> ${new Date(order.createdAt).toLocaleString()}</div>
-            ${order.paidAt ? `<div><strong>完成时间:</strong> ${new Date(order.paidAt).toLocaleString()}</div>` : ''}
-          </div>
-        </div>
-      `}).join('');
-    }
-    
-    function loadUsers() {
-      const container = document.getElementById('users-container');
-      const userList = Object.values(users);
-      
-      if (!userList.length) {
-        container.innerHTML = '<div class="empty-state">暂无用户</div>';
-        return;
+        if (result.success) {
+          showNotification('success', '审核通过', '订单已通过，用户权益已发放');
+          loadOrders();
+        } else {
+          showNotification('error', '操作失败', result.message);
+        }
+      } catch (error) {
+        showNotification('error', '操作失败', '网络错误');
       }
-      
-      container.innerHTML = userList.map(user => {
-        const isVip = user.vipExpireTime && new Date(user.vipExpireTime) > new Date();
-        return `
-        <div class="order-item">
-          <div class="order-header">
-            <span class="order-no">${user.email}</span>
-            <span class="order-status ${isVip ? 'status-paid' : 'status-pending'}">${isVip ? 'VIP' : '普通用户'}</span>
-          </div>
-          <div class="order-details">
-            <div><strong>书币余额:</strong> ${user.coins || 0}</div>
-            <div><strong>累计充值:</strong> ¥${user.totalRecharged || 0}</div>
-            <div><strong>会员状态:</strong> ${isVip ? '会员有效期至 ' + new Date(user.vipExpireTime).toLocaleDateString() : '非会员'}</div>
-            <div><strong>注册时间:</strong> ${new Date(user.createdAt).toLocaleString()}</div>
-          </div>
-        </div>
-      `}).join('');
     }
-    
-    function approveOrder(orderNo) {
-      if (!confirm('确定要审核通过此订单吗？')) return;
+
+    async function rejectOrder(orderNo) {
+      if (!confirm('确认拒绝此订单？')) return;
       
-      fetch(`/api/alipay/orders/${orderNo}/approve`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
-        }
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          alert('✅ 订单审核通过！用户已收到充值/会员权益');
-          loadData();
+      try {
+        const response = await fetch(`/api/alipay/orders/${orderNo}/reject`, {
+          method: 'POST'
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+          showNotification('success', '已拒绝', '订单已被拒绝');
+          loadOrders();
         } else {
-          alert('❌ 审核失败: ' + (data.message || '未知错误'));
+          showNotification('error', '操作失败', result.message);
         }
-      })
-      .catch(err => {
-        console.error('审核失败:', err);
-        alert('❌ 网络错误，请稍后重试');
-      });
+      } catch (error) {
+        showNotification('error', '操作失败', '网络错误');
+      }
     }
-    
-    function rejectOrder(orderNo) {
-      if (!confirm('确定要拒绝此订单吗？')) return;
-      
-      fetch(`/api/alipay/orders/${orderNo}/reject`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
-        }
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          alert('❌ 订单已拒绝');
-          loadData();
-        } else {
-          alert('❌ 拒绝失败: ' + (data.message || '未知错误'));
-        }
-      })
-      .catch(err => {
-        console.error('拒绝失败:', err);
-        alert('❌ 网络错误，请稍后重试');
-      });
-    }
-    
-    document.getElementById('admin-password').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') adminLogin();
-    });
-    
-    const savedAdmin = localStorage.getItem('adminUser');
-    const savedToken = localStorage.getItem('adminToken');
-    if (savedAdmin && savedToken) {
-      adminUser = JSON.parse(savedAdmin);
-      showMainContent();
-    }
+
+    loadOrders();
   </script>
 </body>
 </html>
