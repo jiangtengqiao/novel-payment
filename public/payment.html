@@ -7,232 +7,303 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #faf9f7;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f5f5f7;
       min-height: 100vh;
       padding: 20px;
     }
     .container { max-width: 800px; margin: 0 auto; }
     .header {
-      text-align: center;
-      color: #2d2d2d;
-      margin-bottom: 20px;
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      margin-bottom: 16px;
     }
-    .header h1 {
-      font-size: 1.8rem;
-      margin-bottom: 8px;
-      font-weight: 700;
-    }
-    .header p { font-size: 0.95rem; color: #666; }
-    
-    .login-section {
+    .header-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+    }
+    .header-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+    .header-subtitle {
+      font-size: 0.95rem;
+      color: #86868b;
+      margin-top: 4px;
     }
     .login-btn {
       padding: 10px 20px;
-      background: #f5f5f3;
-      border: 1px solid #e8e8e6;
+      background: #007aff;
+      color: white;
+      border: none;
       border-radius: 20px;
-      color: #2d2d2d;
       font-size: 0.9rem;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.2s;
     }
-    .login-btn:hover { background: #f0f0ee; }
+    .login-btn:hover { background: #0066d6; transform: translateY(-1px); }
     .user-info {
-      font-size: 0.9rem;
-      color: #666;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    
-    .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .user-email {
+      font-size: 0.9rem;
+      color: #1d1d1f;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      background: white;
+      padding: 6px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
     .tab {
       flex: 1;
-      padding: 14px;
-      background: #f5f5f3;
-      border: 1px solid #e8e8e6;
-      border-radius: 10px;
-      color: #666;
+      padding: 12px 16px;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      color: #86868b;
       font-size: 0.95rem;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.3s;
-      min-width: 120px;
+      transition: all 0.2s;
     }
-    .tab:hover { background: #f0f0ee; }
+    .tab:hover { color: #1d1d1f; }
     .tab.active {
-      background: #ffffff;
-      color: #2d2d2d;
+      background: #f5f5f7;
+      color: #1d1d1f;
       font-weight: 600;
-      border-color: #ddd;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
-    
+
     .payment-card {
-      background: #ffffff;
+      background: white;
       border-radius: 16px;
       padding: 24px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      border: 1px solid #f0f0ee;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
     }
     .product-section { display: none; }
     .product-section.active { display: block; }
-    
+
     .section-title {
-      font-size: 1.15rem;
-      color: #2d2d2d;
-      margin-bottom: 18px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #f5f5f3;
+      font-size: 1.2rem;
+      color: #1d1d1f;
+      margin-bottom: 16px;
       font-weight: 600;
     }
-    
+
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
     .product-item {
-      border: 2px solid #e8e8e6;
+      border: 2px solid #e5e5ea;
       border-radius: 12px;
-      padding: 16px 10px;
+      padding: 16px 12px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.2s;
       position: relative;
-      background: #faf9f7;
+      background: #fafafa;
     }
-    .product-item:hover { border-color: #2d2d2d; transform: translateY(-2px); }
+    .product-item:hover { border-color: #007aff; transform: translateY(-2px); }
     .product-item.selected {
-      border-color: #2d2d2d;
-      background: #ffffff;
-      color: #2d2d2d;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-color: #007aff;
+      background: #007aff;
+      color: white;
     }
     .product-item .coin-amount {
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       font-weight: 700;
       margin-bottom: 4px;
-      color: #2d2d2d;
     }
     .product-item .price {
-      font-size: 0.95rem;
-      color: #333;
+      font-size: 1rem;
       font-weight: 600;
     }
-    .product-item.selected .price { color: #333; }
+    .product-item.selected .price { color: white; }
     .product-item .gift {
       font-size: 0.75rem;
-      color: #e74c3c;
-      margin-top: 5px;
-    }
-    .product-item.selected .gift { color: #e74c3c; }
-    .product-item .tag {
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      background: #2d2d2d;
-      color: white;
-      padding: 2px 6px;
-      border-radius: 6px;
-      font-size: 0.65rem;
-      font-weight: 600;
-    }
-    
-    .member-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-    .member-item {
-      border: 2px solid #e8e8e6;
-      border-radius: 12px;
-      padding: 18px 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s;
-      position: relative;
-      background: #faf9f7;
-    }
-    .member-item:hover { border-color: #2d2d2d; transform: translateY(-2px); }
-    .member-item.selected {
-      border-color: #2d2d2d;
-      background: #ffffff;
-      color: #2d2d2d;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .member-item .name {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 5px;
-      color: #2d2d2d;
-    }
-    .member-item .duration {
-      font-size: 0.8rem;
-      color: #666;
-      margin-bottom: 5px;
-    }
-    .member-item.selected .duration { color: #666; }
-    .member-item .price {
-      font-size: 1.25rem;
-      color: #333;
-      font-weight: 700;
-    }
-    .member-item.selected .price { color: #333; }
-    .member-item .benefits {
-      font-size: 0.75rem;
-      color: #e74c3c;
+      color: #ff3b30;
       margin-top: 6px;
     }
-    .member-item.selected .benefits { color: #e74c3c; }
-    
-    .pay-btn {
+    .product-item.selected .gift { color: #ffcc00; }
+    .product-item .tag {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .member-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .member-item {
+      border: 2px solid #e5e5ea;
+      border-radius: 12px;
+      padding: 18px 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      background: #fafafa;
+    }
+    .member-item:hover { border-color: #007aff; transform: translateY(-2px); }
+    .member-item.selected {
+      border-color: #007aff;
+      background: #007aff;
+      color: white;
+    }
+    .member-item .name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .member-item .duration {
+      font-size: 0.85rem;
+      color: #86868b;
+      margin-bottom: 6px;
+    }
+    .member-item.selected .duration { color: rgba(255,255,255,0.85); }
+    .member-item .price {
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+    .member-item.selected .price { color: white; }
+    .member-item .benefits {
+      font-size: 0.75rem;
+      color: #ff3b30;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+    .member-item.selected .benefits { color: #ffcc00; }
+    .member-item .tag {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: linear-gradient(135deg, #ffcc00, #ffb800);
+      color: #1d1d1f;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    .primary-btn {
       width: 100%;
       padding: 16px;
-      background: #2d2d2d;
+      background: linear-gradient(135deg, #007aff, #0056cc);
       border: none;
       border-radius: 12px;
       color: white;
       font-size: 1.05rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(0,122,255,0.3);
     }
-    .pay-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
-    .pay-btn:disabled {
-      background: #ccc;
+    .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,122,255,0.4); }
+    .primary-btn:disabled {
+      background: #c7c7cc;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
-    
+
     .info-section {
       margin-top: 20px;
-      padding: 16px;
-      background: #f8f9fa;
-      border-radius: 10px;
+      padding: 18px;
+      background: #f5f5f7;
+      border-radius: 12px;
     }
     .info-section h4 {
-      color: #333;
+      color: #1d1d1f;
       margin-bottom: 10px;
       font-size: 0.95rem;
+      font-weight: 600;
     }
     .info-section ul {
       list-style: none;
-      color: #666;
+      color: #86868b;
       font-size: 0.85rem;
       line-height: 2;
     }
     .info-section li::before {
       content: "✓ ";
-      color: #2d2d2d;
+      color: #34c759;
       font-weight: bold;
     }
-    
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .task-item {
+      background: #f5f5f7;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .task-info {
+      flex: 1;
+    }
+    .task-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 4px;
+    }
+    .task-desc {
+      font-size: 0.85rem;
+      color: #86868b;
+    }
+    .task-reward {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ff9500;
+      margin-right: 12px;
+    }
+    .task-btn {
+      padding: 8px 16px;
+      background: #007aff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .task-btn:hover { background: #0066d6; }
+    .task-btn.completed {
+      background: #34c759;
+      cursor: default;
+    }
+
     .modal {
       position: fixed;
       top: 0;
@@ -244,17 +315,17 @@
       justify-content: center;
       align-items: center;
       z-index: 1000;
-      animation: fadeInBg 0.2s ease;
+      animation: fadeIn 0.2s ease;
       backdrop-filter: blur(4px);
     }
-    @keyframes fadeInBg { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .modal.show { display: flex; }
     .modal-content {
-      background: linear-gradient(145deg, #ffffff, #f5f5f3);
-      border-radius: 24px;
+      background: white;
+      border-radius: 20px;
       padding: 0;
       width: 92vw;
-      max-width: 480px;
+      max-width: 420px;
       max-height: 92vh;
       overflow: hidden;
       box-shadow: 0 25px 80px rgba(0,0,0,0.25);
@@ -266,150 +337,128 @@
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
     .modal-header {
-      background: linear-gradient(135deg, #faf9f7 0%, #f0f0ee 100%);
-      padding: 32px 32px 24px;
+      background: linear-gradient(135deg, #f5f5f7, #e5e5ea);
+      padding: 32px 24px 24px;
       text-align: center;
-      border-bottom: 1px solid #e8e8e6;
+      border-bottom: 1px solid #e5e5ea;
       position: relative;
-      overflow: hidden;
-    }
-    .modal-header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(45,45,45,0.03) 0%, transparent 70%);
-      pointer-events: none;
     }
     .modal-header .logo {
       font-size: 56px;
       margin-bottom: 12px;
-      position: relative;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.08));
+      display: inline-block;
     }
     .modal-header h3 {
-      color: #2d2d2d;
-      font-size: 1.7rem;
+      color: #1d1d1f;
+      font-size: 1.5rem;
       font-weight: 700;
       margin-bottom: 6px;
-      position: relative;
     }
     .modal-header p {
-      color: #666;
+      color: #86868b;
       font-size: 0.95rem;
-      position: relative;
     }
     .modal-close {
       position: absolute;
       top: 16px;
       right: 16px;
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      border: 2px solid #e8e8e6;
-      background: #ffffff;
-      color: #666;
+      border: none;
+      background: #e5e5ea;
+      color: #86868b;
       font-size: 1.3rem;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 10;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
-    .modal-close:hover { background: #2d2d2d; color: #ffffff; border-color: #2d2d2d; transform: rotate(90deg); }
+    .modal-close:hover { background: #c7c7cc; }
     .modal-body {
-      padding: 32px;
+      padding: 28px 24px;
       overflow-y: auto;
       max-height: calc(92vh - 200px);
     }
-    .user-input {
-      margin-bottom: 24px;
+    .form-group {
+      margin-bottom: 20px;
     }
-    .user-input label {
+    .form-group label {
       display: block;
       font-size: 0.95rem;
-      color: #2d2d2d;
-      margin-bottom: 10px;
+      color: #1d1d1f;
+      margin-bottom: 8px;
       font-weight: 600;
       text-align: left;
-      letter-spacing: 0.3px;
     }
-    .user-input input {
+    .form-group input {
       width: 100%;
-      padding: 16px 18px;
-      border: 2px solid #e8e8e6;
-      border-radius: 14px;
+      padding: 14px 16px;
+      border: 2px solid #e5e5ea;
+      border-radius: 12px;
       font-size: 1rem;
-      background: #faf9f7;
+      background: #fafafa;
       outline: none;
-      transition: all 0.3s;
+      transition: all 0.2s;
       font-weight: 500;
     }
-    .user-input input:focus { border-color: #2d2d2d; background: #ffffff; box-shadow: 0 0 0 4px rgba(45,45,45,0.05); }
-    
+    .form-group input:focus { border-color: #007aff; background: white; box-shadow: 0 0 0 4px rgba(0,122,255,0.1); }
+
     .code-input-group {
       display: flex;
       gap: 8px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
+      justify-content: space-between;
     }
     .code-input {
-      width: calc((100% - 88px) / 12;
-      min-width: 28px;
+      flex: 1;
+      min-width: 0;
       height: 52px;
       text-align: center;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 700;
-      border: 2px solid #e8e8e6;
-      border-radius: 12px;
-      background: #faf9f7;
+      border: 2px solid #e5e5ea;
+      border-radius: 10px;
+      background: #fafafa;
       outline: none;
-      transition: all 0.3s;
+      transition: all 0.2s;
       font-family: 'SF Mono', Monaco, 'Courier New', monospace;
-      letter-spacing: 0;
-      flex: 1;
     }
-    .code-input:focus { border-color: #2d2d2d; background: #ffffff; box-shadow: 0 0 0 3px rgba(45,45,45,0.06); }
-    .code-input.filled { border-color: #2d2d2d; background: #ffffff; }
-    
+    .code-input:focus { border-color: #007aff; background: white; box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+    .code-input.filled { border-color: #007aff; background: white; }
+
     .send-code-wrapper {
       display: flex;
       gap: 12px;
-      margin-bottom: 24px;
-      align-items: stretch;
+      margin-bottom: 12px;
+      flex-direction: column;
     }
     .send-code-btn {
-      padding: 0 24px;
-      background: linear-gradient(135deg, #2d2d2d 0%, #444444 100%);
+      padding: 14px;
+      background: linear-gradient(135deg, #007aff, #0056cc);
       border: none;
-      border-radius: 14px;
+      border-radius: 12px;
       color: white;
       font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s;
-      white-space: nowrap;
-      height: 56px;
-      box-shadow: 0 4px 12px rgba(45,45,45,0.2);
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(0,122,255,0.25);
     }
-    .send-code-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(45,45,45,0.25); }
+    .send-code-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,122,255,0.35); }
     .send-code-btn:disabled {
-      background: #ccc;
+      background: #c7c7cc;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
-    
+
     .code-hint {
       margin-top: 12px;
       font-size: 0.9rem;
-      color: #2e7d32;
+      color: #34c759;
       display: none;
-      padding: 14px 18px;
+      padding: 14px;
       background: #e8f5e9;
       border-radius: 12px;
       text-align: center;
@@ -419,103 +468,211 @@
     .code-warning {
       margin-top: 14px;
       font-size: 0.85rem;
-      color: #888;
+      color: #86868b;
       text-align: center;
       line-height: 1.6;
     }
-    
+
     .terms-checkbox {
       display: flex;
       align-items: flex-start;
       gap: 12px;
       cursor: pointer;
-      margin-bottom: 28px;
-      padding: 16px;
-      background: #faf9f7;
+      margin-bottom: 24px;
+      padding: 14px;
+      background: #f5f5f7;
       border-radius: 12px;
-      border: 1px solid #e8e8e6;
     }
     .terms-checkbox input {
       margin-top: 2px;
       width: 20px;
       height: 20px;
       cursor: pointer;
-      accent-color: #2d2d2d;
+      accent-color: #007aff;
     }
     .terms-checkbox span {
       font-size: 0.9rem;
-      color: #555;
+      color: #86868b;
       line-height: 1.7;
     }
     .terms-checkbox a {
-      color: #2d2d2d;
-      text-decoration: underline;
+      color: #007aff;
+      text-decoration: none;
       font-weight: 600;
     }
-    
-    .modal-btn {
+
+    .modal-footer-btn {
       width: 100%;
-      padding: 18px;
+      padding: 16px;
       border: none;
-      border-radius: 14px;
+      border-radius: 12px;
       font-size: 1.05rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s;
-      margin-bottom: 12px;
+      transition: all 0.2s;
+      margin-bottom: 10px;
     }
-    .modal-btn.primary {
-      background: linear-gradient(135deg, #2d2d2d 0%, #444444 100%);
+    .modal-footer-btn.primary {
+      background: linear-gradient(135deg, #007aff, #0056cc);
       color: white;
-      box-shadow: 0 6px 20px rgba(45,45,45,0.25);
+      box-shadow: 0 4px 12px rgba(0,122,255,0.25);
     }
-    .modal-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,45,45,0.3); }
-    .modal-btn.secondary {
-      background: #f0f0ee;
-      color: #555;
-      border: 2px solid #e8e8e6;
+    .modal-footer-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,122,255,0.35); }
+    .modal-footer-btn.secondary {
+      background: #f5f5f7;
+      color: #86868b;
     }
-    .modal-btn.secondary:hover { background: #e8e8e6; }
-    
-    .order-query-section { margin-top: 18px; }
-    .order-query-btn {
-      width: 100%;
-      padding: 16px;
-      background: #f5f5f3;
-      border: 1px solid #e8e8e6;
-      border-radius: 12px;
-      color: #555;
+    .modal-footer-btn.secondary:hover { background: #e5e5ea; }
+
+    .countdown-box {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+      padding: 12px 16px;
+      border-radius: 10px;
       font-size: 0.95rem;
-      cursor: pointer;
-      margin-top: 12px;
-      transition: all 0.3s;
-      font-weight: 500;
+      font-weight: 600;
+      margin-bottom: 16px;
+      text-align: center;
     }
-    .order-query-btn:hover { background: #f0f0ee; }
-    
+    .order-box {
+      background: #f5f5f7;
+      padding: 14px;
+      border-radius: 10px;
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 0.9rem;
+      color: #1d1d1f;
+      margin-bottom: 16px;
+      word-break: break-all;
+      border: 1px solid #e5e5ea;
+    }
+    .qr-display {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .qr-display img {
+      width: 220px;
+      height: 220px;
+      border: 2px solid #e5e5ea;
+      border-radius: 12px;
+    }
+    .payment-hint {
+      font-size: 0.9rem;
+      color: #86868b;
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+    .payment-hint strong {
+      color: #1d1d1f;
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      min-width: 280px;
+      animation: notificationIn 0.3s ease;
+    }
+    @keyframes notificationIn {
+      from { transform: translateX(100px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .notification.show { display: flex; }
+    .notification.success .notif-icon {
+      background: #34c759;
+      color: white;
+    }
+    .notification.error .notif-icon {
+      background: #ff3b30;
+      color: white;
+    }
+    .notification.info .notif-icon {
+      background: #007aff;
+      color: white;
+    }
+    .notif-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .notif-content {
+      flex: 1;
+    }
+    .notif-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 2px;
+    }
+    .notif-message {
+      font-size: 0.85rem;
+      color: #86868b;
+    }
+
+    .order-query-section { margin-top: 16px; }
+    .order-result {
+      margin-top: 16px;
+      padding: 16px;
+      background: #f5f5f7;
+      border-radius: 12px;
+      display: none;
+    }
+    .order-result h4 {
+      color: #1d1d1f;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .order-result p {
+      color: #86868b;
+      line-height: 1.8;
+      font-size: 0.9rem;
+    }
+
     @media (max-width: 480px) {
       .header h1 { font-size: 1.5rem; }
       .product-grid { grid-template-columns: repeat(3, 1fr); }
       .member-grid { grid-template-columns: repeat(2, 1fr); }
-      .code-input { height: 48px; font-size: 1.15rem; }
+      .code-input { height: 48px; font-size: 1.25rem; }
     }
   </style>
 </head>
 <body>
+  <div class="notification" id="notification">
+    <div class="notif-icon">✓</div>
+    <div class="notif-content">
+      <div class="notif-title" id="notif-title">成功</div>
+      <div class="notif-message" id="notif-message">操作已完成</div>
+    </div>
+  </div>
+
   <div class="container">
     <div class="header">
-      <div class="login-section">
+      <div class="header-top">
         <div>
-          <h1>📚 小说支付中心</h1>
-          <p>安全便捷的充值服务</p>
+          <div class="header-title">📚 小说支付中心</div>
+          <div class="header-subtitle">安全便捷的充值服务</div>
         </div>
         <div id="user-status">
-          <span id="logged-user" style="display:none; color:#666; font-size:0.85rem;">
-            欢迎, <span id="user-email"></span>
+          <span id="logged-user" class="user-info" style="display:none;">
+            <span class="user-email">欢迎, <span id="user-email-text"></span></span>
           </span>
-          <button id="login-btn" class="login-btn" onclick="openLoginModal()">
-            登录/注册
-          </button>
+          <button id="login-btn" class="login-btn" onclick="openLoginModal()">登录/注册</button>
         </div>
       </div>
     </div>
@@ -523,7 +680,7 @@
     <div class="tabs">
       <button class="tab active" onclick="switchTab('coin')">💰 书币充值</button>
       <button class="tab" onclick="switchTab('member')">👑 会员开通</button>
-      <button class="tab" onclick="switchTab('rebate')">🎁 返利中心</button>
+      <button class="tab" onclick="switchTab('task')">🎁 福利中心</button>
       <button class="tab" onclick="switchTab('order')">📋 订单查询</button>
     </div>
 
@@ -539,39 +696,39 @@
             <div class="coin-amount">600</div>
             <div class="price">¥6</div>
           </div>
-          <div class="product-item" onclick="selectCoin(this, 30, 3000, 100)">
+          <div class="product-item" onclick="selectCoin(this, 30, 3100, 100)">
             <div class="coin-amount">3100</div>
             <div class="price">¥30</div>
             <div class="gift">赠100</div>
           </div>
-          <div class="product-item" onclick="selectCoin(this, 68, 6800, 400)">
+          <div class="product-item" onclick="selectCoin(this, 68, 7200, 400)">
             <div class="coin-amount">7200</div>
             <div class="price">¥68</div>
             <div class="gift">赠400</div>
           </div>
-          <div class="product-item" onclick="selectCoin(this, 128, 12800, 1200)">
+          <div class="product-item" onclick="selectCoin(this, 128, 14000, 1200)">
             <div class="coin-amount">14000</div>
             <div class="price">¥128</div>
             <div class="gift">赠1200</div>
           </div>
-          <div class="product-item" onclick="selectCoin(this, 328, 32800, 3800)">
+          <div class="product-item" onclick="selectCoin(this, 328, 36600, 3800)">
             <div class="coin-amount">36600</div>
             <div class="price">¥328</div>
             <div class="gift">赠3800</div>
+            <div class="tag">推荐</div>
           </div>
-          <div class="product-item" onclick="selectCoin(this, 648, 64800, 9000)">
+          <div class="product-item" onclick="selectCoin(this, 648, 73800, 9000)">
             <div class="coin-amount">73800</div>
             <div class="price">¥648</div>
             <div class="gift">赠9000</div>
           </div>
         </div>
-        <button id="pay-btn" class="pay-btn" onclick="pay()" disabled>
-          请选择充值金额
-        </button>
+        <button class="primary-btn" id="coin-pay-btn" onclick="openPaymentModal('coin')" disabled>请选择充值金额</button>
+
         <div class="info-section">
           <h4>💡 温馨提示</h4>
           <ul>
-            <li>书币1元=100书币</li>
+            <li>书币1元 = 100书币</li>
             <li>充值后书币实时到账</li>
             <li>大额充值赠送更多书币</li>
           </ul>
@@ -579,30 +736,60 @@
       </div>
 
       <div id="member-section" class="product-section">
-        <h2 class="section-title">选择会员套餐</h2>
+        <h2 class="section-title">开通会员特权</h2>
         <div class="member-grid">
-          <div class="member-item" onclick="selectMember(this, 25, '月卡', 30, 2000)">
+          <div class="member-item" onclick="selectMember(this, 25, '月卡', 1, 2000)">
             <div class="name">月卡</div>
-            <div class="duration">30天会员</div>
+            <div class="duration">30天</div>
             <div class="price">¥25</div>
-            <div class="benefits">赠2000书币</div>
+            <div class="benefits">赠2000书币+免费读+提前1天</div>
           </div>
-          <div class="member-item" onclick="selectMember(this, 68, '季卡', 90, 6000)">
+          <div class="member-item" onclick="selectMember(this, 28, '月卡', 1, 2000)">
+            <div class="name">月卡</div>
+            <div class="duration">30天</div>
+            <div class="price">¥28</div>
+            <div class="benefits">赠2000书币+免费读+提前1天</div>
+          </div>
+          <div class="member-item" onclick="selectMember(this, 78, '季卡', 3, 6000)">
             <div class="name">季卡</div>
-            <div class="duration">90天会员</div>
-            <div class="price">¥68</div>
-            <div class="benefits">赠6000书币</div>
+            <div class="duration">90天</div>
+            <div class="price">¥78</div>
+            <div class="benefits">赠6000书币+免费读+提前2天</div>
           </div>
-          <div class="member-item" onclick="selectMember(this, 228, '年卡', 365, 28000)">
+          <div class="member-item" onclick="selectMember(this, 82, '季卡', 3, 6000)">
+            <div class="name">季卡</div>
+            <div class="duration">90天</div>
+            <div class="price">¥82</div>
+            <div class="benefits">赠6000书币+免费读+提前2天</div>
+          </div>
+          <div class="member-item" onclick="selectMember(this, 138, '半年卡', 6, 12000)">
+            <div class="name">半年卡</div>
+            <div class="duration">180天</div>
+            <div class="price">¥138</div>
+            <div class="benefits">赠12000书币+免费读+提前2天</div>
+          </div>
+          <div class="member-item" onclick="selectMember(this, 145, '半年卡', 6, 12000)">
+            <div class="name">半年卡</div>
+            <div class="duration">180天</div>
+            <div class="price">¥145</div>
+            <div class="benefits">赠12000书币+免费读+提前2天</div>
+          </div>
+          <div class="member-item" onclick="selectMember(this, 258, '年卡', 12, 25000)">
             <div class="name">年卡</div>
-            <div class="duration">365天会员</div>
-            <div class="price">¥228</div>
-            <div class="benefits">赠28000书币</div>
+            <div class="duration">365天</div>
+            <div class="price">¥258</div>
+            <div class="benefits">赠25000书币+免费读+提前3天</div>
+            <div class="tag">超值</div>
+          </div>
+          <div class="member-item" onclick="selectMember(this, 268, '年卡', 12, 25000)">
+            <div class="name">年卡</div>
+            <div class="duration">365天</div>
+            <div class="price">¥268</div>
+            <div class="benefits">赠25000书币+免费读+提前3天</div>
           </div>
         </div>
-        <button id="member-pay-btn" class="pay-btn" onclick="payMember()" disabled>
-          请选择会员套餐
-        </button>
+        <button class="primary-btn" id="member-pay-btn" onclick="openPaymentModal('member')" disabled>请选择会员套餐</button>
+
         <div class="info-section">
           <h4>👑 会员权益</h4>
           <ul>
@@ -614,39 +801,73 @@
         </div>
       </div>
 
-      <div id="rebate-section" class="product-section">
-        <h2 class="section-title">返利中心</h2>
-        <div class="info-section">
-          <h4>🎁 返利规则</h4>
-          <ul>
-            <li>累计充值满100元，返利5%</li>
-            <li>累计充值满500元，返利8%</li>
-            <li>累计充值满1000元，返利12%</li>
-            <li>累计充值满5000元，返利15%</li>
-          </ul>
+      <div id="task-section" class="product-section">
+        <h2 class="section-title">任务中心</h2>
+        <div class="task-list">
+          <div class="task-item">
+            <div class="task-info">
+              <div class="task-title">每日签到</div>
+              <div class="task-desc">连续签到7天可获得额外奖励</div>
+            </div>
+            <div class="task-reward">+10书币</div>
+            <button class="task-btn" onclick="completeTask(0, this)">领取</button>
+          </div>
+          <div class="task-item">
+            <div class="task-info">
+              <div class="task-title">完善个人资料</div>
+              <div class="task-desc">填写完整的个人信息获得奖励</div>
+            </div>
+            <div class="task-reward">+50书币</div>
+            <button class="task-btn" onclick="completeTask(1, this)">领取</button>
+          </div>
+          <div class="task-item">
+            <div class="task-info">
+              <div class="task-title">首次充值</div>
+              <div class="task-desc">完成任意金额的首次充值</div>
+            </div>
+            <div class="task-reward">+200书币</div>
+            <button class="task-btn" onclick="completeTask(2, this)">领取</button>
+          </div>
+          <div class="task-item">
+            <div class="task-info">
+              <div class="task-title">阅读1小时</div>
+              <div class="task-desc">累计阅读时长达到1小时</div>
+            </div>
+            <div class="task-reward">+30书币</div>
+            <button class="task-btn" onclick="completeTask(3, this)">领取</button>
+          </div>
+          <div class="task-item">
+            <div class="task-info">
+              <div class="task-title">邀请好友注册</div>
+              <div class="task-desc">每邀请1位好友完成注册</div>
+            </div>
+            <div class="task-reward">+100书币</div>
+            <button class="task-btn" onclick="completeTask(4, this)">领取</button>
+          </div>
         </div>
-        <div class="info-section" style="margin-top: 15px;">
-          <h4>📊 我的返利</h4>
-          <p style="color: #666; font-size: 0.95rem; line-height: 1.8;">
-            登录后可查看您的返利详情
-          </p>
+
+        <div class="info-section" style="margin-top:20px;">
+          <h4>📋 待办任务</h4>
+          <ul>
+            <li>连续签到7天（第1天）</li>
+            <li>充值满100元任务</li>
+            <li>分享3次书籍到社交平台</li>
+            <li>评论5本书籍</li>
+            <li>收藏10本书籍</li>
+          </ul>
         </div>
       </div>
 
       <div id="order-section" class="product-section">
         <h2 class="section-title">订单查询</h2>
-        <div class="user-input">
+        <div class="form-group">
           <label>订单编号</label>
           <input type="text" id="query-order-no" placeholder="请输入订单编号">
         </div>
-        <button class="pay-btn" onclick="queryOrder()">
-          查询订单
-        </button>
-        <div class="order-query-section">
-          <div id="order-result" style="display:none; margin-top:15px; padding:15px; background:#f8f9fa; border-radius:10px;">
-            <h4 style="color:#333; margin-bottom:10px;">订单详情</h4>
-            <p id="order-detail" style="color:#666; line-height:1.8;"></p>
-          </div>
+        <button class="primary-btn" onclick="queryOrder()">查询订单</button>
+        <div class="order-result" id="order-result">
+          <h4>订单详情</h4>
+          <p id="order-detail"></p>
         </div>
       </div>
     </div>
@@ -654,46 +875,39 @@
 
   <div class="modal" id="login-modal">
     <div class="modal-content">
-      <div style="position: relative;">
-        <div class="modal-header">
-          <div class="logo">📚</div>
-          <h3 id="login-title">用户登录</h3>
-          <p>欢迎来到小说支付中心</p>
-          <button class="modal-close" onclick="closeLoginModal()">×</button>
-        </div>
+      <div class="modal-header">
+        <div class="logo">📚</div>
+        <h3 id="login-title">用户登录</h3>
+        <p>欢迎来到小说支付中心</p>
+        <button class="modal-close" onclick="closeLoginModal()">×</button>
       </div>
-      
       <div class="modal-body">
         <div id="login-form">
-          <div class="user-input">
+          <div class="form-group">
             <label>邮箱地址</label>
             <input type="email" id="login-email" placeholder="请输入您的邮箱地址">
           </div>
-          <div class="user-input">
+          <div class="form-group">
             <label>登录密码</label>
             <input type="password" id="login-password" placeholder="请输入您的密码">
           </div>
-          <button class="modal-btn primary" onclick="handleLogin()">
-            登录账户
-          </button>
-          <button class="modal-btn secondary" onclick="switchToRegister()">
-            创建新账户
-          </button>
+          <button class="modal-footer-btn primary" onclick="handleLogin()">登录账户</button>
+          <button class="modal-footer-btn secondary" onclick="switchToRegister()">创建新账户</button>
         </div>
 
         <div id="register-form" style="display:none;">
-          <div class="user-input">
+          <div class="form-group">
             <label>邮箱地址</label>
             <input type="email" id="reg-email" placeholder="请输入您的邮箱地址">
           </div>
-          <div class="user-input">
+          <div class="form-group">
             <label>设置密码</label>
             <input type="password" id="reg-password" placeholder="请设置您的登录密码">
           </div>
-          <div class="user-input">
-            <label>验证码 (12位复杂验证码)</label>
-            <div style="display:flex; gap:12px; align-items:flex-start; flex-direction:column;">
-              <div class="code-input-group" style="width:100%;">
+          <div class="form-group">
+            <label>验证码（8位复杂字符）</label>
+            <div class="send-code-wrapper">
+              <div class="code-input-group">
                 <input type="text" class="code-input" maxlength="1" data-index="0" oninput="handleCodeInput(event)">
                 <input type="text" class="code-input" maxlength="1" data-index="1" oninput="handleCodeInput(event)">
                 <input type="text" class="code-input" maxlength="1" data-index="2" oninput="handleCodeInput(event)">
@@ -702,38 +916,18 @@
                 <input type="text" class="code-input" maxlength="1" data-index="5" oninput="handleCodeInput(event)">
                 <input type="text" class="code-input" maxlength="1" data-index="6" oninput="handleCodeInput(event)">
                 <input type="text" class="code-input" maxlength="1" data-index="7" oninput="handleCodeInput(event)">
-                <input type="text" class="code-input" maxlength="1" data-index="8" oninput="handleCodeInput(event)">
-                <input type="text" class="code-input" maxlength="1" data-index="9" oninput="handleCodeInput(event)">
-                <input type="text" class="code-input" maxlength="1" data-index="10" oninput="handleCodeInput(event)">
-                <input type="text" class="code-input" maxlength="1" data-index="11" oninput="handleCodeInput(event)">
               </div>
-              <button id="send-code-btn" class="send-code-btn" onclick="sendCode()" style="width:100%; margin-top:8px;">
-                <span id="send-btn-text">获取验证码</span>
-              </button>
+              <button id="send-code-btn" class="send-code-btn" onclick="sendCode()">获取验证码</button>
             </div>
-            <div id="code-hint" class="code-hint">
-              ✓ 验证码已发送到您的邮箱，请注意查收
-            </div>
-            <div class="code-warning">
-              ⚠ 请输入邮件中的12位复杂验证码（包含大小写字母和数字）
-            </div>
+            <div id="code-hint" class="code-hint">✓ 验证码已发送到您的邮箱，请注意查收</div>
+            <div class="code-warning">⚠ 验证码包含大小写字母和数字</div>
           </div>
           <div class="terms-checkbox">
             <input type="checkbox" id="agree-terms">
-            <span>
-              我已阅读并同意
-              <a href="agreements.html" target="_blank">用户协议</a>、
-              <a href="agreements.html" target="_blank">社区规范</a>
-              和
-              <a href="agreements.html" target="_blank">平台准则</a>
-            </span>
+            <span>我已阅读并同意<a href="agreements.html" target="_blank">用户协议</a>、<a href="agreements.html" target="_blank">社区规范</a>和<a href="agreements.html" target="_blank">平台准则</a></span>
           </div>
-          <button class="modal-btn primary" onclick="handleRegister()">
-            完成注册
-          </button>
-          <button class="modal-btn secondary" onclick="switchToLogin()">
-            返回登录
-          </button>
+          <button class="modal-footer-btn primary" onclick="handleRegister()">完成注册</button>
+          <button class="modal-footer-btn secondary" onclick="switchToLogin()">返回登录</button>
         </div>
       </div>
     </div>
@@ -741,36 +935,24 @@
 
   <div class="modal" id="pay-modal">
     <div class="modal-content">
-      <div style="position: relative;">
-        <div class="modal-header">
-          <div class="logo">💳</div>
-          <h3>确认支付</h3>
-          <p id="pay-amount-text">请确认订单信息</p>
-          <button class="modal-close" onclick="closePayModal()">×</button>
-        </div>
+      <div class="modal-header">
+        <div class="logo">💳</div>
+        <h3>确认支付</h3>
+        <p id="pay-amount-text">请确认订单信息</p>
+        <button class="modal-close" onclick="closePayModal()">×</button>
       </div>
-      
       <div class="modal-body">
-        <div style="text-align:center; margin-bottom:24px;">
-          <img src="/images/alipay_qr.png" alt="支付宝付款码" style="width:220px; height:220px; border:2px solid #e8e8e6; border-radius:12px; margin-bottom:12px;">
-          <p style="color:#666; font-size:0.95rem; margin:0;">请使用支付宝扫码支付</p>
+        <div class="qr-display">
+          <img src="/images/alipay_qr.png" alt="支付宝付款码">
         </div>
-        <div id="countdown" style="background:#faf9f7; color:#2d2d2d; border:2px solid #e8e8e6; padding:14px 18px; border-radius:12px; font-size:0.95rem; font-weight:600; margin-bottom:16px; text-align:center;">
-          剩余付款时间：<span id="countdown-time">30:00</span>
+        <div class="countdown-box" id="countdown">剩余付款时间: <span id="countdown-time">30:00</span></div>
+        <div class="order-box">订单号: <span id="current-order-no"></span></div>
+        <p class="payment-hint">付款时请在【备注】中填写订单号后6位: <strong id="order-code-display"></strong></p>
+        <div class="form-group">
+          <label>付款金额（元）</label>
+          <input type="number" id="confirm-amount" placeholder="请输入实际付款金额">
         </div>
-        <div style="background:#f8f9fa; padding:14px; border-radius:12px; font-family:monospace; font-size:0.9rem; color:#333; margin-bottom:16px; word-break:break-all; border:1px solid #e8e8e6;">
-          订单号：<span id="current-order-no"></span>
-        </div>
-        <p style="font-size:0.9rem; color:#666; margin-bottom:18px; line-height:1.7;">
-          付款时请在【备注】中填写订单号后6位：<span id="order-code-display" style="font-weight:700; color:#2d2d2d; font-size:1.2rem;"></span>
-        </p>
-        <label style="display:block; font-size:0.95rem; color:#2d2d2d; margin-bottom:10px; text-align:left; font-weight:600;">
-          付款金额（元）
-        </label>
-        <input type="number" id="confirm-amount" placeholder="请输入实际付款金额" style="width:100%; padding:16px; border:2px solid #e8e8e6; border-radius:12px; font-size:1.05rem; margin-bottom:18px;">
-        <button class="modal-btn primary" onclick="confirmPayment()">
-          确认到账
-        </button>
+        <button class="modal-footer-btn primary" onclick="confirmPayment()">确认到账</button>
       </div>
     </div>
   </div>
@@ -780,16 +962,37 @@
     let currentProductType = 'coin';
     let currentOrderData = null;
     let countdownInterval = null;
+    let lastSendTime = 0;
+    const taskStatus = [false, false, false, false, false];
+
+    function showNotification(type, title, message) {
+      const notif = document.getElementById('notification');
+      const notifTitle = document.getElementById('notif-title');
+      const notifMsg = document.getElementById('notif-message');
+      const notifIcon = notif.querySelector('.notif-icon');
+      
+      notif.className = 'notification ' + type;
+      notifTitle.textContent = title;
+      notifMsg.textContent = message;
+      
+      if (type === 'success') notifIcon.textContent = '✓';
+      else if (type === 'error') notifIcon.textContent = '✕';
+      else notifIcon.textContent = 'ℹ';
+      
+      notif.classList.add('show');
+      setTimeout(() => notif.classList.remove('show'), 3000);
+    }
 
     function generateOrderNo() {
       const timestamp = Date.now().toString().slice(-8);
       const random = Math.random().toString(36).slice(-4).toUpperCase();
-      return `NO${timestamp}${random}`;
+      return 'NO' + timestamp + random;
     }
 
     function switchTab(tab) {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.product-section').forEach(s => s.classList.remove('active'));
+      
       if (tab === 'coin') {
         document.querySelector('.tab:nth-child(1)').classList.add('active');
         document.getElementById('coin-section').classList.add('active');
@@ -798,9 +1001,9 @@
         document.querySelector('.tab:nth-child(2)').classList.add('active');
         document.getElementById('member-section').classList.add('active');
         currentProductType = 'member';
-      } else if (tab === 'rebate') {
+      } else if (tab === 'task') {
         document.querySelector('.tab:nth-child(3)').classList.add('active');
-        document.getElementById('rebate-section').classList.add('active');
+        document.getElementById('task-section').classList.add('active');
       } else if (tab === 'order') {
         document.querySelector('.tab:nth-child(4)').classList.add('active');
         document.getElementById('order-section').classList.add('active');
@@ -811,8 +1014,8 @@
       document.querySelectorAll('.product-item').forEach(item => item.classList.remove('selected'));
       el.classList.add('selected');
       selectedProduct = { price, coins, gift, type: 'coin' };
-      document.getElementById('pay-btn').disabled = false;
-      document.getElementById('pay-btn').textContent = `立即充值 ¥${price}`;
+      document.getElementById('coin-pay-btn').disabled = false;
+      document.getElementById('coin-pay-btn').textContent = '立即充值 ¥' + price;
     }
 
     function selectMember(el, price, name, days, coins) {
@@ -820,40 +1023,26 @@
       el.classList.add('selected');
       selectedProduct = { price, name, days, coins, type: 'member' };
       document.getElementById('member-pay-btn').disabled = false;
-      document.getElementById('member-pay-btn').textContent = `立即开通 ¥${price}`;
+      document.getElementById('member-pay-btn').textContent = '立即开通 ¥' + price;
     }
 
-    function pay() {
+    function openPaymentModal(type) {
       if (!selectedProduct) {
-        alert('请先选择充值金额');
+        showNotification('error', '请选择', '请先选择' + (type === 'coin' ? '充值金额' : '会员套餐'));
         return;
       }
-      openPayModal(selectedProduct);
-    }
-
-    function payMember() {
-      if (!selectedProduct) {
-        alert('请先选择会员套餐');
-        return;
-      }
-      openPayModal(selectedProduct);
-    }
-
-    function openPayModal(product) {
+      
       const orderNo = generateOrderNo();
-      currentOrderData = {
-        orderNo,
-        ...product,
-        status: 'pending',
-        createdAt: new Date().toISOString()
-      };
+      currentOrderData = { orderNo, ...selectedProduct, status: 'pending', createdAt: new Date().toISOString() };
       document.getElementById('current-order-no').textContent = orderNo;
       document.getElementById('order-code-display').textContent = orderNo.slice(-6);
-      if (product.type === 'coin') {
-        document.getElementById('pay-amount-text').textContent = `¥${product.price} (${product.coins + product.gift}书币)`;
+      
+      if (selectedProduct.type === 'coin') {
+        document.getElementById('pay-amount-text').textContent = '¥' + selectedProduct.price + ' (' + (selectedProduct.coins + selectedProduct.gift) + '书币)';
       } else {
-        document.getElementById('pay-amount-text').textContent = `¥${product.price} (${product.name})`;
+        document.getElementById('pay-amount-text').textContent = '¥' + selectedProduct.price + ' (' + selectedProduct.name + ')';
       }
+      
       document.getElementById('pay-modal').classList.add('show');
       document.getElementById('confirm-amount').value = '';
       startCountdown();
@@ -873,7 +1062,7 @@
         if (totalSeconds <= 0) {
           stopCountdown();
           if (currentOrderData) currentOrderData.status = 'expired';
-          alert('订单已超时，请重新下单');
+          showNotification('error', '订单超时', '请重新下单');
           closePayModal();
         }
       }, 1000);
@@ -890,28 +1079,29 @@
       const minutes = Math.floor(remainingSeconds / 60);
       const seconds = remainingSeconds % 60;
       document.getElementById('countdown-time').textContent = 
-        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
     }
 
     async function confirmPayment() {
       const confirmAmount = parseFloat(document.getElementById('confirm-amount').value);
       if (!confirmAmount) {
-        alert('请输入实际付款金额');
+        showNotification('error', '请输入', '请输入实际付款金额');
         return;
       }
       if (!currentOrderData) return;
       if (confirmAmount !== currentOrderData.price) {
-        alert('付款金额与订单金额不一致，请确认');
+        showNotification('error', '金额不对', '付款金额与订单金额不一致，请确认');
         return;
       }
       currentOrderData.status = 'paid';
       currentOrderData.paidAt = new Date().toISOString();
       stopCountdown();
-      alert('支付确认成功！书币/会员已到账！');
+      showNotification('success', '支付成功', '书币/会员已到账');
       closePayModal();
+      
       document.querySelectorAll('.product-item, .member-item').forEach(item => item.classList.remove('selected'));
-      document.getElementById('pay-btn').disabled = true;
-      document.getElementById('pay-btn').textContent = '请选择充值金额';
+      document.getElementById('coin-pay-btn').disabled = true;
+      document.getElementById('coin-pay-btn').textContent = '请选择充值金额';
       document.getElementById('member-pay-btn').disabled = true;
       document.getElementById('member-pay-btn').textContent = '请选择会员套餐';
       selectedProduct = null;
@@ -920,27 +1110,26 @@
     async function queryOrder() {
       const orderNo = document.getElementById('query-order-no').value.trim();
       if (!orderNo) {
-        alert('请输入订单编号');
+        showNotification('error', '请输入', '请输入订单编号');
         return;
       }
+      
+      const resultDiv = document.getElementById('order-result');
+      const detailDiv = document.getElementById('order-detail');
+      
       if (currentOrderData && currentOrderData.orderNo === orderNo) {
-        const resultDiv = document.getElementById('order-result');
-        const detailDiv = document.getElementById('order-detail');
         resultDiv.style.display = 'block';
         let statusText = '待支付';
         if (currentOrderData.status === 'paid') statusText = '已支付';
         if (currentOrderData.status === 'expired') statusText = '已过期';
-        detailDiv.innerHTML = `
-          订单号：${currentOrderData.orderNo}<br>
-          订单金额：¥${currentOrderData.price}<br>
-          订单状态：${statusText}<br>
-          创建时间：${new Date(currentOrderData.createdAt).toLocaleString()}
-        `;
+        detailDiv.innerHTML = 
+          '订单号: ' + currentOrderData.orderNo + '<br>' +
+          '订单金额: ¥' + currentOrderData.price + '<br>' +
+          '订单状态: ' + statusText + '<br>' +
+          '创建时间: ' + new Date(currentOrderData.createdAt).toLocaleString();
       } else {
-        const resultDiv = document.getElementById('order-result');
-        const detailDiv = document.getElementById('order-detail');
         resultDiv.style.display = 'block';
-        detailDiv.innerHTML = '订单不存在或暂无订单记录';
+        detailDiv.textContent = '订单不存在或暂无订单记录';
       }
     }
 
@@ -966,45 +1155,45 @@
       document.getElementById('login-title').textContent = '用户登录';
     }
 
-    let lastSendTime = 0;
     async function sendCode() {
       const email = document.getElementById('reg-email').value.trim();
       if (!email) {
-        alert('请先输入邮箱地址');
+        showNotification('error', '请输入', '请先输入邮箱地址');
         return;
       }
       const now = Date.now();
       if (now - lastSendTime < 60 * 1000) {
         const remaining = Math.ceil((60 * 1000 - (now - lastSendTime)) / 1000);
-        alert(`请稍后再试，剩余${remaining}秒`);
+        showNotification('info', '请稍候', remaining + '秒后可重新获取');
         return;
       }
+      
       const btn = document.getElementById('send-code-btn');
-      const btnText = document.getElementById('send-btn-text');
+      const btnText = btn.querySelector('span') || btn;
       btn.disabled = true;
       let countdown = 60;
-      btnText.textContent = `${countdown}秒后重发`;
+      btnText.textContent = countdown + '秒后重发';
       const timer = setInterval(() => {
         countdown--;
-        if (countdown > 0) {
-          btnText.textContent = `${countdown}秒后重发`;
-        } else {
+        if (countdown > 0) btnText.textContent = countdown + '秒后重发';
+        else {
           clearInterval(timer);
           btnText.textContent = '获取验证码';
           btn.disabled = false;
         }
       }, 1000);
+      
       lastSendTime = now;
       document.getElementById('code-hint').style.display = 'block';
-      setTimeout(() => {
-        document.getElementById('code-hint').style.display = 'none';
-      }, 5000);
+      setTimeout(() => document.getElementById('code-hint').style.display = 'none', 5000);
+      showNotification('success', '发送成功', '验证码已发送到您的邮箱');
     }
 
     function handleCodeInput(event) {
       const input = event.target;
       const index = parseInt(input.dataset.index);
       const inputs = document.querySelectorAll('.code-input');
+      
       if (input.value.length === 1) {
         input.classList.add('filled');
         if (index < inputs.length - 1) inputs[index + 1].focus();
@@ -1027,19 +1216,21 @@
       const inputs = document.querySelectorAll('.code-input');
       let code = '';
       inputs.forEach(input => code += input.value);
+      
       if (!email || !password || !code) {
-        alert('请填写完整信息');
+        showNotification('error', '请填写', '请填写完整信息');
         return;
       }
-      if (code.length !== 12) {
-        alert('请输入完整的12位验证码');
+      if (code.length !== 8) {
+        showNotification('error', '请输入', '请输入完整的8位验证码');
         return;
       }
       if (!agreeTerms) {
-        alert('请先阅读并同意用户协议');
+        showNotification('error', '请阅读', '请先阅读并同意用户协议');
         return;
       }
-      alert('注册成功！');
+      
+      showNotification('success', '注册成功', '欢迎加入');
       closeLoginModal();
       showLoggedIn(email);
     }
@@ -1047,23 +1238,38 @@
     async function handleLogin() {
       const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value;
+      
       if (!email || !password) {
-        alert('请填写邮箱和密码');
+        showNotification('error', '请填写', '请填写邮箱和密码');
         return;
       }
-      alert('登录成功！');
+      
+      showNotification('success', '登录成功', '欢迎回来');
       closeLoginModal();
       showLoggedIn(email);
     }
 
     function showLoggedIn(email) {
       document.getElementById('login-btn').style.display = 'none';
-      document.getElementById('logged-user').style.display = 'block';
-      document.getElementById('user-email').textContent = email;
+      document.getElementById('logged-user').style.display = 'flex';
+      document.getElementById('user-email-text').textContent = email;
+    }
+
+    function completeTask(index, btn) {
+      if (taskStatus[index]) {
+        showNotification('info', '已领取', '您已领取过该奖励');
+        return;
+      }
+      taskStatus[index] = true;
+      btn.textContent = '已完成';
+      btn.classList.add('completed');
+      btn.disabled = true;
+      showNotification('success', '领取成功', '奖励已发放');
     }
 
     document.addEventListener('keydown', (e) => {
       if (!e.target.classList.contains('code-input')) return;
+      
       if (e.key === 'Backspace' && !e.target.value) {
         const index = parseInt(e.target.dataset.index);
         const inputs = document.querySelectorAll('.code-input');
