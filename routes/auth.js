@@ -7,44 +7,85 @@ const users = global.users || new Map();
 const verificationCodes = new Map();
 const lastSendTime = new Map();
 
-// 配置QQ邮箱SMTP（发信人）
-const transporter = nodemailer.createTransport({
+const SMTP_CONFIG = {
   host: 'smtp.qq.com',
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false,
   auth: {
     user: '2527469579@qq.com',
     pass: 'sdafarxfmqrwcgff'
   },
+  pool: true,
+  requireTLS: true,
+  maxConnections: 1,
+  maxMessages: 1,
+  rateLimit: 1,
+  connectionTimeout: 15000,
+  greetingTimeout: 15000,
+  socketTimeout: 15000,
   tls: {
     rejectUnauthorized: false
-  },
-  connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  socketTimeout: 10000,
-  family: 4
-});
-
-// 测试邮件连接
-transporter.verify(function(error, success) {
-  if (error) {
-    console.log('⚠️  QQ邮箱SMTP连接失败:', error.message);
-    console.log('💡 请确保开启了POP3/SMTP服务并使用了正确的授权码');
-  } else {
-    console.log('✅ QQ邮箱SMTP连接成功！邮件服务已就绪');
   }
-});
+};
+
+let transporter = null;
+let emailServiceReady = false;
+
+function initTransporter() {
+  try {
+    transporter = nodemailer.createTransport(SMTP_CONFIG);
+    
+    transporter.verify(function(error, success) {
+      if (error) {
+        console.log('⚠️  SMTP连接失败:', error.message);
+        console.log('💡 请检查：1. 授权码是否正确 2. POP3/SMTP服务是否开启');
+        emailServiceReady = false;
+      } else {
+        console.log('✅ SMTP连接成功！邮件服务已就绪');
+        emailServiceReady = true;
+      }
+    });
+  } catch (err) {
+    console.error('❌ 初始化邮件服务失败:', err);
+    emailServiceReady = false;
+  }
+}
+
+initTransporter();
 
 async function sendEmail(to, code) {
+  if (!emailServiceReady || !transporter) {
+    console.error('❌ 邮件服务未就绪');
+    return false;
+  }
+  
   try {
-    console.log(`正在发送验证码邮件到: ${to}`);
-    console.log(`验证码: ${code}`);
+    console.log(`📧 正在发送验证码邮件到: ${to}`);
+    console.log(`🔑 验证码: ${code}`);
     
     const mailOptions = {
       from: '"小说支付中心" <2527469579@qq.com>',
       to: to,
       subject: '【小说支付中心】安全验证 - 验证码',
-      text: `尊敬的用户：\n\n您正在进行账户注册验证，验证码为：${code}\n\n验证码有效期：5分钟\n\n请在注册页面输入此验证码完成验证。\n\n⚠️ 安全提示：\n- 此验证码仅供您本人使用，请妥善保管\n- 请勿将验证码告知他人\n- 如非本人操作，请忽略此邮件\n\n如有疑问，请联系客服。\n\n---\n小说支付中心\n官网：https://www.example.com\n客服邮箱：support@example.com`,
+      text: `尊敬的用户：
+
+您正在进行账户注册验证，验证码为：${code}
+
+验证码有效期：5分钟
+
+请在注册页面输入此验证码完成验证。
+
+⚠️ 安全提示：
+- 此验证码仅供您本人使用，请妥善保管
+- 请勿将验证码告知他人
+- 如非本人操作，请忽略此邮件
+
+如有疑问，请联系客服。
+
+---
+小说支付中心
+官网：https://www.example.com
+客服邮箱：support@example.com`,
       html: `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -110,12 +151,17 @@ async function sendEmail(to, code) {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log('✅ 邮件发送成功！Message ID:', info.messageId);
-    console.log('收件人:', to);
+    console.log('✅ 邮件发送成功！');
+    console.log('📬 收件人:', to);
+    console.log('📧 Message ID:', info.messageId);
     return true;
   } catch (error) {
     console.error('❌ 邮件发送失败:', error.message);
-    console.error('错误详情:', error);
+    console.error('错误代码:', error.code);
+    console.error('响应码:', error.responseCode);
+    if (error.response) {
+      console.error('服务器响应:', error.response);
+    }
     return false;
   }
 }
@@ -126,6 +172,11 @@ router.post('/send-code', async (req, res) => {
     
     if (!email) {
       return res.status(400).json({ success: false, message: '请输入邮箱' });
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ success: false, message: '请输入有效的邮箱地址' });
     }
     
     if (users.has(email)) {
@@ -144,12 +195,12 @@ router.post('/send-code', async (req, res) => {
       });
     }
     
-    // 生成更复杂的6位验证码，包含大小写字母和数字
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
     let code = '';
     for (let i = 0; i < 6; i++) {
       code += chars.charAt(Math.floor(Math.random() * chars.length));
     }
+    
     verificationCodes.set(email, {
       code,
       expiresAt: Date.now() + 5 * 60 * 1000,
@@ -158,11 +209,11 @@ router.post('/send-code', async (req, res) => {
     
     lastSendTime.set(email, now);
     
-    console.log(`=== 验证码发送 ===`);
+    console.log(`\n=== 验证码发送 ===`);
     console.log(`邮箱: ${email}`);
     console.log(`验证码: ${code}`);
     console.log(`有效期: 5分钟`);
-    console.log(`==================`);
+    console.log(`==================\n`);
     
     const emailSent = await sendEmail(email, code);
     
@@ -352,6 +403,14 @@ router.get('/users', (req, res) => {
     console.error('获取用户列表失败:', error);
     res.status(500).json({ success: false, message: '获取用户失败' });
   }
+});
+
+router.get('/email-status', (req, res) => {
+  res.json({
+    success: true,
+    ready: emailServiceReady,
+    message: emailServiceReady ? '邮件服务已就绪' : '邮件服务未就绪，请检查配置'
+  });
 });
 
 module.exports = router;
