@@ -1,36 +1,38 @@
 const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
+const nodemailer = require('nodemailer');
 
 const users = global.users || new Map();
 const verificationCodes = new Map();
 const lastSendTime = new Map();
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_EDy6uahn_LeRYvWZ9NyvwyNrvRGsKb72P';
+const SMTP_CONFIG = {
+  host: 'smtp.qq.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: '2527469579@qq.com',
+    pass: 'sdafarxfmqrwcgff'
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+};
+
+let transporter = nodemailer.createTransport(SMTP_CONFIG);
 
 async function sendEmail(to, code) {
-  if (!RESEND_API_KEY) {
-    console.error('❌ 未配置RESEND_API_KEY');
-    console.log('💡 请在Railway环境变量中添加: RESEND_API_KEY=your_api_key');
-    return false;
-  }
-  
   try {
     console.log(`📧 正在发送验证码邮件到: ${to}`);
     console.log(`🔑 验证码: ${code}`);
     
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: 'onboarding@resend.dev',
-        to: to,
-        subject: '【小说支付中心】安全验证 - 验证码',
-        html: `
-<!DOCTYPE html>
+    const mailOptions = {
+      from: '"小说支付中心" <2527469579@qq.com>',
+      to: to,
+      subject: '【小说支付中心】安全验证 - 验证码',
+      text: `尊敬的用户：\n\n您正在进行账户注册验证，验证码为：${code}\n\n验证码有效期：5分钟\n\n请在注册页面输入此验证码完成验证。\n\n⚠️ 安全提示：\n- 此验证码仅供您本人使用，请妥善保管\n- 请勿将验证码告知他人\n- 如非本人操作，请忽略此邮件\n\n如有疑问，请联系客服。\n\n---\n小说支付中心`,
+      html: `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -41,28 +43,20 @@ async function sendEmail(to, code) {
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f5f7fa; min-height: 100vh; padding: 20px; }
     .email-container { max-width: 500px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .email-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; }
-    .email-header .logo { font-size: 56px; margin-bottom: 12px; }
     .email-header h1 { color: white; font-size: 22px; font-weight: 600; margin-bottom: 6px; }
-    .email-header p { color: rgba(255,255,255,0.9); font-size: 14px; }
     .email-body { padding: 30px; }
     .email-body .greeting { font-size: 15px; color: #333; margin-bottom: 20px; line-height: 1.6; }
     .verification-box { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px; padding: 25px; text-align: center; margin-bottom: 20px; }
     .verification-box .label { font-size: 13px; color: #666; margin-bottom: 15px; display: block; }
     .verification-box .code { font-size: 40px; font-weight: 700; color: #667eea; letter-spacing: 12px; font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace; }
     .verification-box .expire { font-size: 12px; color: #999; margin-top: 12px; }
-    .warning-section { background: #fff3cd; border: 1px solid #ffeeba; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
-    .warning-section .title { font-size: 13px; font-weight: 600; color: #856404; margin-bottom: 10px; }
-    .warning-section ul { margin: 0; padding-left: 20px; }
-    .warning-section li { font-size: 12px; color: #856404; margin-bottom: 5px; line-height: 1.5; }
     .email-footer { background: #f8f9fa; padding: 20px; text-align: center; }
     .email-footer p { font-size: 12px; color: #999; line-height: 1.6; }
-    .email-footer .divider { width: 40px; height: 1px; background: #ddd; margin: 15px auto; }
   </style>
 </head>
 <body>
   <div class="email-container">
     <div class="email-header">
-      <div class="logo">📚</div>
       <h1>小说支付中心</h1>
       <p>安全验证通知</p>
     </div>
@@ -74,40 +68,23 @@ async function sendEmail(to, code) {
         <div class="code">${code}</div>
         <span class="expire">⚠️ 有效期：5分钟，请尽快使用</span>
       </div>
-      <div class="warning-section">
-        <div class="title">🔒 安全提示</div>
-        <ul>
-          <li>此验证码仅供您本人使用，请妥善保管</li>
-          <li>请勿将验证码通过任何方式告知他人</li>
-          <li>如非本人操作，请忽略此邮件，您的账户安全不会受到影响</li>
-          <li>验证码过期后，请重新获取</li>
-        </ul>
-      </div>
     </div>
     <div class="email-footer">
       <p>如有疑问，请联系客服</p>
-      <div class="divider"></div>
       <p>© 2024 小说支付中心 | 版权所有</p>
     </div>
   </div>
 </body>
 </html>`
-      })
-    });
-    
-    const result = await response.json();
-    
-    if (result.id) {
-      console.log('✅ 邮件发送成功！');
-      console.log('📬 收件人:', to);
-      console.log('📧 Message ID:', result.id);
-      return true;
-    } else {
-      console.error('❌ 邮件发送失败:', result);
-      return false;
-    }
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('✅ 邮件发送成功！');
+    return true;
   } catch (error) {
-    console.error('❌ 邮件发送异常:', error.message);
+    console.error('❌ 邮件发送失败:', error.message);
+    console.error('错误代码:', error.code);
+    console.error('响应码:', error.responseCode);
     return false;
   }
 }
@@ -173,7 +150,7 @@ router.post('/send-code', async (req, res) => {
     } else {
       res.status(500).json({
         success: false,
-        message: '邮件发送失败，请稍后重试或联系客服'
+        message: '邮件发送失败，请检查网络连接或联系客服'
       });
     }
   } catch (error) {
@@ -239,12 +216,12 @@ router.post('/login', (req, res) => {
     const { email, password } = req.body;
     
     if (!email || !password) {
-      return res.status(400).json({ success: false, message: '缺少必要参数' });
+      return res.status(400).json({ success: false, message: '请填写邮箱和密码' });
     }
     
     const user = users.get(email);
     if (!user) {
-      return res.status(400).json({ success: false, message: '用户不存在' });
+      return res.status(400).json({ success: false, message: '用户不存在，请先注册' });
     }
     
     if (user.password !== password) {
@@ -282,14 +259,6 @@ router.get('/users', (req, res) => {
     console.error('获取用户列表失败:', error);
     res.status(500).json({ success: false, message: '获取用户失败' });
   }
-});
-
-router.get('/email-status', (req, res) => {
-  res.json({
-    success: true,
-    ready: !!RESEND_API_KEY,
-    message: RESEND_API_KEY ? '邮件服务已就绪(Resend)' : '未配置RESEND_API_KEY'
-  });
 });
 
 module.exports = router;
