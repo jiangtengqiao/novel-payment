@@ -643,6 +643,73 @@
       line-height: 1.8;
       font-size: 0.9rem;
     }
+    
+    .user-profile-section {
+      margin-bottom: 24px;
+    }
+    .profile-item {
+      background: #fafafa;
+      padding: 16px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      border: 1px solid #e5e5e5;
+    }
+    .profile-label {
+      font-size: 0.85rem;
+      color: #86868b;
+      margin-bottom: 6px;
+    }
+    .profile-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+    .user-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .logout-btn {
+      background: #ff3b30 !important;
+      color: white !important;
+    }
+    .logout-btn:hover {
+      background: #e03127 !important;
+    }
+    .payment-review-box {
+      background: #fff3cd;
+      padding: 16px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      border: 1px solid #ffeeba;
+    }
+    .payment-review-title {
+      font-size: 0.95rem;
+      color: #856404;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .payment-review-desc {
+      font-size: 0.85rem;
+      color: #856404;
+      line-height: 1.6;
+    }
+    .payment-screenshot-upload {
+      border: 2px dashed #e5e5e5;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 16px;
+      background: #fafafa;
+      cursor: pointer;
+    }
+    .payment-screenshot-upload:hover {
+      border-color: #007aff;
+      background: #f0f8ff;
+    }
+    .payment-screenshot-upload input {
+      display: none;
+    }
 
     @media (max-width: 480px) {
       .header h1 { font-size: 1.5rem; }
@@ -670,12 +737,47 @@
         </div>
         <div id="user-status">
           <span id="logged-user" class="user-info" style="display:none;">
-            <span class="user-email">欢迎, <span id="user-email-text"></span></span>
+            <span class="user-email" onclick="openUserCenter()" style="cursor:pointer;">欢迎, <span id="user-email-text" style="font-weight:600;"></span> ▼</span>
           </span>
           <button id="login-btn" class="login-btn" onclick="openLoginModal()">登录/注册</button>
         </div>
       </div>
     </div>
+    
+    <div class="modal" id="user-center-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="logo">👤</div>
+          <h3>个人中心</h3>
+          <p>管理您的账户信息</p>
+          <button class="modal-close" onclick="closeUserCenterModal()">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="user-profile-section">
+            <div class="profile-item">
+            <div class="profile-label">邮箱</div>
+            <div class="profile-value" id="profile-email">-</div>
+          </div>
+          <div class="profile-item">
+            <div class="profile-label">书币余额</div>
+            <div class="profile-value" id="profile-coins">0</div>
+          </div>
+          <div class="profile-item">
+            <div class="profile-label">会员状态</div>
+            <div class="profile-value" id="profile-vip">非会员</div>
+          </div>
+          <div class="profile-item">
+            <div class="profile-label">累计充值</div>
+            <div class="profile-value" id="profile-recharge">¥0</div>
+          </div>
+        </div>
+        <div class="user-actions">
+          <button class="modal-footer-btn secondary" onclick="closeUserCenterModal()">返回</button>
+          <button class="modal-footer-btn logout-btn" onclick="handleLogout()">退出登录</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
     <div class="tabs">
       <button class="tab active" onclick="switchTab('coin')">💰 书币充值</button>
@@ -846,8 +948,15 @@
           </div>
         </div>
 
+        <div class="info-section" style="margin-top:20px;" id="pending-orders-section">
+          <h4>📋 待审核订单</h4>
+          <div id="pending-orders-list" style="margin-top:10px;">
+            <p style="color:#86868b;font-size:0.9rem;">暂无待审核订单</p>
+          </div>
+        </div>
+        
         <div class="info-section" style="margin-top:20px;">
-          <h4>📋 待办任务</h4>
+          <h4>📌 待办任务</h4>
           <ul>
             <li>连续签到7天（第1天）</li>
             <li>充值满100元任务</li>
@@ -946,11 +1055,28 @@
         <div class="countdown-box" id="countdown">剩余付款时间: <span id="countdown-time">30:00</span></div>
         <div class="order-box">订单号: <span id="current-order-no"></span></div>
         <p class="payment-hint">付款时请在【备注】中填写订单号后6位: <strong id="order-code-display"></strong></p>
+        
+        <div class="payment-review-box">
+          <div class="payment-review-title">⚠️ 重要提示</div>
+          <div class="payment-review-desc">
+            1. 请务必先完成支付宝扫码付款<br>
+            2. 付款成功后，系统需要人工审核到账情况<br>
+            3. 审核通过后，书币/会员会自动到账<br>
+            4. 如有疑问，请联系客服处理
+          </div>
+        </div>
+        
         <div class="form-group">
           <label>付款金额（元）</label>
-          <input type="number" id="confirm-amount" placeholder="请输入实际付款金额">
+          <input type="number" id="confirm-amount" placeholder="请输入实际付款金额" step="0.01">
         </div>
-        <button class="modal-footer-btn primary" onclick="confirmPayment()">确认到账</button>
+        
+        <div class="form-group">
+          <label>支付宝交易号/凭证号（可选，用于快速审核）</label>
+          <input type="text" id="confirm-transaction-id" placeholder="输入交易号或流水号，可选">
+        </div>
+        
+        <button class="modal-footer-btn primary" onclick="submitPaymentReview()">提交审核</button>
       </div>
     </div>
   </div>
@@ -962,6 +1088,8 @@
     let countdownInterval = null;
     let lastSendTime = 0;
     const taskStatus = [false, false, false, false, false];
+    let currentUser = null;
+    let pendingOrders = [];
 
     function showNotification(type, title, message) {
       const notif = document.getElementById('notification');
@@ -1030,6 +1158,12 @@
         return;
       }
       
+      if (!currentUser) {
+        showNotification('error', '请先登录', '请先登录后再购买');
+        openLoginModal();
+        return;
+      }
+      
       const orderNo = generateOrderNo();
       currentOrderData = { orderNo, ...selectedProduct, status: 'pending', createdAt: new Date().toISOString() };
       document.getElementById('current-order-no').textContent = orderNo;
@@ -1080,8 +1214,10 @@
         minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
     }
 
-    async function confirmPayment() {
+    async function submitPaymentReview() {
       const confirmAmount = parseFloat(document.getElementById('confirm-amount').value);
+      const transactionId = document.getElementById('confirm-transaction-id').value.trim();
+      
       if (!confirmAmount) {
         showNotification('error', '请输入', '请输入实际付款金额');
         return;
@@ -1091,10 +1227,20 @@
         showNotification('error', '金额不对', '付款金额与订单金额不一致，请确认');
         return;
       }
-      currentOrderData.status = 'paid';
-      currentOrderData.paidAt = new Date().toISOString();
+      
+      if (!currentUser) {
+        showNotification('error', '请先登录', '请先登录后再提交审核');
+        return;
+      }
+      
+      currentOrderData.status = 'pending_review';
+      currentOrderData.transactionId = transactionId;
+      currentOrderData.submittedAt = new Date().toISOString();
+      currentOrderData.userEmail = currentUser;
+      pendingOrders.push(currentOrderData);
+      
       stopCountdown();
-      showNotification('success', '支付成功', '书币/会员已到账');
+      showNotification('success', '提交成功', '订单已提交审核，请等待人工确认');
       closePayModal();
       
       document.querySelectorAll('.product-item, .member-item').forEach(item => item.classList.remove('selected'));
@@ -1103,6 +1249,47 @@
       document.getElementById('member-pay-btn').disabled = true;
       document.getElementById('member-pay-btn').textContent = '请选择会员套餐';
       selectedProduct = null;
+      
+      updatePendingOrdersList();
+    }
+    
+    function updatePendingOrdersList() {
+      const listEl = document.getElementById('pending-orders-list');
+      
+      if (!pendingOrders.length) {
+        listEl.innerHTML = '<p style="color:#86868b;font-size:0.9rem;">暂无待审核订单</p>';
+        return;
+      }
+      
+      listEl.innerHTML = pendingOrders.map((order, idx) => `
+        <div style="background:#fff;padding:14px;border-radius:10px;border:1px solid #e5e5e5;margin-bottom:10px;">
+          <div style="font-weight:600;color:#1d1d1f;margin-bottom:6px;">订单 ${order.orderNo}</div>
+          <div style="font-size:0.9rem;color:#86868b;">
+            ${order.type === 'coin' ? `充值 ¥${order.price} (${order.coins}书币)` : `开通 ¥${order.price} (${order.name})`}
+          </div>
+          <div style="font-size:0.85rem;color:#ff9500;margin-top:6px;font-weight:500;">
+            ⏳ 待审核中...
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function openUserCenter() {
+      if (!currentUser) return;
+      document.getElementById('profile-email').textContent = currentUser;
+      document.getElementById('user-center-modal').classList.add('show');
+    }
+    
+    function closeUserCenterModal() {
+      document.getElementById('user-center-modal').classList.remove('show');
+    }
+    
+    function handleLogout() {
+      currentUser = null;
+      document.getElementById('login-btn').style.display = 'block';
+      document.getElementById('logged-user').style.display = 'none';
+      closeUserCenterModal();
+      showNotification('success', '已退出', '您已安全退出登录');
     }
 
     async function queryOrder() {
@@ -1308,6 +1495,7 @@
     }
 
     function showLoggedIn(email) {
+      currentUser = email;
       document.getElementById('login-btn').style.display = 'none';
       document.getElementById('logged-user').style.display = 'flex';
       document.getElementById('user-email-text').textContent = email;
