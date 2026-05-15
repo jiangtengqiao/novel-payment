@@ -1,40 +1,35 @@
 const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
-const nodemailer = require('nodemailer');
 
 const users = global.users || new Map();
 const verificationCodes = new Map();
 const lastSendTime = new Map();
 
-const SMTP_CONFIG = {
-  host: 'smtp.163.com',
-  port: 587,
-  secure: false,
-  requireTLS: true,
-  auth: {
-    user: '13677735766@163.com',
-    pass: 'XMrnbaBdEeHzjTq4'
-  },
-  tls: {
-    rejectUnauthorized: false
-  },
-  family: 4  // 强制使用IPv4
-};
-
-let transporter = nodemailer.createTransport(SMTP_CONFIG);
+const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_EDy6uahn_LeRYvWZ9NyvwyNrvRGsKb72P';
 
 async function sendEmail(to, code) {
+  if (!RESEND_API_KEY) {
+    console.error('❌ 未配置RESEND_API_KEY');
+    return false;
+  }
+  
   try {
     console.log(`📧 正在发送验证码邮件到: ${to}`);
     console.log(`🔑 验证码: ${code}`);
     
-    const mailOptions = {
-      from: '"小说支付中心" <13677735766@163.com>',
-      to: to,
-      subject: '【小说支付中心】安全验证 - 验证码',
-      text: `尊敬的用户：\n\n您正在进行账户注册验证，验证码为：${code}\n\n验证码有效期：5分钟\n\n请在注册页面输入此验证码完成验证。\n\n⚠️ 安全提示：\n- 此验证码仅供您本人使用，请妥善保管\n- 请勿将验证码告知他人\n- 如非本人操作，请忽略此邮件\n\n如有疑问，请联系客服。\n\n---\n小说支付中心`,
-      html: `<!DOCTYPE html>
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'onboarding@resend.dev',
+        to: to,
+        subject: '【小说支付中心】安全验证 - 验证码',
+        html: `
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -78,15 +73,20 @@ async function sendEmail(to, code) {
   </div>
 </body>
 </html>`
-    };
-
-    const info = await transporter.sendMail(mailOptions);
-    console.log('✅ 邮件发送成功！');
-    return true;
+      })
+    });
+    
+    const result = await response.json();
+    
+    if (result.id) {
+      console.log('✅ 邮件发送成功！');
+      return true;
+    } else {
+      console.error('❌ 邮件发送失败:', result);
+      return false;
+    }
   } catch (error) {
-    console.error('❌ 邮件发送失败:', error.message);
-    console.error('错误代码:', error.code);
-    console.error('响应码:', error.responseCode);
+    console.error('❌ 邮件发送异常:', error.message);
     return false;
   }
 }
