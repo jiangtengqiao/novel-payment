@@ -1,61 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
-const nodemailer = require('nodemailer');
 
 const users = global.users || new Map();
 const verificationCodes = new Map();
 const lastSendTime = new Map();
 
-const SMTP_CONFIG = {
-  host: 'smtp.qq.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: '2527469579@qq.com',
-    pass: 'sdafarxfmqrwcgff'
-  },
-  pool: true,
-  requireTLS: true,
-  maxConnections: 1,
-  maxMessages: 1,
-  rateLimit: 1,
-  connectionTimeout: 15000,
-  greetingTimeout: 15000,
-  socketTimeout: 15000,
-  tls: {
-    rejectUnauthorized: false
-  }
-};
-
-let transporter = null;
-let emailServiceReady = false;
-
-function initTransporter() {
-  try {
-    transporter = nodemailer.createTransport(SMTP_CONFIG);
-    
-    transporter.verify(function(error, success) {
-      if (error) {
-        console.log('⚠️  SMTP连接失败:', error.message);
-        console.log('💡 请检查：1. 授权码是否正确 2. POP3/SMTP服务是否开启');
-        emailServiceReady = false;
-      } else {
-        console.log('✅ SMTP连接成功！邮件服务已就绪');
-        emailServiceReady = true;
-      }
-    });
-  } catch (err) {
-    console.error('❌ 初始化邮件服务失败:', err);
-    emailServiceReady = false;
-  }
-}
-
-initTransporter();
+const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 
 async function sendEmail(to, code) {
-  if (!emailServiceReady || !transporter) {
-    console.error('❌ 邮件服务未就绪');
+  if (!RESEND_API_KEY) {
+    console.error('❌ 未配置RESEND_API_KEY');
+    console.log('💡 请在Railway环境变量中添加: RESEND_API_KEY=your_api_key');
     return false;
   }
   
@@ -63,30 +19,18 @@ async function sendEmail(to, code) {
     console.log(`📧 正在发送验证码邮件到: ${to}`);
     console.log(`🔑 验证码: ${code}`);
     
-    const mailOptions = {
-      from: '"小说支付中心" <2527469579@qq.com>',
-      to: to,
-      subject: '【小说支付中心】安全验证 - 验证码',
-      text: `尊敬的用户：
-
-您正在进行账户注册验证，验证码为：${code}
-
-验证码有效期：5分钟
-
-请在注册页面输入此验证码完成验证。
-
-⚠️ 安全提示：
-- 此验证码仅供您本人使用，请妥善保管
-- 请勿将验证码告知他人
-- 如非本人操作，请忽略此邮件
-
-如有疑问，请联系客服。
-
----
-小说支付中心
-官网：https://www.example.com
-客服邮箱：support@example.com`,
-      html: `<!DOCTYPE html>
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'onboarding@resend.dev',
+        to: to,
+        subject: '【小说支付中心】安全验证 - 验证码',
+        html: `
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -148,20 +92,22 @@ async function sendEmail(to, code) {
   </div>
 </body>
 </html>`
-    };
-
-    const info = await transporter.sendMail(mailOptions);
-    console.log('✅ 邮件发送成功！');
-    console.log('📬 收件人:', to);
-    console.log('📧 Message ID:', info.messageId);
-    return true;
-  } catch (error) {
-    console.error('❌ 邮件发送失败:', error.message);
-    console.error('错误代码:', error.code);
-    console.error('响应码:', error.responseCode);
-    if (error.response) {
-      console.error('服务器响应:', error.response);
+      })
+    });
+    
+    const result = await response.json();
+    
+    if (result.id) {
+      console.log('✅ 邮件发送成功！');
+      console.log('📬 收件人:', to);
+      console.log('📧 Message ID:', result.id);
+      return true;
+    } else {
+      console.error('❌ 邮件发送失败:', result);
+      return false;
     }
+  } catch (error) {
+    console.error('❌ 邮件发送异常:', error.message);
     return false;
   }
 }
@@ -227,7 +173,7 @@ router.post('/send-code', async (req, res) => {
     } else {
       res.status(500).json({
         success: false,
-        message: '邮件发送失败，请检查网络连接或联系客服'
+        message: '邮件发送失败，请稍后重试或联系客服'
       });
     }
   } catch (error) {
@@ -288,53 +234,6 @@ router.post('/register', (req, res) => {
   }
 });
 
-router.post('/verify', (req, res) => {
-  try {
-    const { email, code } = req.body;
-    
-    if (!email || !code) {
-      return res.status(400).json({ success: false, message: '缺少必要参数' });
-    }
-    
-    const verification = verificationCodes.get(email);
-    if (!verification) {
-      return res.status(400).json({ success: false, message: '未找到验证码，请重新获取' });
-    }
-    
-    if (Date.now() > verification.expiresAt) {
-      verificationCodes.delete(email);
-      return res.status(400).json({ success: false, message: '验证码已过期，请重新获取' });
-    }
-    
-    if (verification.code !== code.toUpperCase()) {
-      return res.status(400).json({ success: false, message: '验证码错误' });
-    }
-    
-    const userId = uuidv4().slice(0, 8);
-    users.set(email, {
-      userId,
-      email,
-      password: verification.password,
-      coins: 0,
-      totalRecharged: 0,
-      vipExpireTime: null,
-      members: [],
-      createdAt: new Date()
-    });
-    
-    verificationCodes.delete(email);
-    
-    res.json({
-      success: true,
-      message: '注册成功',
-      data: { userId, email }
-    });
-  } catch (error) {
-    console.error('验证失败:', error);
-    res.status(500).json({ success: false, message: '验证失败' });
-  }
-});
-
 router.post('/login', (req, res) => {
   try {
     const { email, password } = req.body;
@@ -372,26 +271,6 @@ router.post('/login', (req, res) => {
   }
 });
 
-router.get('/check', (req, res) => {
-  try {
-    const { email } = req.query;
-    
-    if (!email) {
-      return res.status(400).json({ success: false, message: '缺少必要参数' });
-    }
-    
-    const exists = users.has(email);
-    
-    res.json({
-      success: true,
-      data: { exists }
-    });
-  } catch (error) {
-    console.error('检查用户失败:', error);
-    res.status(500).json({ success: false, message: '检查失败' });
-  }
-});
-
 router.get('/users', (req, res) => {
   try {
     const userList = {};
@@ -408,8 +287,8 @@ router.get('/users', (req, res) => {
 router.get('/email-status', (req, res) => {
   res.json({
     success: true,
-    ready: emailServiceReady,
-    message: emailServiceReady ? '邮件服务已就绪' : '邮件服务未就绪，请检查配置'
+    ready: !!RESEND_API_KEY,
+    message: RESEND_API_KEY ? '邮件服务已就绪(Resend)' : '未配置RESEND_API_KEY'
   });
 });
 
