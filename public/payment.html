@@ -735,7 +735,8 @@
           <div class="header-title">📚 小说支付中心</div>
           <div class="header-subtitle">安全便捷的充值服务</div>
         </div>
-        <div id="user-status">
+        <div id="user-status" style="display:flex;gap:10px;align-items:center;">
+          <button id="admin-btn" class="login-btn" style="background:#ff9500;" onclick="window.location.href='/admin.html'">管理后台</button>
           <span id="logged-user" class="user-info" style="display:none;">
             <span class="user-email" onclick="openUserCenter()" style="cursor:pointer;">欢迎, <span id="user-email-text" style="font-weight:600;"></span> ▼</span>
           </span>
@@ -754,7 +755,7 @@
         </div>
         <div class="modal-body">
           <div class="user-profile-section">
-            <div class="profile-item">
+          <div class="profile-item">
             <div class="profile-label">邮箱</div>
             <div class="profile-value" id="profile-email">-</div>
           </div>
@@ -909,42 +910,42 @@
           <div class="task-item">
             <div class="task-info">
               <div class="task-title">每日签到</div>
-              <div class="task-desc">连续签到7天可获得额外奖励</div>
+              <div class="task-desc">今日尚未签到，点击完成签到</div>
             </div>
             <div class="task-reward">+10书币</div>
-            <button class="task-btn" onclick="completeTask(0, this)">领取</button>
+            <button id="task-btn-0" class="task-btn" onclick="checkin()">签到</button>
           </div>
           <div class="task-item">
             <div class="task-info">
               <div class="task-title">完善个人资料</div>
-              <div class="task-desc">填写完整的个人信息获得奖励</div>
+              <div class="task-desc">需要先登录账号才能完成此任务</div>
             </div>
             <div class="task-reward">+50书币</div>
-            <button class="task-btn" onclick="completeTask(1, this)">领取</button>
+            <button id="task-btn-1" class="task-btn" onclick="taskNeedLogin(1)">领取</button>
           </div>
           <div class="task-item">
             <div class="task-info">
               <div class="task-title">首次充值</div>
-              <div class="task-desc">完成任意金额的首次充值</div>
+              <div class="task-desc">完成任意金额的首次充值后可领取</div>
             </div>
             <div class="task-reward">+200书币</div>
-            <button class="task-btn" onclick="completeTask(2, this)">领取</button>
+            <button id="task-btn-2" class="task-btn" onclick="taskNeedRecharge(2)">领取</button>
           </div>
           <div class="task-item">
             <div class="task-info">
               <div class="task-title">阅读1小时</div>
-              <div class="task-desc">累计阅读时长达到1小时</div>
+              <div class="task-desc">需要在阅读器中累计阅读满60分钟</div>
             </div>
             <div class="task-reward">+30书币</div>
-            <button class="task-btn" onclick="completeTask(3, this)">领取</button>
+            <button id="task-btn-3" class="task-btn" onclick="showTaskProgress(3)">查看进度</button>
           </div>
           <div class="task-item">
             <div class="task-info">
               <div class="task-title">邀请好友注册</div>
-              <div class="task-desc">每邀请1位好友完成注册</div>
+              <div class="task-desc">邀请链接可在分享页中获取</div>
             </div>
             <div class="task-reward">+100书币</div>
-            <button class="task-btn" onclick="completeTask(4, this)">领取</button>
+            <button id="task-btn-4" class="task-btn" onclick="showInviteLink(4)">邀请好友</button>
           </div>
         </div>
 
@@ -957,7 +958,7 @@
         
         <div class="info-section" style="margin-top:20px;">
           <h4>📌 待办任务</h4>
-          <ul>
+          <ul id="todo-list">
             <li>连续签到7天（第1天）</li>
             <li>充值满100元任务</li>
             <li>分享3次书籍到社交平台</li>
@@ -1233,24 +1234,47 @@
         return;
       }
       
-      currentOrderData.status = 'pending_review';
-      currentOrderData.transactionId = transactionId;
-      currentOrderData.submittedAt = new Date().toISOString();
-      currentOrderData.userEmail = currentUser;
-      pendingOrders.push(currentOrderData);
-      
-      stopCountdown();
-      showNotification('success', '提交成功', '订单已提交审核，请等待人工确认');
-      closePayModal();
-      
-      document.querySelectorAll('.product-item, .member-item').forEach(item => item.classList.remove('selected'));
-      document.getElementById('coin-pay-btn').disabled = true;
-      document.getElementById('coin-pay-btn').textContent = '请选择充值金额';
-      document.getElementById('member-pay-btn').disabled = true;
-      document.getElementById('member-pay-btn').textContent = '请选择会员套餐';
-      selectedProduct = null;
-      
-      updatePendingOrdersList();
+      try {
+        const response = await fetch('/api/alipay/submit-review', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderNo: currentOrderData.orderNo,
+            transactionId,
+            confirmAmount,
+            userEmail: currentUser,
+            userId: currentUser
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          currentOrderData.status = 'pending_review';
+          currentOrderData.transactionId = transactionId;
+          currentOrderData.submittedAt = new Date().toISOString();
+          currentOrderData.userEmail = currentUser;
+          pendingOrders.push(currentOrderData);
+          
+          stopCountdown();
+          showNotification('success', '提交成功', '订单已提交审核，请等待人工确认');
+          closePayModal();
+          
+          document.querySelectorAll('.product-item, .member-item').forEach(item => item.classList.remove('selected'));
+          document.getElementById('coin-pay-btn').disabled = true;
+          document.getElementById('coin-pay-btn').textContent = '请选择充值金额';
+          document.getElementById('member-pay-btn').disabled = true;
+          document.getElementById('member-pay-btn').textContent = '请选择会员套餐';
+          selectedProduct = null;
+          
+          updatePendingOrdersList();
+          loadOrdersFromServer();
+        } else {
+          showNotification('error', '提交失败', result.message);
+        }
+      } catch (error) {
+        showNotification('error', '提交失败', '网络错误，请稍后重试');
+      }
     }
     
     function updatePendingOrdersList() {
@@ -1274,10 +1298,31 @@
       `).join('');
     }
     
-    function openUserCenter() {
+    async function openUserCenter() {
       if (!currentUser) return;
+      
       document.getElementById('profile-email').textContent = currentUser;
       document.getElementById('user-center-modal').classList.add('show');
+      
+      try {
+        const response = await fetch('/api/auth/users');
+        const result = await response.json();
+        
+        if (result.success && result.users && result.users[currentUser]) {
+          const user = result.users[currentUser];
+          document.getElementById('profile-coins').textContent = user.coins || 0;
+          document.getElementById('profile-recharge').textContent = '¥' + (user.totalRecharged || 0);
+          
+          const isVip = user.vipExpireTime && new Date(user.vipExpireTime) > new Date();
+          if (isVip) {
+            document.getElementById('profile-vip').textContent = 'VIP会员 (' + new Date(user.vipExpireTime).toLocaleDateString() + '到期)';
+          } else {
+            document.getElementById('profile-vip').textContent = '非会员';
+          }
+        }
+      } catch (error) {
+        console.log('加载用户信息失败');
+      }
     }
     
     function closeUserCenterModal() {
@@ -1499,19 +1544,122 @@
       document.getElementById('login-btn').style.display = 'none';
       document.getElementById('logged-user').style.display = 'flex';
       document.getElementById('user-email-text').textContent = email;
+      
+      const task1Btn = document.getElementById('task-btn-1');
+      if (task1Btn) {
+        task1Btn.onclick = () => completeRealTask(1);
+        task1Btn.textContent = '领取';
+      }
     }
-
-    function completeTask(index, btn) {
+    
+    function checkin() {
+      const today = new Date().toDateString();
+      const lastCheckin = localStorage.getItem('lastCheckin');
+      
+      if (lastCheckin === today) {
+        showNotification('info', '今日已签到', '请明天再来');
+        return;
+      }
+      
+      localStorage.setItem('lastCheckin', today);
+      let streak = parseInt(localStorage.getItem('checkinStreak') || '0') + 1;
+      if (streak > 7) streak = 1;
+      localStorage.setItem('checkinStreak', streak);
+      
+      const todoList = document.getElementById('todo-list');
+      if (todoList && todoList.children[0]) {
+        todoList.children[0].textContent = `连续签到7天（第${streak}天）`;
+      }
+      
+      taskStatus[0] = true;
+      const btn = document.getElementById('task-btn-0');
+      if (btn) {
+        btn.textContent = '已完成';
+        btn.classList.add('completed');
+        btn.disabled = true;
+      }
+      
+      showNotification('success', '签到成功', `连续签到${streak}天！`);
+    }
+    
+    function taskNeedLogin(index) {
+      if (!currentUser) {
+        showNotification('error', '请先登录', '登录后才能领取奖励');
+        openLoginModal();
+        return;
+      }
+      completeRealTask(index);
+    }
+    
+    function taskNeedRecharge(index) {
+      if (!currentUser) {
+        showNotification('error', '请先登录', '登录后才能领取奖励');
+        openLoginModal();
+        return;
+      }
+      showNotification('info', '继续努力', '完成一笔充值后即可领取');
+    }
+    
+    function showTaskProgress(index) {
+      showNotification('info', '阅读进度', `当前阅读进度: 0/60 分钟`);
+    }
+    
+    function showInviteLink(index) {
+      if (!currentUser) {
+        showNotification('error', '请先登录', '登录后才能邀请好友');
+        openLoginModal();
+        return;
+      }
+      const inviteLink = window.location.origin + '/register?ref=' + btoa(currentUser);
+      showNotification('info', '邀请链接', '链接已复制到剪贴板');
+    }
+    
+    function completeRealTask(index) {
       if (taskStatus[index]) {
         showNotification('info', '已领取', '您已领取过该奖励');
         return;
       }
+      
       taskStatus[index] = true;
-      btn.textContent = '已完成';
-      btn.classList.add('completed');
-      btn.disabled = true;
+      const btn = document.getElementById('task-btn-' + index);
+      if (btn) {
+        btn.textContent = '已完成';
+        btn.classList.add('completed');
+        btn.disabled = true;
+      }
+      
       showNotification('success', '领取成功', '奖励已发放');
     }
+    
+    async function loadOrdersFromServer() {
+      try {
+        const response = await fetch('/api/alipay/orders');
+        const result = await response.json();
+        
+        if (result.success && result.orders) {
+          pendingOrders = result.orders.filter(o => o.status === 'pending_review');
+          updatePendingOrdersList();
+        }
+      } catch (error) {
+        console.log('加载订单失败，使用本地数据');
+      }
+    }
+    
+    window.onload = () => {
+      loadOrdersFromServer();
+      
+      const today = new Date().toDateString();
+      const lastCheckin = localStorage.getItem('lastCheckin');
+      if (lastCheckin === today) {
+        taskStatus[0] = true;
+        const btn = document.getElementById('task-btn-0');
+        if (btn) {
+          btn.textContent = '已完成';
+          btn.classList.add('completed');
+          btn.disabled = true;
+        }
+      }
+    };
 
     document.addEventListener('keydown', (e) => {
       if (!e.target.classList.contains('code-input')) return;

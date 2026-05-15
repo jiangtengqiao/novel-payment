@@ -341,5 +341,18 @@ router.get('/check', (req, res) => {
   }
 });
 
+router.get('/users', (req, res) => {
+  try {
+    const userList = {};
+    users.forEach((user, key) => {
+      userList[key] = user;
+    });
+    res.json({ success: true, users: userList });
+  } catch (error) {
+    console.error('获取用户列表失败:', error);
+    res.status(500).json({ success: false, message: '获取用户失败' });
+  }
+});
+
 module.exports = router;
 module.exports.users = users;

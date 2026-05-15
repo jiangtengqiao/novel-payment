@@ -650,4 +650,130 @@ router.post('/consume', (req, res) => {
   }
 });
 
+// 管理后台 API
+router.get('/orders', (req, res) => {
+  try {
+    const orderList = [];
+    orders.forEach((order, key) => {
+      orderList.push({
+        orderNo: key,
+        outTradeNo: order.outTradeNo,
+        userEmail: order.userEmail,
+        userId: order.userId,
+        subject: order.subject,
+        totalAmount: order.totalAmount,
+        status: order.status,
+        type: order.productType,
+        coins: order.coins,
+        gift: order.gift,
+        name: order.name,
+        days: order.days,
+        transactionId: order.transactionId,
+        createdAt: order.createdAt,
+        paidAt: order.paidAt,
+        submittedAt: order.submittedAt
+      });
+    });
+    res.json({ success: true, orders: orderList });
+  } catch (error) {
+    console.error('获取订单列表失败:', error);
+    res.status(500).json({ success: false, message: '获取订单失败' });
+  }
+});
+
+router.post('/orders/:orderNo/approve', (req, res) => {
+  try {
+    const { orderNo } = req.params;
+    const order = orders.get(orderNo);
+    
+    if (!order) {
+      return res.status(400).json({ success: false, message: '订单不存在' });
+    }
+    
+    order.status = 'paid';
+    order.paidAt = new Date();
+    order.approvedAt = new Date();
+    
+    const userId = order.userId || order.userEmail;
+    let user;
+    
+    if (userId) {
+      user = users.get(userId);
+      if (!user) {
+        user = { coins: 0, totalRecharged: 0, members: [], vipExpireTime: null, lotteries: 0, email: order.userEmail };
+        users.set(userId, user);
+      }
+      
+      if (order.productType === 'coin') {
+        const packageInfo = RECHARGE_PACKAGES.find(p => p.price === parseFloat(order.totalAmount));
+        const coins = packageInfo ? packageInfo.coins : Math.floor(parseFloat(order.totalAmount) * COIN_RATE);
+        const gift = packageInfo ? packageInfo.gift : 0;
+        user.coins += coins + gift;
+        user.totalRecharged += parseFloat(order.totalAmount);
+      } else {
+        const giftCoins = order.coins || 200;
+        const memberDays = order.days || 30;
+        user.coins += giftCoins;
+        user.totalRecharged += parseFloat(order.totalAmount);
+        
+        const now = new Date();
+        const currentExpire = user.vipExpireTime ? new Date(user.vipExpireTime) : now;
+        if (currentExpire < now) currentExpire.setTime(now.getTime());
+        currentExpire.setDate(currentExpire.getDate() + memberDays);
+        user.vipExpireTime = currentExpire;
+      }
+    }
+    
+    res.json({ success: true, message: '审核通过' });
+  } catch (error) {
+    console.error('审核订单失败:', error);
+    res.status(500).json({ success: false, message: '审核失败' });
+  }
+});
+
+router.post('/orders/:orderNo/reject', (req, res) => {
+  try {
+    const { orderNo } = req.params;
+    const order = orders.get(orderNo);
+    
+    if (!order) {
+      return res.status(400).json({ success: false, message: '订单不存在' });
+    }
+    
+    order.status = 'rejected';
+    order.rejectedAt = new Date();
+    
+    res.json({ success: true, message: '订单已拒绝' });
+  } catch (error) {
+    console.error('拒绝订单失败:', error);
+    res.status(500).json({ success: false, message: '拒绝失败' });
+  }
+});
+
+router.post('/submit-review', (req, res) => {
+  try {
+    const { orderNo, transactionId, confirmAmount, userEmail, userId } = req.body;
+    
+    const order = orders.get(orderNo);
+    if (!order) {
+      return res.status(400).json({ success: false, message: '订单不存在' });
+    }
+    
+    if (confirmAmount !== parseFloat(order.totalAmount)) {
+      return res.status(400).json({ success: false, message: '金额不匹配' });
+    }
+    
+    order.status = 'pending_review';
+    order.transactionId = transactionId;
+    order.userEmail = userEmail;
+    order.userId = userId;
+    order.submittedAt = new Date();
+    
+    res.json({ success: true, message: '已提交审核' });
+  } catch (error) {
+    console.error('提交审核失败:', error);
+    res.status(500).json({ success: false, message: '提交失败' });
+  }
+});
+
 module.exports = router;
