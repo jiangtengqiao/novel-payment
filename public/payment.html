@@ -8,55 +8,57 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #faf9f7;
       min-height: 100vh;
       padding: 15px;
     }
     .container { max-width: 800px; margin: 0 auto; }
-    .header { text-align: center; color: white; margin-bottom: 20px; }
-    .header h1 { font-size: 1.8rem; margin-bottom: 8px; }
-    .header p { font-size: 0.9rem; opacity: 0.9; }
+    .header { text-align: center; color: #2d2d2d; margin-bottom: 20px; }
+    .header h1 { font-size: 1.8rem; margin-bottom: 8px; font-weight: 600; }
+    .header p { font-size: 0.9rem; color: #666; }
     
     .tabs { display: flex; gap: 8px; margin-bottom: 15px; }
     .tab {
-      flex: 1; padding: 12px; background: rgba(255,255,255,0.2);
-      border: none; border-radius: 10px; color: white; font-size: 0.95rem;
+      flex: 1; padding: 12px; background: #f5f5f3;
+      border: 1px solid #e8e8e6; border-radius: 10px; color: #444; font-size: 0.95rem;
       cursor: pointer; transition: all 0.3s;
     }
-    .tab.active { background: rgba(255,255,255,0.95); color: #667eea; font-weight: 600; }
+    .tab:hover { background: #f0f0ee; }
+    .tab.active { background: #ffffff; color: #2d2d2d; font-weight: 600; border-color: #ddd; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
     
     .payment-card {
-      background: white; border-radius: 16px; padding: 20px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      background: #ffffff; border-radius: 16px; padding: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid #f0f0ee;
     }
     .product-section { display: none; }
     .product-section.active { display: block; }
     
-    .section-title { font-size: 1.1rem; color: #333; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #f0f0f0; }
+    .section-title { font-size: 1.1rem; color: #2d2d2d; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #f5f5f3; }
     
     .product-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;
       margin-bottom: 15px;
     }
     .product-item {
-      border: 2px solid #e0e0e0; border-radius: 10px;
+      border: 2px solid #e8e8e6; border-radius: 10px;
       padding: 12px 8px; text-align: center; cursor: pointer;
-      transition: all 0.3s; position: relative;
+      transition: all 0.3s; position: relative; background: #faf9f7;
     }
-    .product-item:hover { border-color: #667eea; transform: translateY(-2px); }
+    .product-item:hover { border-color: #333; transform: translateY(-2px); }
     .product-item.selected {
-      border-color: #667eea;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      border-color: #333;
+      background: #ffffff;
+      color: #2d2d2d;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    .product-item .coin-amount { font-size: 1.3rem; font-weight: bold; margin-bottom: 3px; }
-    .product-item .price { font-size: 0.95rem; color: #667eea; font-weight: 600; }
-    .product-item.selected .price { color: white; }
-    .product-item .gift { font-size: 0.7rem; color: #ff6b6b; margin-top: 3px; }
-    .product-item.selected .gift { color: #ffd93d; }
+    .product-item .coin-amount { font-size: 1.3rem; font-weight: bold; margin-bottom: 3px; color: #2d2d2d; }
+    .product-item .price { font-size: 0.95rem; color: #333; font-weight: 600; }
+    .product-item.selected .price { color: #333; }
+    .product-item .gift { font-size: 0.7rem; color: #e74c3c; margin-top: 3px; }
+    .product-item.selected .gift { color: #e74c3c; }
     .product-item .tag {
       position: absolute; top: -6px; right: -6px;
-      background: #ff4757; color: white; padding: 2px 6px;
+      background: #333; color: white; padding: 2px 6px;
       border-radius: 6px; font-size: 0.6rem; font-weight: 600;
     }
     
@@ -65,23 +67,24 @@
       margin-bottom: 15px;
     }
     .member-item {
-      border: 2px solid #e0e0e0; border-radius: 10px;
+      border: 2px solid #e8e8e6; border-radius: 10px;
       padding: 15px 10px; text-align: center; cursor: pointer;
-      transition: all 0.3s; position: relative;
+      transition: all 0.3s; position: relative; background: #faf9f7;
     }
-    .member-item:hover { border-color: #667eea; transform: translateY(-2px); }
+    .member-item:hover { border-color: #333; transform: translateY(-2px); }
     .member-item.selected {
-      border-color: #667eea;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      border-color: #333;
+      background: #ffffff;
+      color: #2d2d2d;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    .member-item .name { font-size: 1.1rem; font-weight: bold; margin-bottom: 5px; }
+    .member-item .name { font-size: 1.1rem; font-weight: bold; margin-bottom: 5px; color: #2d2d2d; }
     .member-item .duration { font-size: 0.8rem; color: #666; margin-bottom: 5px; }
-    .member-item.selected .duration { color: rgba(255,255,255,0.8); }
-    .member-item .price { font-size: 1.2rem; color: #667eea; font-weight: bold; }
-    .member-item.selected .price { color: white; }
-    .member-item .benefits { font-size: 0.7rem; color: #ff6b6b; margin-top: 5px; }
-    .member-item.selected .benefits { color: #ffd93d; }
+    .member-item.selected .duration { color: #666; }
+    .member-item .price { font-size: 1.2rem; color: #333; font-weight: bold; }
+    .member-item.selected .price { color: #333; }
+    .member-item .benefits { font-size: 0.7rem; color: #e74c3c; margin-top: 5px; }
+    .member-item.selected .benefits { color: #e74c3c; }
     .member-item .tag {
       position: absolute; top: -6px; right: -6px;
       background: #ffd93d; color: #333; padding: 2px 6px;
@@ -98,12 +101,12 @@
     
     .pay-button {
       width: 100%; padding: 14px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #2d2d2d;
       border: none; border-radius: 10px; color: white;
       font-size: 1.1rem; font-weight: 600; cursor: pointer;
-      transition: all 0.3s; box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+      transition: all 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
-    .pay-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.5); }
+    .pay-button:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
     .pay-button:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
     
     .info-section {
@@ -115,18 +118,20 @@
     
     .modal {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.6); display: none; justify-content: center;
+      background: rgba(0,0,0,0.4); display: none; justify-content: center;
       align-items: center; z-index: 1000;
     }
     .modal.show { display: flex; }
     .modal-content {
-      background: white; border-radius: 16px; padding: 20px;
-      width: 95vw; max-width: 380px; max-height: 95vh; text-align: center;
+      background: #ffffff; border-radius: 16px; padding: 0;
+      width: 95vw; max-width: 420px; max-height: 95vh; text-align: center;
       overflow-y: auto; box-sizing: border-box;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+      border: 1px solid #f0f0ee;
     }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .modal-header h3 { font-size: 1.1rem; color: #333; }
-    .modal-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #999; }
+    .modal-header h3 { font-size: 1.1rem; color: #2d2d2d; }
+    .modal-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #666; }
     .qr-code-container {
       background: white; padding: 10px; border-radius: 12px;
       margin: 15px auto; width: fit-content; box-shadow: 0 8px 25px rgba(0,0,0,0.1);
@@ -161,11 +166,11 @@
     }
     
     .login-btn {
-      padding: 8px 16px; background: rgba(255,255,255,0.2); border: 1px solid white;
-      border-radius: 20px; color: white; font-size: 0.85rem; cursor: pointer;
+      padding: 8px 16px; background: #f5f5f3; border: 1px solid #e8e8e6;
+      border-radius: 20px; color: #2d2d2d; font-size: 0.85rem; cursor: pointer;
       transition: all 0.3s;
     }
-    .login-btn:hover { background: rgba(255,255,255,0.3); }
+    .login-btn:hover { background: #f0f0ee; }
     
     .countdown {
       background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
