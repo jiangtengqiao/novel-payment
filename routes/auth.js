@@ -144,7 +144,12 @@ router.post('/send-code', async (req, res) => {
       });
     }
     
-    const code = Math.random().toString(36).slice(-6).toUpperCase();
+    // 生成更复杂的6位验证码，包含大小写字母和数字
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+    let code = '';
+    for (let i = 0; i < 6; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
     verificationCodes.set(email, {
       code,
       expiresAt: Date.now() + 5 * 60 * 1000,

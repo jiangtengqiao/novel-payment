@@ -905,7 +905,7 @@
             <input type="password" id="reg-password" placeholder="请设置您的登录密码">
           </div>
           <div class="form-group">
-            <label>验证码（8位复杂字符）</label>
+            <label>验证码（6位复杂字符）</label>
             <div class="send-code-wrapper">
               <div class="code-input-group">
                 <input type="text" class="code-input" maxlength="1" data-index="0" oninput="handleCodeInput(event)">
@@ -914,8 +914,6 @@
                 <input type="text" class="code-input" maxlength="1" data-index="3" oninput="handleCodeInput(event)">
                 <input type="text" class="code-input" maxlength="1" data-index="4" oninput="handleCodeInput(event)">
                 <input type="text" class="code-input" maxlength="1" data-index="5" oninput="handleCodeInput(event)">
-                <input type="text" class="code-input" maxlength="1" data-index="6" oninput="handleCodeInput(event)">
-                <input type="text" class="code-input" maxlength="1" data-index="7" oninput="handleCodeInput(event)">
               </div>
               <button id="send-code-btn" class="send-code-btn" onclick="sendCode()">获取验证码</button>
             </div>
@@ -1184,9 +1182,35 @@
       }, 1000);
       
       lastSendTime = now;
-      document.getElementById('code-hint').style.display = 'block';
-      setTimeout(() => document.getElementById('code-hint').style.display = 'none', 5000);
-      showNotification('success', '发送成功', '验证码已发送到您的邮箱');
+      
+      try {
+        const response = await fetch('/api/auth/send-code', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          document.getElementById('code-hint').style.display = 'block';
+          setTimeout(() => document.getElementById('code-hint').style.display = 'none', 5000);
+          showNotification('success', '发送成功', '验证码已发送到您的邮箱');
+        } else {
+          showNotification('error', '发送失败', result.message);
+          clearInterval(timer);
+          btnText.textContent = '获取验证码';
+          btn.disabled = false;
+          lastSendTime = 0;
+        }
+      } catch (error) {
+        console.error('发送验证码失败:', error);
+        showNotification('error', '发送失败', '网络错误，请稍后重试');
+        clearInterval(timer);
+        btnText.textContent = '获取验证码';
+        btn.disabled = false;
+        lastSendTime = 0;
+      }
     }
 
     function handleCodeInput(event) {
@@ -1221,8 +1245,8 @@
         showNotification('error', '请填写', '请填写完整信息');
         return;
       }
-      if (code.length !== 8) {
-        showNotification('error', '请输入', '请输入完整的8位验证码');
+      if (code.length !== 6) {
+        showNotification('error', '请输入', '请输入完整的6位验证码');
         return;
       }
       if (!agreeTerms) {
@@ -1230,9 +1254,26 @@
         return;
       }
       
-      showNotification('success', '注册成功', '欢迎加入');
-      closeLoginModal();
-      showLoggedIn(email);
+      try {
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, code })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showNotification('success', '注册成功', '欢迎加入');
+          closeLoginModal();
+          showLoggedIn(email);
+        } else {
+          showNotification('error', '注册失败', result.message);
+        }
+      } catch (error) {
+        console.error('注册失败:', error);
+        showNotification('error', '注册失败', '网络错误，请稍后重试');
+      }
     }
 
     async function handleLogin() {
@@ -1244,9 +1285,26 @@
         return;
       }
       
-      showNotification('success', '登录成功', '欢迎回来');
-      closeLoginModal();
-      showLoggedIn(email);
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showNotification('success', '登录成功', '欢迎回来');
+          closeLoginModal();
+          showLoggedIn(email);
+        } else {
+          showNotification('error', '登录失败', result.message);
+        }
+      } catch (error) {
+        console.error('登录失败:', error);
+        showNotification('error', '登录失败', '网络错误，请稍后重试');
+      }
     }
 
     function showLoggedIn(email) {
