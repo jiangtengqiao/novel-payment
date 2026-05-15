@@ -199,6 +199,7 @@
       <button class="tab active" onclick="switchTab('coin')">💰 书币充值</button>
       <button class="tab" onclick="switchTab('member')">👑 会员开通</button>
       <button class="tab" onclick="switchTab('rebate')">🎁 返利中心</button>
+      <button class="tab" onclick="switchTab('order')">📋 订单查询</button>
     </div>
 
     <div class="payment-card">
@@ -366,6 +367,87 @@
 
         <button class="pay-button" onclick="loadRebateInfo()" style="margin-top: 15px;">🔄 刷新返利信息</button>
       </div>
+
+      <div id="order-section" class="product-section">
+        <h2 class="section-title">📋 订单查询</h2>
+        
+        <div style="background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
+          <div class="input-group">
+            <label>订单号</label>
+            <input type="text" id="query-order-no" placeholder="请输入我们系统生成的订单号">
+          </div>
+          <button class="pay-button" onclick="queryOrder()" style="margin-top: 10px;">🔍 查询订单</button>
+        </div>
+
+        <div id="order-info" style="display: none; background: #fff; border-radius: 12px; padding: 20px;">
+          <div style="margin-bottom: 15px;">
+            <h3 style="color: #333; margin-bottom: 10px;">订单详情</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9rem;">
+              <div style="background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                <div style="color: #999; font-size: 0.8rem;">订单号</div>
+                <div style="font-weight: bold; color: #333;" id="order-detail-no">-</div>
+              </div>
+              <div style="background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                <div style="color: #999; font-size: 0.8rem;">订单金额</div>
+                <div style="font-weight: bold; color: #333;" id="order-detail-amount">-</div>
+              </div>
+              <div style="background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                <div style="color: #999; font-size: 0.8rem;">订单状态</div>
+                <div style="font-weight: bold;" id="order-detail-status">-</div>
+              </div>
+              <div style="background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                <div style="color: #999; font-size: 0.8rem;">创建时间</div>
+                <div style="font-weight: bold; color: #333;" id="order-detail-time">-</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="order-actions" style="display: none;">
+            <div style="background: #fff3cd; border: 1px solid #ffeeba; border-radius: 8px; padding: 12px; margin-bottom: 15px;">
+              <p style="color: #856404; font-size: 0.9rem; margin: 0;">
+                ⚠️ <strong>重要提示：</strong>确认前请确保您已在支付宝付款，并在付款备注里填写了<span style="color: #d32f2f; font-weight: bold;">订单号后6位</span>
+              </p>
+            </div>
+            <hr style="margin: 15px 0; border: none; border-top: 1px solid #eee;">
+            <h3 style="color: #333; margin-bottom: 15px;">手动确认到账</h3>
+            <div class="input-group">
+              <label>订单验证码（订单号后6位）</label>
+              <input type="text" id="manual-confirm-code" placeholder="请输入订单号后6位数字" maxlength="6">
+            </div>
+            <div class="input-group">
+              <label>付款金额（元）</label>
+              <input type="number" id="manual-paid-amount" placeholder="请输入实际付款金额" step="0.01">
+            </div>
+            <button class="pay-button" onclick="manualConfirmOrder()" style="margin-top: 10px;">✅ 确认到账</button>
+          </div>
+        </div>
+
+        <div id="order-not-found" style="display: none; background: #fff3cd; border: 1px solid #ffeeba; border-radius: 10px; padding: 15px; text-align: center; color: #856404;">
+          <p>❌ 未找到该订单</p>
+          <p style="font-size: 0.85rem; margin-top: 5px;">请检查订单号是否正确</p>
+        </div>
+
+        <div style="background: #e7f3ff; border: 1px solid #b6d4fe; border-radius: 10px; padding: 15px; margin-top: 15px;">
+          <h4 style="color: #0c63e4; margin-bottom: 10px;">💡 使用说明</h4>
+          <ul style="color: #0c63e4; font-size: 0.85rem; line-height: 1.8;">
+            <li>1. 输入我们系统生成的订单号查询订单状态</li>
+            <li>2. 在支付宝付款时，<strong>必须在备注里填写订单号后6位</strong></li>
+            <li>3. 如果订单显示"待支付"但您已付款</li>
+            <li>4. 输入订单号后6位验证码 + 实际付款金额</li>
+            <li>5. 点击"确认到账"，系统将自动发放书币/会员</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部链接区域 -->
+    <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center;">
+      <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+        <a href="agreements.html" target="_blank" style="color: white; text-decoration: none; font-size: 0.85rem; opacity: 0.9;">📜 用户协议</a>
+        <a href="agreements.html" target="_blank" style="color: white; text-decoration: none; font-size: 0.85rem; opacity: 0.9;">🏠 社区规范</a>
+        <a href="agreements.html" target="_blank" style="color: white; text-decoration: none; font-size: 0.85rem; opacity: 0.9;">📋 平台准则</a>
+        <a href="agreements.html" target="_blank" style="color: white; text-decoration: none; font-size: 0.85rem; opacity: 0.9;">📢 平台公告</a>
+      </div>
     </div>
   </div>
 
@@ -410,43 +492,76 @@
   </div>
 
   <div class="modal" id="login-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 id="login-title">用户登录</h3>
-        <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+    <div class="modal-content" style="max-width: 420px; width: 90%; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
+        <div style="font-size: 48px; margin-bottom: 12px;">📚</div>
+        <h3 id="login-title" style="color: white; font-size: 24px; margin-bottom: 6px; font-weight: 600;">用户登录</h3>
+        <p style="color: rgba(255,255,255,0.85); font-size: 14px;">欢迎来到小说支付中心</p>
+        <button class="modal-close" onclick="closeLoginModal()" style="position: absolute; top: 15px; right: 15px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(255,255,255,0.2); color: white; font-size: 18px; cursor: pointer; transition: all 0.3s;">&times;</button>
       </div>
 
-      <div id="login-form">
-        <div class="user-input-section">
-          <label>邮箱</label>
-          <input type="email" id="login-email" placeholder="请输入邮箱">
+      <div id="login-form" style="padding: 30px;">
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px;">邮箱地址</label>
+          <input type="email" id="login-email" placeholder="请输入您的邮箱地址" style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 15px; transition: all 0.3s; outline: none; background: #fafafa;">
         </div>
-        <div class="user-input-section">
-          <label>密码</label>
-          <input type="password" id="login-password" placeholder="请输入密码">
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px;">登录密码</label>
+          <input type="password" id="login-password" placeholder="请输入您的密码" style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 15px; transition: all 0.3s; outline: none; background: #fafafa;">
         </div>
-        <button class="pay-button" onclick="handleLogin()" style="margin-bottom:10px">登录</button>
-        <button class="pay-button" onclick="switchToRegister()" style="background:#ccc">注册</button>
+        <button onclick="handleLogin()" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 10px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-bottom: 12px;">
+          登录账户
+        </button>
+        <button onclick="switchToRegister()" style="width: 100%; padding: 15px; background: #f0f0f0; border: none; border-radius: 10px; color: #666; font-size: 15px; cursor: pointer; transition: all 0.3s;">
+          创建新账户
+        </button>
       </div>
 
-      <div id="register-form" style="display:none">
-        <div class="user-input-section">
-          <label>邮箱</label>
-          <input type="email" id="reg-email" placeholder="请输入邮箱">
+      <div id="register-form" style="display:none; padding: 30px;">
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px;">邮箱地址</label>
+          <input type="email" id="reg-email" placeholder="请输入您的邮箱地址" style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 15px; transition: all 0.3s; outline: none; background: #fafafa;">
         </div>
-        <div class="user-input-section">
-          <label>密码</label>
-          <input type="password" id="reg-password" placeholder="请输入密码">
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px;">设置密码</label>
+          <input type="password" id="reg-password" placeholder="请设置您的登录密码" style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 15px; transition: all 0.3s; outline: none; background: #fafafa;">
         </div>
-        <div class="user-input-section">
-          <label>验证码</label>
-          <div style="display:flex;gap:8px;">
-            <input type="text" id="reg-code" placeholder="请输入验证码">
-            <button class="pay-button" onclick="sendCode()" style="padding:10px 16px;font-size:0.85rem;">获取验证码</button>
+        <div style="margin-bottom: 20px;">
+          <label style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 10px;">
+            <span>安全验证码</span>
+            <span style="font-size: 12px; font-weight: 400; color: #999;">📧 发送至邮箱</span>
+          </label>
+          <div style="display: flex; gap: 12px;">
+            <input type="text" id="reg-code" placeholder="请输入6位验证码" maxlength="6" style="flex: 1; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 16px; font-weight: 700; letter-spacing: 6px; font-family: 'SF Mono', 'Monaco', monospace; outline: none; background: #fafafa; text-align: center;">
+            <button id="send-code-btn" onclick="sendCode()" style="padding: 14px 22px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 10px; color: white; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; white-space: nowrap;">
+              <span id="send-btn-text">📧 获取验证码</span>
+            </button>
+          </div>
+          <div id="code-tip" style="margin-top: 10px; font-size: 12px; color: #4caf50; display: none; padding: 10px; background: #e8f5e9; border-radius: 6px; text-align: center;">
+            ✅ 验证码已发送到您的邮箱，请查收（包括垃圾箱）
+          </div>
+          <div style="margin-top: 8px; font-size: 11px; color: #999;">
+            ⚠️ 验证码有效期5分钟，请勿泄露给他人
           </div>
         </div>
-        <button class="pay-button" onclick="handleRegister()" style="margin-bottom:10px">完成注册</button>
-        <button class="pay-button" onclick="switchToLogin()" style="background:#ccc">返回登录</button>
+        <div style="margin-bottom: 24px;">
+          <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="agree-terms" style="margin-top: 2px; width: 16px; height: 16px;">
+            <span style="font-size: 12px; color: #666; line-height: 1.5;">
+              我已阅读并同意
+              <a href="agreements.html" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 600;">用户协议</a>、
+              <a href="agreements.html" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 600;">社区规范</a>
+              和
+              <a href="agreements.html" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 600;">平台准则</a>
+            </span>
+          </label>
+        </div>
+        <button onclick="handleRegister()" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 10px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-bottom: 12px;">
+          完成注册
+        </button>
+        <button onclick="switchToLogin()" style="width: 100%; padding: 15px; background: #f0f0f0; border: none; border-radius: 10px; color: #666; font-size: 15px; cursor: pointer; transition: all 0.3s;">
+          返回登录
+        </button>
       </div>
     </div>
   </div>
@@ -477,6 +592,9 @@
         document.querySelector('.tab:nth-child(3)').classList.add('active');
         document.getElementById('rebate-section').classList.add('active');
         loadRebateInfo();
+      } else if (tab === 'order') {
+        document.querySelector('.tab:nth-child(4)').classList.add('active');
+        document.getElementById('order-section').classList.add('active');
       }
     }
 
@@ -717,36 +835,34 @@
         
         const result = await response.json();
         if (result.success) {
-          if (result.code) {
-            // 邮件发送失败，在页面上直接显示验证码
-            alert(`邮件发送失败，但您可以使用下面的验证码：${result.code}`);
-            // 自动填入验证码
-            document.getElementById('reg-code').value = result.code;
-          } else {
-            alert('验证码已发送到您的邮箱，请查收！');
-          }
+          document.getElementById('code-tip').style.display = 'block';
+          setTimeout(() => {
+            document.getElementById('code-tip').style.display = 'none';
+          }, 5000);
           startCodeTimer(codeBtn);
         } else {
           alert(result.message);
         }
       } catch (error) {
-        alert('网络错误');
+        alert('网络错误，请稍后重试');
       }
     }
 
     function startCodeTimer(btn) {
       let count = 60;
       btn.disabled = true;
-      btn.innerHTML = `${count}秒后重发`;
+      btn.style.background = '#999';
+      document.getElementById('send-btn-text').innerHTML = `${count}秒后重发`;
       
       const timer = setInterval(() => {
         count--;
         if (count <= 0) {
           clearInterval(timer);
           btn.disabled = false;
-          btn.innerHTML = '获取验证码';
+          btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+          document.getElementById('send-btn-text').innerHTML = '📧 获取验证码';
         } else {
-          btn.innerHTML = `${count}秒后重发`;
+          document.getElementById('send-btn-text').innerHTML = `⏱️ ${count}秒后重发`;
         }
       }, 1000);
     }
@@ -755,9 +871,14 @@
       const email = document.getElementById('reg-email').value.trim();
       const password = document.getElementById('reg-password').value.trim();
       const code = document.getElementById('reg-code').value.trim();
+      const agreeTerms = document.getElementById('agree-terms').checked;
 
       if (!email || !password || !code) {
         alert('请填写完整信息');
+        return;
+      }
+      if (!agreeTerms) {
+        alert('请先阅读并同意用户协议和平台规范');
         return;
       }
 
@@ -911,6 +1032,130 @@
       html += '</ul>';
       
       container.innerHTML = html;
+    }
+
+    async function queryOrder() {
+      const orderNo = document.getElementById('query-order-no').value.trim();
+      
+      if (!orderNo) {
+        alert('请输入订单号');
+        return;
+      }
+
+      document.getElementById('order-info').style.display = 'none';
+      document.getElementById('order-not-found').style.display = 'none';
+
+      try {
+        const response = await fetch(`/api/alipay/query/${orderNo}`);
+        const result = await response.json();
+
+        if (result.success) {
+          const data = result.data;
+
+          if (data.tradeStatus === 'ORDER_NOT_EXIST') {
+            document.getElementById('order-not-found').style.display = 'block';
+            return;
+          }
+
+          document.getElementById('order-detail-no').textContent = data.outTradeNo;
+          document.getElementById('order-detail-amount').textContent = '¥' + data.totalAmount;
+          
+          let statusText = '';
+          let statusColor = '';
+          switch (data.tradeStatus) {
+            case 'PENDING':
+              statusText = '⏳ 待支付';
+              statusColor = '#ff9800';
+              break;
+            case 'PAID':
+              statusText = '✅ 已支付';
+              statusColor = '#4caf50';
+              break;
+            case 'EXPIRED':
+              statusText = '❌ 已过期';
+              statusColor = '#f44336';
+              break;
+            default:
+              statusText = '未知';
+              statusColor = '#999';
+          }
+          document.getElementById('order-detail-status').textContent = statusText;
+          document.getElementById('order-detail-status').style.color = statusColor;
+
+          let createTime = '未知';
+          if (data.createdAt) {
+            createTime = new Date(data.createdAt).toLocaleString('zh-CN');
+          }
+          document.getElementById('order-detail-time').textContent = createTime;
+
+          document.getElementById('order-info').style.display = 'block';
+
+          if (data.tradeStatus === 'PENDING' && currentUser) {
+            document.getElementById('order-actions').style.display = 'block';
+          } else {
+            document.getElementById('order-actions').style.display = 'none';
+          }
+        }
+      } catch (error) {
+        console.error('查询订单失败:', error);
+        alert('查询订单失败，请重试');
+      }
+    }
+
+    async function manualConfirmOrder() {
+      if (!currentUser) {
+        alert('请先登录');
+        return;
+      }
+
+      const orderNo = document.getElementById('query-order-no').value.trim();
+      const paidAmount = document.getElementById('manual-paid-amount').value.trim();
+      const confirmCode = document.getElementById('manual-confirm-code').value.trim();
+
+      if (!orderNo) {
+        alert('请先查询订单');
+        return;
+      }
+
+      if (!confirmCode) {
+        alert('请输入订单验证码（订单号后6位）');
+        return;
+      }
+
+      if (!paidAmount) {
+        alert('请输入付款金额');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/alipay/manual-confirm', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            orderNo: orderNo,
+            userId: currentUser.userId,
+            paidAmount: paidAmount,
+            confirmCode: confirmCode
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert('确认成功！书币已到账');
+          document.getElementById('order-detail-status').textContent = '✅ 已支付';
+          document.getElementById('order-detail-status').style.color = '#4caf50';
+          document.getElementById('order-actions').style.display = 'none';
+          loadUserInfo();
+        } else {
+          alert(result.message || '确认失败');
+        }
+      } catch (error) {
+        console.error('确认订单失败:', error);
+        alert('确认订单失败，请重试');
+      }
     }
 
     window.onclick = function(event) {

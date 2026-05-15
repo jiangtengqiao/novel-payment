@@ -1,0 +1,71 @@
+// 备份之前的QQ邮箱配置，供本地部署使用
+const express = require('express');
+const router = express.Router();
+const { v4: uuidv4 } = require('uuid');
+const nodemailer = require('nodemailer');
+
+const users = global.users || new Map();
+const verificationCodes = new Map();
+const lastSendTime = new Map();
+
+// 配置QQ邮箱SMTP（使用授权码）- 本地部署时使用
+const transporter = nodemailer.createTransport({
+  host: 'smtp.qq.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: '2527469579@qq.com',
+    pass: 'ibwcdqgjmxpfedcj' // 这是QQ邮箱授权码
+  },
+  tls: {
+    rejectUnauthorized: false
+  },
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 10000,
+  family: 4
+});
+
+// 测试邮件连接
+transporter.verify(function(error, success) {
+  if (error) {
+    console.log('SMTP连接失败:', error.message);
+  } else {
+    console.log('SMTP连接成功！邮件服务已就绪');
+  }
+});
+
+async function sendEmail(to, code) {
+  try {
+    console.log(`正在发送验证码邮件到: ${to}`);
+    
+    const mailOptions = {
+      from: '"小说支付中心" <2527469579@qq.com>',
+      to: to,
+      subject: '【小说支付中心】验证码',
+      text: `您的验证码是：${code}\n\n有效期5分钟，请及时使用。\n\n如有疑问请联系客服。`,
+      html: `<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 400px; margin: 0 auto; padding: 20px; border-radius: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <div style="text-align: center; color: white;">
+    <div style="font-size: 48px; margin-bottom: 15px;">📚</div>
+    <h2 style="margin-bottom: 5px;">小说支付中心</h2>
+    <p style="opacity: 0.9; font-size: 14px; margin-bottom: 20px;">验证码通知</p>
+  </div>
+  <div style="background: white; border-radius: 8px; padding: 25px; text-align: center;">
+    <p style="color: #666; font-size: 14px; margin-bottom: 15px;">您的验证码是：</p>
+    <div style="font-size: 36px; font-weight: bold; color: #667eea; letter-spacing: 8px;">${code}</div>
+    <p style="color: #999; font-size: 12px; margin-top: 20px;">有效期5分钟，请及时使用</p>
+  </div>
+  <p style="text-align: center; color: rgba(255,255,255,0.8); font-size: 12px; margin-top: 15px;">如有疑问请联系客服</p>
+</div>`
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log('邮件发送成功！Message ID:', info.messageId);
+    console.log('收件人:', to);
+    return true;
+  } catch (error) {
+    console.error('邮件发送失败:', error.message);
+    console.error('错误详情:', error);
+    return false;
+  }
+}

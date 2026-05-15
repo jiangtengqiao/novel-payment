@@ -67,6 +67,10 @@ app.get('/payment-success', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'payment-success.html'));
 });
 
+app.get('/agreements', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'agreements.html'));
+});
+
 const HOST = '0.0.0.0';
 
 app.listen(PORT, HOST, () => {

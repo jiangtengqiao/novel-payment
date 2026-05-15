@@ -7,82 +7,117 @@ const users = global.users || new Map();
 const verificationCodes = new Map();
 const lastSendTime = new Map();
 
-// 尝试多个邮件服务，确保至少有一个能工作
-const emailServices = [
-  {
-    name: 'QQ邮箱',
-    host: 'smtp.qq.com',
-    port: 587,
-    secure: false,
-    auth: {
-      user: '2527469579@qq.com',
-      pass: 'ibwcdqgjmxpfedcj'
-    }
+// 配置QQ邮箱SMTP（发信人）
+const transporter = nodemailer.createTransport({
+  host: 'smtp.qq.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: '2527469579@qq.com',
+    pass: 'sdafarxfmqrwcgff'
   },
-  {
-    name: 'QQ邮箱SSL',
-    host: 'smtp.qq.com',
-    port: 465,
-    secure: true,
-    auth: {
-      user: '2527469579@qq.com',
-      pass: 'ibwcdqgjmxpfedcj'
-    }
+  tls: {
+    rejectUnauthorized: false
+  },
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 10000,
+  family: 4
+});
+
+// 测试邮件连接
+transporter.verify(function(error, success) {
+  if (error) {
+    console.log('⚠️  QQ邮箱SMTP连接失败:', error.message);
+    console.log('💡 请确保开启了POP3/SMTP服务并使用了正确的授权码');
+  } else {
+    console.log('✅ QQ邮箱SMTP连接成功！邮件服务已就绪');
   }
-];
+});
 
 async function sendEmail(to, code) {
-  // 依次尝试每个邮件服务
-  for (let i = 0; i < emailServices.length; i++) {
-    const service = emailServices[i];
-    try {
-      console.log(`正在尝试使用${service.name}发送邮件...`);
-      
-      const transporter = nodemailer.createTransport({
-        host: service.host,
-        port: service.port,
-        secure: service.secure,
-        auth: service.auth,
-        tls: {
-          rejectUnauthorized: false
-        },
-        connectionTimeout: 5000,
-        greetingTimeout: 5000,
-        socketTimeout: 5000
-      });
-
-      const mailOptions = {
-        from: '"小说支付中心" <2527469579@qq.com>',
-        to: to,
-        subject: '【小说支付中心】验证码',
-        text: `您的验证码是：${code}\n\n有效期5分钟，请及时使用。\n\n如有疑问请联系客服。`,
-        html: `<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 400px; margin: 0 auto; padding: 20px; border-radius: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-  <div style="text-align: center; color: white;">
-    <div style="font-size: 48px; margin-bottom: 15px;">📚</div>
-    <h2 style="margin-bottom: 5px;">小说支付中心</h2>
-    <p style="opacity: 0.9; font-size: 14px; margin-bottom: 20px;">验证码通知</p>
+  try {
+    console.log(`正在发送验证码邮件到: ${to}`);
+    console.log(`验证码: ${code}`);
+    
+    const mailOptions = {
+      from: '"小说支付中心" <2527469579@qq.com>',
+      to: to,
+      subject: '【小说支付中心】安全验证 - 验证码',
+      text: `尊敬的用户：\n\n您正在进行账户注册验证，验证码为：${code}\n\n验证码有效期：5分钟\n\n请在注册页面输入此验证码完成验证。\n\n⚠️ 安全提示：\n- 此验证码仅供您本人使用，请妥善保管\n- 请勿将验证码告知他人\n- 如非本人操作，请忽略此邮件\n\n如有疑问，请联系客服。\n\n---\n小说支付中心\n官网：https://www.example.com\n客服邮箱：support@example.com`,
+      html: `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>验证码通知</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #f5f7fa; min-height: 100vh; padding: 20px; }
+    .email-container { max-width: 500px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .email-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; }
+    .email-header .logo { font-size: 56px; margin-bottom: 12px; }
+    .email-header h1 { color: white; font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+    .email-header p { color: rgba(255,255,255,0.9); font-size: 14px; }
+    .email-body { padding: 30px; }
+    .email-body .greeting { font-size: 15px; color: #333; margin-bottom: 20px; line-height: 1.6; }
+    .verification-box { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 12px; padding: 25px; text-align: center; margin-bottom: 20px; }
+    .verification-box .label { font-size: 13px; color: #666; margin-bottom: 15px; display: block; }
+    .verification-box .code { font-size: 40px; font-weight: 700; color: #667eea; letter-spacing: 12px; font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace; }
+    .verification-box .expire { font-size: 12px; color: #999; margin-top: 12px; }
+    .warning-section { background: #fff3cd; border: 1px solid #ffeeba; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+    .warning-section .title { font-size: 13px; font-weight: 600; color: #856404; margin-bottom: 10px; }
+    .warning-section ul { margin: 0; padding-left: 20px; }
+    .warning-section li { font-size: 12px; color: #856404; margin-bottom: 5px; line-height: 1.5; }
+    .email-footer { background: #f8f9fa; padding: 20px; text-align: center; }
+    .email-footer p { font-size: 12px; color: #999; line-height: 1.6; }
+    .email-footer .divider { width: 40px; height: 1px; background: #ddd; margin: 15px auto; }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <div class="email-header">
+      <div class="logo">📚</div>
+      <h1>小说支付中心</h1>
+      <p>安全验证通知</p>
+    </div>
+    <div class="email-body">
+      <p class="greeting">尊敬的用户：</p>
+      <p class="greeting">您正在进行账户注册验证，请使用以下验证码完成操作：</p>
+      <div class="verification-box">
+        <span class="label">您的验证码</span>
+        <div class="code">${code}</div>
+        <span class="expire">⚠️ 有效期：5分钟，请尽快使用</span>
+      </div>
+      <div class="warning-section">
+        <div class="title">🔒 安全提示</div>
+        <ul>
+          <li>此验证码仅供您本人使用，请妥善保管</li>
+          <li>请勿将验证码通过任何方式告知他人</li>
+          <li>如非本人操作，请忽略此邮件，您的账户安全不会受到影响</li>
+          <li>验证码过期后，请重新获取</li>
+        </ul>
+      </div>
+    </div>
+    <div class="email-footer">
+      <p>如有疑问，请联系客服</p>
+      <div class="divider"></div>
+      <p>© 2024 小说支付中心 | 版权所有</p>
+    </div>
   </div>
-  <div style="background: white; border-radius: 8px; padding: 25px; text-align: center;">
-    <p style="color: #666; font-size: 14px; margin-bottom: 15px;">您的验证码是：</p>
-    <div style="font-size: 36px; font-weight: bold; color: #667eea; letter-spacing: 8px;">${code}</div>
-    <p style="color: #999; font-size: 12px; margin-top: 20px;">有效期5分钟，请及时使用</p>
-  </div>
-  <p style="text-align: center; color: rgba(255,255,255,0.8); font-size: 12px; margin-top: 15px;">如有疑问请联系客服</p>
-</div>`
-      };
+</body>
+</html>`
+    };
 
-      const info = await transporter.sendMail(mailOptions);
-      console.log(`邮件发送成功（${service.name}）:`, info.messageId);
-      return true;
-    } catch (error) {
-      console.error(`${service.name}发送失败:`, error.message);
-      // 继续尝试下一个服务
-    }
+    const info = await transporter.sendMail(mailOptions);
+    console.log('✅ 邮件发送成功！Message ID:', info.messageId);
+    console.log('收件人:', to);
+    return true;
+  } catch (error) {
+    console.error('❌ 邮件发送失败:', error.message);
+    console.error('错误详情:', error);
+    return false;
   }
-  
-  // 所有服务都失败了
-  console.error('所有邮件服务都发送失败');
-  return false;
 }
 
 router.post('/send-code', async (req, res) => {
@@ -134,12 +169,9 @@ router.post('/send-code', async (req, res) => {
         expiresIn: 5 * 60
       });
     } else {
-      res.json({
-        success: true,
-        message: '邮件发送失败，验证码已显示在下方',
-        email,
-        expiresIn: 5 * 60,
-        code: code
+      res.status(500).json({
+        success: false,
+        message: '邮件发送失败，请检查网络连接或联系客服'
       });
     }
   } catch (error) {

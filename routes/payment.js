@@ -379,6 +379,173 @@ router.get('/query/:outTradeNo', (req, res) => {
   }
 });
 
+router.post('/manual-confirm', (req, res) => {
+  try {
+    const { orderNo, userId, paidAmount, confirmCode } = req.body;
+
+    if (!orderNo || !userId) {
+      return res.status(400).json({
+        success: false,
+        message: '缺少必要参数'
+      });
+    }
+
+    const order = orders.get(orderNo);
+
+    if (!order) {
+      return res.status(400).json({
+        success: false,
+        message: '订单不存在'
+      });
+    }
+
+    if (order.status === 'expired') {
+      return res.status(400).json({
+        success: false,
+        message: '订单已过期，请重新下单'
+      });
+    }
+
+    if (order.status === 'paid') {
+      return res.json({
+        success: true,
+        message: '订单已支付'
+      });
+    }
+
+    const expectedCode = orderNo.slice(-6);
+    if (!confirmCode || confirmCode !== expectedCode) {
+      return res.status(400).json({
+        success: false,
+        message: '订单验证码错误，请输入订单号后6位数字'
+      });
+    }
+
+    if (paidAmount && Math.abs(parseFloat(paidAmount) - parseFloat(order.totalAmount)) > 0.01) {
+      return res.status(400).json({
+        success: false,
+        message: `付款金额不匹配！应付 ${order.totalAmount} 元，实际支付 ${paidAmount} 元`
+      });
+    }
+
+    order.status = 'paid';
+    order.paidAt = new Date();
+
+    let user = users.get(userId);
+    if (!user) {
+      user = { coins: 0, totalRecharged: 0, members: [], vipExpireTime: null, lotteries: 0 };
+      users.set(userId, user);
+    }
+
+    const previousTotal = user.totalRecharged;
+
+    if (order.productType === 'coin') {
+      const packageInfo = RECHARGE_PACKAGES.find(p => p.price === parseFloat(order.totalAmount));
+      const coins = packageInfo ? packageInfo.coins : Math.floor(parseFloat(order.totalAmount) * COIN_RATE);
+      const gift = packageInfo ? packageInfo.gift : 0;
+      const totalCoins = coins + gift;
+      
+      user.coins += totalCoins;
+      user.totalRecharged += parseFloat(order.totalAmount);
+
+      console.log('书币充值成功(手动确认):', {
+        userId: userId,
+        amount: order.totalAmount,
+        coins: coins,
+        gift: gift,
+        totalCoins: totalCoins,
+        totalRecharged: user.totalRecharged
+      });
+    } else if (order.productType === 'member') {
+      const giftCoins = 200;
+      user.coins += giftCoins;
+      user.totalRecharged += parseFloat(order.totalAmount);
+      
+      const now = new Date();
+      const memberEnd = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+      
+      user.members.push({
+        type: 'monthly',
+        months: 1,
+        price: parseFloat(order.totalAmount),
+        giftCoins: giftCoins,
+        startTime: now,
+        endTime: memberEnd,
+        paidAt: now
+      });
+      
+      if (!user.vipExpireTime || memberEnd > new Date(user.vipExpireTime)) {
+        user.vipExpireTime = memberEnd;
+      }
+
+      console.log('会员开通成功(手动确认):', {
+        userId: userId,
+        price: order.totalAmount,
+        giftCoins: giftCoins,
+        vipExpireTime: user.vipExpireTime
+      });
+    }
+
+    const earnedRewards = [];
+    for (const rule of REBATE_RULES) {
+      if (user.totalRecharged >= rule.threshold && previousTotal < rule.threshold) {
+        earnedRewards.push(rule);
+        
+        const rebateRecord = {
+          rule: rule,
+          earnedAt: new Date(),
+          rewards: [rule.reward]
+        };
+
+        if (rule.reward.type === 'lottery') {
+          user.lotteries += rule.reward.count;
+        }
+
+        if (rule.bonus) {
+          rebateRecord.rewards.push(rule.bonus);
+          if (rule.bonus.type === 'lottery') {
+            user.lotteries += rule.bonus.count;
+          }
+        }
+        if (rule.extraBonus) {
+          rebateRecord.rewards.push(rule.extraBonus);
+          if (rule.extraBonus.type === 'lottery') {
+            user.lotteries += rule.extraBonus.count;
+          }
+        }
+        
+        let userRebates = rebateRecords.get(userId);
+        if (!userRebates) {
+          userRebates = [];
+          rebateRecords.set(userId, userRebates);
+        }
+        userRebates.push(rebateRecord);
+        
+        console.log('用户获得返利:', { userId, rule });
+      }
+    }
+
+    res.json({
+      success: true,
+      message: '支付确认成功',
+      data: {
+        earnedRewards: earnedRewards,
+        userInfo: {
+          coins: user.coins,
+          totalRecharged: user.totalRecharged,
+          lotteries: user.lotteries
+        }
+      }
+    });
+  } catch (error) {
+    console.error('手动确认支付失败:', error);
+    res.status(500).json({
+      success: false,
+      message: '确认支付失败'
+    });
+  }
+});
+
 router.get('/user/:userId/info', (req, res) => {
   try {
     const { userId } = req.params;
