@@ -7,195 +7,515 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #faf9f7;
       min-height: 100vh;
-      padding: 15px;
+      padding: 20px;
     }
     .container { max-width: 800px; margin: 0 auto; }
-    .header { text-align: center; color: #2d2d2d; margin-bottom: 20px; }
-    .header h1 { font-size: 1.8rem; margin-bottom: 8px; font-weight: 600; }
-    .header p { font-size: 0.9rem; color: #666; }
+    .header {
+      text-align: center;
+      color: #2d2d2d;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .header p { font-size: 0.95rem; color: #666; }
     
-    .tabs { display: flex; gap: 8px; margin-bottom: 15px; }
+    .login-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .login-btn {
+      padding: 10px 20px;
+      background: #f5f5f3;
+      border: 1px solid #e8e8e6;
+      border-radius: 20px;
+      color: #2d2d2d;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .login-btn:hover { background: #f0f0ee; }
+    .user-info {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
     .tab {
-      flex: 1; padding: 12px; background: #f5f5f3;
-      border: 1px solid #e8e8e6; border-radius: 10px; color: #444; font-size: 0.95rem;
-      cursor: pointer; transition: all 0.3s;
+      flex: 1;
+      padding: 14px;
+      background: #f5f5f3;
+      border: 1px solid #e8e8e6;
+      border-radius: 10px;
+      color: #666;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      min-width: 120px;
     }
     .tab:hover { background: #f0f0ee; }
-    .tab.active { background: #ffffff; color: #2d2d2d; font-weight: 600; border-color: #ddd; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .tab.active {
+      background: #ffffff;
+      color: #2d2d2d;
+      font-weight: 600;
+      border-color: #ddd;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
     
     .payment-card {
-      background: #ffffff; border-radius: 16px; padding: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid #f0f0ee;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 1px solid #f0f0ee;
     }
     .product-section { display: none; }
     .product-section.active { display: block; }
     
-    .section-title { font-size: 1.1rem; color: #2d2d2d; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #f5f5f3; }
+    .section-title {
+      font-size: 1.15rem;
+      color: #2d2d2d;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f5f5f3;
+      font-weight: 600;
+    }
     
     .product-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px;
-      margin-bottom: 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
     }
     .product-item {
-      border: 2px solid #e8e8e6; border-radius: 10px;
-      padding: 12px 8px; text-align: center; cursor: pointer;
-      transition: all 0.3s; position: relative; background: #faf9f7;
+      border: 2px solid #e8e8e6;
+      border-radius: 12px;
+      padding: 16px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      background: #faf9f7;
     }
-    .product-item:hover { border-color: #333; transform: translateY(-2px); }
+    .product-item:hover { border-color: #2d2d2d; transform: translateY(-2px); }
     .product-item.selected {
-      border-color: #333;
+      border-color: #2d2d2d;
       background: #ffffff;
       color: #2d2d2d;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    .product-item .coin-amount { font-size: 1.3rem; font-weight: bold; margin-bottom: 3px; color: #2d2d2d; }
-    .product-item .price { font-size: 0.95rem; color: #333; font-weight: 600; }
+    .product-item .coin-amount {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #2d2d2d;
+    }
+    .product-item .price {
+      font-size: 0.95rem;
+      color: #333;
+      font-weight: 600;
+    }
     .product-item.selected .price { color: #333; }
-    .product-item .gift { font-size: 0.7rem; color: #e74c3c; margin-top: 3px; }
+    .product-item .gift {
+      font-size: 0.75rem;
+      color: #e74c3c;
+      margin-top: 5px;
+    }
     .product-item.selected .gift { color: #e74c3c; }
     .product-item .tag {
-      position: absolute; top: -6px; right: -6px;
-      background: #333; color: white; padding: 2px 6px;
-      border-radius: 6px; font-size: 0.6rem; font-weight: 600;
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #2d2d2d;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 0.65rem;
+      font-weight: 600;
     }
     
     .member-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px;
-      margin-bottom: 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
     }
     .member-item {
-      border: 2px solid #e8e8e6; border-radius: 10px;
-      padding: 15px 10px; text-align: center; cursor: pointer;
-      transition: all 0.3s; position: relative; background: #faf9f7;
+      border: 2px solid #e8e8e6;
+      border-radius: 12px;
+      padding: 18px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      background: #faf9f7;
     }
-    .member-item:hover { border-color: #333; transform: translateY(-2px); }
+    .member-item:hover { border-color: #2d2d2d; transform: translateY(-2px); }
     .member-item.selected {
-      border-color: #333;
+      border-color: #2d2d2d;
       background: #ffffff;
       color: #2d2d2d;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    .member-item .name { font-size: 1.1rem; font-weight: bold; margin-bottom: 5px; color: #2d2d2d; }
-    .member-item .duration { font-size: 0.8rem; color: #666; margin-bottom: 5px; }
+    .member-item .name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: #2d2d2d;
+    }
+    .member-item .duration {
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 5px;
+    }
     .member-item.selected .duration { color: #666; }
-    .member-item .price { font-size: 1.2rem; color: #333; font-weight: bold; }
+    .member-item .price {
+      font-size: 1.25rem;
+      color: #333;
+      font-weight: 700;
+    }
     .member-item.selected .price { color: #333; }
-    .member-item .benefits { font-size: 0.7rem; color: #e74c3c; margin-top: 5px; }
+    .member-item .benefits {
+      font-size: 0.75rem;
+      color: #e74c3c;
+      margin-top: 6px;
+    }
     .member-item.selected .benefits { color: #e74c3c; }
-    .member-item .tag {
-      position: absolute; top: -6px; right: -6px;
-      background: #ffd93d; color: #333; padding: 2px 6px;
-      border-radius: 6px; font-size: 0.6rem; font-weight: 600;
-    }
     
-    .custom-amount { margin-bottom: 15px; }
-    .custom-amount label { display: block; font-size: 0.9rem; color: #333; margin-bottom: 6px; }
-    .custom-amount input {
-      width: 100%; padding: 10px; border: 2px solid #e0e0e0;
-      border-radius: 8px; font-size: 1rem;
-    }
-    .custom-amount input:focus { outline: none; border-color: #333; }
-    
-    .pay-button {
-      width: 100%; padding: 14px;
+    .pay-btn {
+      width: 100%;
+      padding: 16px;
       background: #2d2d2d;
-      border: none; border-radius: 10px; color: white;
-      font-size: 1.1rem; font-weight: 600; cursor: pointer;
-      transition: all 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
-    .pay-button:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
-    .pay-button:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+    .pay-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
+    .pay-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
     
     .info-section {
-      margin-top: 15px; padding: 12px; background: #f8f9fa; border-radius: 10px;
+      margin-top: 20px;
+      padding: 16px;
+      background: #f8f9fa;
+      border-radius: 10px;
     }
-    .info-section h4 { color: #333; margin-bottom: 10px; font-size: 0.9rem; }
-    .info-section ul { list-style: none; color: #666; font-size: 0.8rem; line-height: 1.8; }
-    .info-section li::before { content: "✓ "; color: #2d2d2d; font-weight: bold; }
+    .info-section h4 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+    .info-section ul {
+      list-style: none;
+      color: #666;
+      font-size: 0.85rem;
+      line-height: 2;
+    }
+    .info-section li::before {
+      content: "✓ ";
+      color: #2d2d2d;
+      font-weight: bold;
+    }
     
     .modal {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.4); display: none; justify-content: center;
-      align-items: center; z-index: 1000;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      animation: fadeInBg 0.2s ease;
+      backdrop-filter: blur(4px);
     }
+    @keyframes fadeInBg { from { opacity: 0; } to { opacity: 1; } }
     .modal.show { display: flex; }
     .modal-content {
-      background: #ffffff; border-radius: 16px; padding: 0;
-      width: 95vw; max-width: 420px; max-height: 95vh; text-align: center;
-      overflow-y: auto; box-sizing: border-box;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.12);
-      border: 1px solid #f0f0ee;
+      background: linear-gradient(145deg, #ffffff, #f5f5f3);
+      border-radius: 24px;
+      padding: 0;
+      width: 92vw;
+      max-width: 480px;
+      max-height: 92vh;
+      overflow: hidden;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.25);
+      animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
     }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .modal-header h3 { font-size: 1.1rem; color: #2d2d2d; }
-    .modal-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #666; }
-    .qr-code-container {
-      background: white; padding: 10px; border-radius: 12px;
-      margin: 15px auto; width: fit-content; box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .qr-code { width: 50vw; max-width: 220px; height: auto; border-radius: 8px; }
-    .alipay-logo { font-size: 2.2rem; margin-bottom: 10px; }
-    .amount-display { font-size: 1.4rem; font-weight: bold; color: #2d2d2d; margin: 10px 0; }
-    .order-no {
-      background: #f8f9fa; padding: 8px; border-radius: 8px;
-      font-family: monospace; font-size: 0.85rem; color: #333;
-      margin-bottom: 12px; word-break: break-all;
+    .modal-header {
+      background: linear-gradient(135deg, #faf9f7 0%, #f0f0ee 100%);
+      padding: 32px 32px 24px;
+      text-align: center;
+      border-bottom: 1px solid #e8e8e6;
+      position: relative;
+      overflow: hidden;
     }
-    .confirm-section { margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; }
-    .confirm-section p { color: #666; margin-bottom: 8px; font-size: 0.85rem; }
-    .confirm-section .input-group { margin-bottom: 10px; }
-    .confirm-section .input-group label { display: block; font-size: 0.85rem; color: #333; margin-bottom: 4px; text-align: left; }
-    .confirm-section input {
-      width: 100%; padding: 10px; border: 2px solid #e0e0e0;
-      border-radius: 8px; font-size: 0.95rem;
+    .modal-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(45,45,45,0.03) 0%, transparent 70%);
+      pointer-events: none;
     }
-    .confirm-section input:focus { outline: none; border-color: #333; }
-    .success-badge {
-      width: 70px; height: 70px; background: #2d2d2d;
-      border-radius: 50%; display: flex; justify-content: center; align-items: center;
-      margin: 15px auto; font-size: 2.5rem;
+    .modal-header .logo {
+      font-size: 56px;
+      margin-bottom: 12px;
+      position: relative;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.08));
     }
-    .user-input-section { margin-bottom: 15px; }
-    .user-input-section label { display: block; font-size: 0.9rem; color: #333; margin-bottom: 6px; text-align: left; }
-    .user-input-section input {
-      width: 100%; padding: 10px; border: 2px solid #e0e0e0;
-      border-radius: 8px; font-size: 0.95rem;
+    .modal-header h3 {
+      color: #2d2d2d;
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      position: relative;
     }
-    
-    .login-btn {
-      padding: 8px 16px; background: #f5f5f3; border: 1px solid #e8e8e6;
-      border-radius: 20px; color: #2d2d2d; font-size: 0.85rem; cursor: pointer;
+    .modal-header p {
+      color: #666;
+      font-size: 0.95rem;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #e8e8e6;
+      background: #ffffff;
+      color: #666;
+      font-size: 1.3rem;
+      cursor: pointer;
       transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
-    .login-btn:hover { background: #f0f0ee; }
+    .modal-close:hover { background: #2d2d2d; color: #ffffff; border-color: #2d2d2d; transform: rotate(90deg); }
+    .modal-body {
+      padding: 32px;
+      overflow-y: auto;
+      max-height: calc(92vh - 200px);
+    }
+    .user-input {
+      margin-bottom: 24px;
+    }
+    .user-input label {
+      display: block;
+      font-size: 0.95rem;
+      color: #2d2d2d;
+      margin-bottom: 10px;
+      font-weight: 600;
+      text-align: left;
+      letter-spacing: 0.3px;
+    }
+    .user-input input {
+      width: 100%;
+      padding: 16px 18px;
+      border: 2px solid #e8e8e6;
+      border-radius: 14px;
+      font-size: 1rem;
+      background: #faf9f7;
+      outline: none;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    .user-input input:focus { border-color: #2d2d2d; background: #ffffff; box-shadow: 0 0 0 4px rgba(45,45,45,0.05); }
     
-    .countdown {
-      background: #f5f5f3;
-      color: #2d2d2d; border: 1px solid #e8e8e6; padding: 8px 12px; border-radius: 8px;
-      font-size: 0.9rem; font-weight: bold; margin-bottom: 12px;
+    .code-input-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
     }
+    .code-input {
+      width: calc((100% - 88px) / 12;
+      min-width: 28px;
+      height: 52px;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      border: 2px solid #e8e8e6;
+      border-radius: 12px;
+      background: #faf9f7;
+      outline: none;
+      transition: all 0.3s;
+      font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+      letter-spacing: 0;
+      flex: 1;
+    }
+    .code-input:focus { border-color: #2d2d2d; background: #ffffff; box-shadow: 0 0 0 3px rgba(45,45,45,0.06); }
+    .code-input.filled { border-color: #2d2d2d; background: #ffffff; }
+    
+    .send-code-wrapper {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      align-items: stretch;
+    }
+    .send-code-btn {
+      padding: 0 24px;
+      background: linear-gradient(135deg, #2d2d2d 0%, #444444 100%);
+      border: none;
+      border-radius: 14px;
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+      height: 56px;
+      box-shadow: 0 4px 12px rgba(45,45,45,0.2);
+    }
+    .send-code-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(45,45,45,0.25); }
+    .send-code-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .code-hint {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: #2e7d32;
+      display: none;
+      padding: 14px 18px;
+      background: #e8f5e9;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 500;
+      border: 1px solid #c8e6c9;
+    }
+    .code-warning {
+      margin-top: 14px;
+      font-size: 0.85rem;
+      color: #888;
+      text-align: center;
+      line-height: 1.6;
+    }
+    
+    .terms-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      margin-bottom: 28px;
+      padding: 16px;
+      background: #faf9f7;
+      border-radius: 12px;
+      border: 1px solid #e8e8e6;
+    }
+    .terms-checkbox input {
+      margin-top: 2px;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: #2d2d2d;
+    }
+    .terms-checkbox span {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.7;
+    }
+    .terms-checkbox a {
+      color: #2d2d2d;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+    
+    .modal-btn {
+      width: 100%;
+      padding: 18px;
+      border: none;
+      border-radius: 14px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 12px;
+    }
+    .modal-btn.primary {
+      background: linear-gradient(135deg, #2d2d2d 0%, #444444 100%);
+      color: white;
+      box-shadow: 0 6px 20px rgba(45,45,45,0.25);
+    }
+    .modal-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,45,45,0.3); }
+    .modal-btn.secondary {
+      background: #f0f0ee;
+      color: #555;
+      border: 2px solid #e8e8e6;
+    }
+    .modal-btn.secondary:hover { background: #e8e8e6; }
+    
+    .order-query-section { margin-top: 18px; }
+    .order-query-btn {
+      width: 100%;
+      padding: 16px;
+      background: #f5f5f3;
+      border: 1px solid #e8e8e6;
+      border-radius: 12px;
+      color: #555;
+      font-size: 0.95rem;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+    .order-query-btn:hover { background: #f0f0ee; }
     
     @media (max-width: 480px) {
       .header h1 { font-size: 1.5rem; }
       .product-grid { grid-template-columns: repeat(3, 1fr); }
       .member-grid { grid-template-columns: repeat(2, 1fr); }
+      .code-input { height: 48px; font-size: 1.15rem; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div class="login-section">
         <div>
           <h1>📚 小说支付中心</h1>
           <p>安全便捷的充值服务</p>
         </div>
-        <div id="user-status" style="text-align:right;">
-          <span id="logged-user" style="display:none;color:#2d2d2d;font-size:0.85rem;">欢迎, <span id="user-email"></span></span>
-          <button id="login-btn" class="login-btn" onclick="openLoginModal()">登录/注册</button>
+        <div id="user-status">
+          <span id="logged-user" style="display:none; color:#666; font-size:0.85rem;">
+            欢迎, <span id="user-email"></span>
+          </span>
+          <button id="login-btn" class="login-btn" onclick="openLoginModal()">
+            登录/注册
+          </button>
         </div>
       </div>
     </div>
@@ -219,40 +539,39 @@
             <div class="coin-amount">600</div>
             <div class="price">¥6</div>
           </div>
-          <div class="product-item" onclick="selectCoin(this, 30, 3100, 100)">
+          <div class="product-item" onclick="selectCoin(this, 30, 3000, 100)">
             <div class="coin-amount">3100</div>
             <div class="price">¥30</div>
             <div class="gift">赠100</div>
           </div>
-          <div class="product-item" onclick="selectCoin(this, 68, 7200, 400)">
+          <div class="product-item" onclick="selectCoin(this, 68, 6800, 400)">
             <div class="coin-amount">7200</div>
             <div class="price">¥68</div>
             <div class="gift">赠400</div>
           </div>
-          <div class="product-item" onclick="selectCoin(this, 128, 14000, 1200)">
+          <div class="product-item" onclick="selectCoin(this, 128, 12800, 1200)">
             <div class="coin-amount">14000</div>
             <div class="price">¥128</div>
             <div class="gift">赠1200</div>
           </div>
-          <div class="product-item" onclick="selectCoin(this, 328, 36600, 3800)">
+          <div class="product-item" onclick="selectCoin(this, 328, 32800, 3800)">
             <div class="coin-amount">36600</div>
             <div class="price">¥328</div>
             <div class="gift">赠3800</div>
-            <div class="tag">推荐</div>
           </div>
-          <div class="product-item" onclick="selectCoin(this, 648, 73800, 9000)">
+          <div class="product-item" onclick="selectCoin(this, 648, 64800, 9000)">
             <div class="coin-amount">73800</div>
             <div class="price">¥648</div>
             <div class="gift">赠9000</div>
           </div>
         </div>
-
-        <div class="pay-button" id="coin-pay-btn" onclick="openPaymentModal('coin')" disabled>请选择充值金额</div>
-
+        <button id="pay-btn" class="pay-btn" onclick="pay()" disabled>
+          请选择充值金额
+        </button>
         <div class="info-section">
           <h4>💡 温馨提示</h4>
           <ul>
-            <li>书币1元 = 100书币</li>
+            <li>书币1元=100书币</li>
             <li>充值后书币实时到账</li>
             <li>大额充值赠送更多书币</li>
           </ul>
@@ -260,320 +579,197 @@
       </div>
 
       <div id="member-section" class="product-section">
-        <h2 class="section-title">开通会员特权</h2>
+        <h2 class="section-title">选择会员套餐</h2>
         <div class="member-grid">
-          <div class="member-item" onclick="selectMember(this, 28, 1, 200)">
+          <div class="member-item" onclick="selectMember(this, 25, '月卡', 30, 2000)">
             <div class="name">月卡</div>
-            <div class="duration">1个月</div>
-            <div class="price">¥28</div>
-            <div class="benefits">赠200书币+免费读+提前1天</div>
+            <div class="duration">30天会员</div>
+            <div class="price">¥25</div>
+            <div class="benefits">赠2000书币</div>
           </div>
-          <div class="member-item" onclick="selectMember(this, 30, 1, 200)">
-            <div class="name">月卡</div>
-            <div class="duration">1个月</div>
-            <div class="price">¥30</div>
-            <div class="benefits">赠200书币+免费读+提前1天</div>
-          </div>
-          <div class="member-item" onclick="selectMember(this, 78, 3, 600)">
+          <div class="member-item" onclick="selectMember(this, 68, '季卡', 90, 6000)">
             <div class="name">季卡</div>
-            <div class="duration">3个月</div>
-            <div class="price">¥78</div>
-            <div class="benefits">赠600书币+免费读+提前2天</div>
+            <div class="duration">90天会员</div>
+            <div class="price">¥68</div>
+            <div class="benefits">赠6000书币</div>
           </div>
-          <div class="member-item" onclick="selectMember(this, 82, 3, 600)">
-            <div class="name">季卡</div>
-            <div class="duration">3个月</div>
-            <div class="price">¥82</div>
-            <div class="benefits">赠600书币+免费读+提前2天</div>
-          </div>
-          <div class="member-item" onclick="selectMember(this, 138, 6, 1200)">
-            <div class="name">半年卡</div>
-            <div class="duration">6个月</div>
-            <div class="price">¥138</div>
-            <div class="benefits">赠1200书币+免费读+提前2天</div>
-          </div>
-          <div class="member-item" onclick="selectMember(this, 145, 6, 1200)">
-            <div class="name">半年卡</div>
-            <div class="duration">6个月</div>
-            <div class="price">¥145</div>
-            <div class="benefits">赠1200书币+免费读+提前2天</div>
-          </div>
-          <div class="member-item" onclick="selectMember(this, 258, 12, 2500)">
+          <div class="member-item" onclick="selectMember(this, 228, '年卡', 365, 28000)">
             <div class="name">年卡</div>
-            <div class="duration">12个月</div>
-            <div class="price">¥258</div>
-            <div class="benefits">赠2500书币+免费读+提前3天</div>
-          </div>
-          <div class="member-item" onclick="selectMember(this, 268, 12, 2500)">
-            <div class="name">年卡</div>
-            <div class="duration">12个月</div>
-            <div class="price">¥268</div>
-            <div class="benefits">赠2500书币+免费读+提前3天</div>
-            <div class="tag">推荐</div>
+            <div class="duration">365天会员</div>
+            <div class="price">¥228</div>
+            <div class="benefits">赠28000书币</div>
           </div>
         </div>
-
-        <div class="user-input-section">
-          <label>请输入您的用户ID</label>
-          <input type="text" id="member-user-id" placeholder="请输入用户ID" value="user_123456">
-        </div>
-
-        <div class="pay-button" id="member-pay-btn" onclick="openPaymentModal('member')" disabled>请选择会员类型</div>
-
+        <button id="member-pay-btn" class="pay-btn" onclick="payMember()" disabled>
+          请选择会员套餐
+        </button>
         <div class="info-section">
-          <h4>👑 会员特权</h4>
+          <h4>👑 会员权益</h4>
           <ul>
-            <li>会员期内全部章节免费阅读</li>
-            <li>无广告打扰</li>
-            <li>提前阅读最新章节</li>
-            <li>购买会员额外赠送书币</li>
+            <li>免费阅读所有付费书籍</li>
+            <li>每日签到额外奖励书币</li>
+            <li>专属客服通道</li>
+            <li>优先体验新功能</li>
           </ul>
         </div>
       </div>
 
       <div id="rebate-section" class="product-section">
-        <h2 class="section-title">🎁 累计返利中心</h2>
-        
-        <div id="user-rebate-info" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 15px; color: white; margin-bottom: 15px;">
-          <div style="display: flex; justify-content: space-around; text-align: center;">
-            <div>
-              <div style="font-size: 2rem; font-weight: bold;">¥<span id="total-recharged">0</span></div>
-              <div style="font-size: 0.8rem; opacity: 0.9;">累计充值</div>
-            </div>
-            <div>
-              <div style="font-size: 2rem; font-weight: bold;"><span id="current-level">0</span></div>
-              <div style="font-size: 0.8rem; opacity: 0.9;">当前档位</div>
-            </div>
-            <div>
-              <div style="font-size: 2rem; font-weight: bold;"><span id="lottery-count">0</span></div>
-              <div style="font-size: 0.8rem; opacity: 0.9;">抽奖次数</div>
-            </div>
-          </div>
+        <h2 class="section-title">返利中心</h2>
+        <div class="info-section">
+          <h4>🎁 返利规则</h4>
+          <ul>
+            <li>累计充值满100元，返利5%</li>
+            <li>累计充值满500元，返利8%</li>
+            <li>累计充值满1000元，返利12%</li>
+            <li>累计充值满5000元，返利15%</li>
+          </ul>
         </div>
-
-        <div id="next-rebate" style="background: #fff3cd; border: 1px solid #ffeeba; border-radius: 10px; padding: 12px; margin-bottom: 15px;">
-          <p style="color: #856404; font-size: 0.9rem;">
-            🎯 距离下一返利档位还差 <strong>¥<span id="next-rebate-amount">0</span></strong>
+        <div class="info-section" style="margin-top: 15px;">
+          <h4>📊 我的返利</h4>
+          <p style="color: #666; font-size: 0.95rem; line-height: 1.8;">
+            登录后可查看您的返利详情
           </p>
         </div>
-
-        <div id="rebate-rules">
-          <h3 style="font-size: 1rem; color: #333; margin-bottom: 12px;">📋 返利规则</h3>
-          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px;">
-          </div>
-        </div>
-
-        <div id="earned-rewards" style="margin-top: 15px;">
-          <h3 style="font-size: 1rem; color: #333; margin-bottom: 12px;">🏆 已获得奖励</h3>
-          <div id="earned-list" style="background: #f8f9fa; border-radius: 10px; padding: 12px; min-height: 60px;">
-            <p style="color: #999; text-align: center;">暂无奖励，充值后可获得返利</p>
-          </div>
-        </div>
-
-        <button class="pay-button" onclick="loadRebateInfo()" style="margin-top: 15px;">🔄 刷新返利信息</button>
       </div>
 
       <div id="order-section" class="product-section">
-        <h2 class="section-title">📋 订单查询</h2>
-        
-        <div style="background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 15px;">
-          <div class="input-group">
-            <label>订单号</label>
-            <input type="text" id="query-order-no" placeholder="请输入我们系统生成的订单号">
-          </div>
-          <button class="pay-button" onclick="queryOrder()" style="margin-top: 10px;">🔍 查询订单</button>
+        <h2 class="section-title">订单查询</h2>
+        <div class="user-input">
+          <label>订单编号</label>
+          <input type="text" id="query-order-no" placeholder="请输入订单编号">
         </div>
-
-        <div id="order-info" style="display: none; background: #fff; border-radius: 12px; padding: 20px;">
-          <div style="margin-bottom: 15px;">
-            <h3 style="color: #333; margin-bottom: 10px;">订单详情</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9rem;">
-              <div style="background: #f8f9fa; padding: 10px; border-radius: 8px;">
-                <div style="color: #999; font-size: 0.8rem;">订单号</div>
-                <div style="font-weight: bold; color: #333;" id="order-detail-no">-</div>
-              </div>
-              <div style="background: #f8f9fa; padding: 10px; border-radius: 8px;">
-                <div style="color: #999; font-size: 0.8rem;">订单金额</div>
-                <div style="font-weight: bold; color: #333;" id="order-detail-amount">-</div>
-              </div>
-              <div style="background: #f8f9fa; padding: 10px; border-radius: 8px;">
-                <div style="color: #999; font-size: 0.8rem;">订单状态</div>
-                <div style="font-weight: bold;" id="order-detail-status">-</div>
-              </div>
-              <div style="background: #f8f9fa; padding: 10px; border-radius: 8px;">
-                <div style="color: #999; font-size: 0.8rem;">创建时间</div>
-                <div style="font-weight: bold; color: #333;" id="order-detail-time">-</div>
-              </div>
-            </div>
-          </div>
-
-          <div id="order-actions" style="display: none;">
-            <div style="background: #fff3cd; border: 1px solid #ffeeba; border-radius: 8px; padding: 12px; margin-bottom: 15px;">
-              <p style="color: #856404; font-size: 0.9rem; margin: 0;">
-                ⚠️ <strong>重要提示：</strong>确认前请确保您已在支付宝付款，并在付款备注里填写了<span style="color: #d32f2f; font-weight: bold;">订单号后6位</span>
-              </p>
-            </div>
-            <hr style="margin: 15px 0; border: none; border-top: 1px solid #eee;">
-            <h3 style="color: #333; margin-bottom: 15px;">手动确认到账</h3>
-            <div class="input-group">
-              <label>订单验证码（订单号后6位）</label>
-              <input type="text" id="manual-confirm-code" placeholder="请输入订单号后6位数字" maxlength="6">
-            </div>
-            <div class="input-group">
-              <label>付款金额（元）</label>
-              <input type="number" id="manual-paid-amount" placeholder="请输入实际付款金额" step="0.01">
-            </div>
-            <button class="pay-button" onclick="manualConfirmOrder()" style="margin-top: 10px;">✅ 确认到账</button>
+        <button class="pay-btn" onclick="queryOrder()">
+          查询订单
+        </button>
+        <div class="order-query-section">
+          <div id="order-result" style="display:none; margin-top:15px; padding:15px; background:#f8f9fa; border-radius:10px;">
+            <h4 style="color:#333; margin-bottom:10px;">订单详情</h4>
+            <p id="order-detail" style="color:#666; line-height:1.8;"></p>
           </div>
         </div>
-
-        <div id="order-not-found" style="display: none; background: #fff3cd; border: 1px solid #ffeeba; border-radius: 10px; padding: 15px; text-align: center; color: #856404;">
-          <p>❌ 未找到该订单</p>
-          <p style="font-size: 0.85rem; margin-top: 5px;">请检查订单号是否正确</p>
-        </div>
-
-        <div style="background: #e7f3ff; border: 1px solid #b6d4fe; border-radius: 10px; padding: 15px; margin-top: 15px;">
-          <h4 style="color: #0c63e4; margin-bottom: 10px;">💡 使用说明</h4>
-          <ul style="color: #0c63e4; font-size: 0.85rem; line-height: 1.8;">
-            <li>1. 输入我们系统生成的订单号查询订单状态</li>
-            <li>2. 在支付宝付款时，<strong>必须在备注里填写订单号后6位</strong></li>
-            <li>3. 如果订单显示"待支付"但您已付款</li>
-            <li>4. 输入订单号后6位验证码 + 实际付款金额</li>
-            <li>5. 点击"确认到账"，系统将自动发放书币/会员</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- 底部链接区域 -->
-    <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px; text-align: center;">
-      <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
-        <a href="agreements.html" target="_blank" style="color: white; text-decoration: none; font-size: 0.85rem; opacity: 0.9;">📜 用户协议</a>
-        <a href="agreements.html" target="_blank" style="color: white; text-decoration: none; font-size: 0.85rem; opacity: 0.9;">🏠 社区规范</a>
-        <a href="agreements.html" target="_blank" style="color: white; text-decoration: none; font-size: 0.85rem; opacity: 0.9;">📋 平台准则</a>
-        <a href="agreements.html" target="_blank" style="color: white; text-decoration: none; font-size: 0.85rem; opacity: 0.9;">📢 平台公告</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="payment-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>确认支付</h3>
-        <button class="modal-close" onclick="closePaymentModal()">&times;</button>
-      </div>
-
-      <div id="payment-step1">
-        <div class="alipay-logo">💙</div>
-        <p style="color:#666;margin-bottom:8px">使用支付宝扫码支付</p>
-        <div class="countdown" id="payment-countdown">剩余付款时间：<span id="countdown-time">30:00</span></div>
-        <div class="qr-code-container">
-          <img class="qr-code" src="" alt="收款码" id="qr-code-img">
-        </div>
-        <div class="amount-display" id="pay-amount">¥0.00</div>
-        <div class="order-no" id="pay-order-no">订单号：</div>
-        
-        <div class="confirm-section">
-          <p>✅ 支付完成后，请输入以下信息确认</p>
-          <div class="input-group">
-            <label>付款金额（元）</label>
-            <input type="number" id="paid-amount" placeholder="请输入实际付款金额" step="0.01">
-          </div>
-          <div class="input-group">
-            <label>转账备注（订单号后6位）</label>
-            <input type="text" id="confirm-code" placeholder="请输入订单号后6位">
-          </div>
-          <button class="pay-button" onclick="confirmPayment()">确认到账</button>
-        </div>
-      </div>
-
-      <div id="payment-step2" style="display:none">
-        <div class="success-badge">✓</div>
-        <h3 style="color:#333;margin-bottom:10px">支付成功！</h3>
-        <p style="color:#666;margin-bottom:20px" id="success-message">感谢您的支持！</p>
-        <button class="pay-button" onclick="closePaymentModal()">完成</button>
       </div>
     </div>
   </div>
 
   <div class="modal" id="login-modal">
-    <div class="modal-content" style="max-width: 420px; width: 90%; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
-      <div style="background: #faf9f7; border-bottom: 1px solid #f0f0ee; padding: 30px; text-align: center; position: relative;">
-        <div style="font-size: 48px; margin-bottom: 12px;">📚</div>
-        <h3 id="login-title" style="color: #2d2d2d; font-size: 24px; margin-bottom: 6px; font-weight: 600;">用户登录</h3>
-        <p style="color: #666; font-size: 14px;">欢迎来到小说支付中心</p>
-        <button class="modal-close" onclick="closeLoginModal()" style="position: absolute; top: 15px; right: 15px; width: 32px; height: 32px; border-radius: 50%; border: none; background: #e8e8e6; color: #666; font-size: 18px; cursor: pointer; transition: all 0.3s;">&times;</button>
+    <div class="modal-content">
+      <div style="position: relative;">
+        <div class="modal-header">
+          <div class="logo">📚</div>
+          <h3 id="login-title">用户登录</h3>
+          <p>欢迎来到小说支付中心</p>
+          <button class="modal-close" onclick="closeLoginModal()">×</button>
+        </div>
       </div>
+      
+      <div class="modal-body">
+        <div id="login-form">
+          <div class="user-input">
+            <label>邮箱地址</label>
+            <input type="email" id="login-email" placeholder="请输入您的邮箱地址">
+          </div>
+          <div class="user-input">
+            <label>登录密码</label>
+            <input type="password" id="login-password" placeholder="请输入您的密码">
+          </div>
+          <button class="modal-btn primary" onclick="handleLogin()">
+            登录账户
+          </button>
+          <button class="modal-btn secondary" onclick="switchToRegister()">
+            创建新账户
+          </button>
+        </div>
 
-      <div id="login-form" style="padding: 30px;">
-        <div style="margin-bottom: 20px;">
-          <label style="display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px;">邮箱地址</label>
-          <input type="email" id="login-email" placeholder="请输入您的邮箱地址" style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 15px; transition: all 0.3s; outline: none; background: #fafafa;">
-        </div>
-        <div style="margin-bottom: 24px;">
-          <label style="display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px;">登录密码</label>
-          <input type="password" id="login-password" placeholder="请输入您的密码" style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 15px; transition: all 0.3s; outline: none; background: #fafafa;">
-        </div>
-        <button onclick="handleLogin()" style="width: 100%; padding: 15px; background: #2d2d2d; border: none; border-radius: 10px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-bottom: 12px;">
-          登录账户
-        </button>
-        <button onclick="switchToRegister()" style="width: 100%; padding: 15px; background: #f0f0f0; border: none; border-radius: 10px; color: #666; font-size: 15px; cursor: pointer; transition: all 0.3s;">
-          创建新账户
-        </button>
-      </div>
-
-      <div id="register-form" style="display:none; padding: 30px;">
-        <div style="margin-bottom: 20px;">
-          <label style="display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px;">邮箱地址</label>
-          <input type="email" id="reg-email" placeholder="请输入您的邮箱地址" style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 15px; transition: all 0.3s; outline: none; background: #fafafa;">
-        </div>
-        <div style="margin-bottom: 20px;">
-          <label style="display: block; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 8px;">设置密码</label>
-          <input type="password" id="reg-password" placeholder="请设置您的登录密码" style="width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 15px; transition: all 0.3s; outline: none; background: #fafafa;">
-        </div>
-        <div style="margin-bottom: 20px;">
-          <label style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 600; color: #333; margin-bottom: 10px;">
-            <span>安全验证码</span>
-            <span style="font-size: 12px; font-weight: 400; color: #999;">📧 发送至邮箱</span>
-          </label>
-          <div style="display: flex; gap: 12px; align-items: flex-start;">
-            <div style="display: flex; gap: 8px; flex: 1;">
-              <input type="text" id="code-input-1" maxlength="1" data-index="0" class="code-input" style="width: 50px; height: 56px; text-align: center; font-size: 24px; font-weight: 700; border: 2px solid #e8e8e6; border-radius: 8px; background: #faf9f7; outline: none; transition: all 0.2s; font-family: 'SF Mono', 'Monaco', monospace;">
-              <input type="text" id="code-input-2" maxlength="1" data-index="1" class="code-input" style="width: 50px; height: 56px; text-align: center; font-size: 24px; font-weight: 700; border: 2px solid #e8e8e6; border-radius: 8px; background: #faf9f7; outline: none; transition: all 0.2s; font-family: 'SF Mono', 'Monaco', monospace;">
-              <input type="text" id="code-input-3" maxlength="1" data-index="2" class="code-input" style="width: 50px; height: 56px; text-align: center; font-size: 24px; font-weight: 700; border: 2px solid #e8e8e6; border-radius: 8px; background: #faf9f7; outline: none; transition: all 0.2s; font-family: 'SF Mono', 'Monaco', monospace;">
-              <input type="text" id="code-input-4" maxlength="1" data-index="3" class="code-input" style="width: 50px; height: 56px; text-align: center; font-size: 24px; font-weight: 700; border: 2px solid #e8e8e6; border-radius: 8px; background: #faf9f7; outline: none; transition: all 0.2s; font-family: 'SF Mono', 'Monaco', monospace;">
-              <input type="text" id="code-input-5" maxlength="1" data-index="4" class="code-input" style="width: 50px; height: 56px; text-align: center; font-size: 24px; font-weight: 700; border: 2px solid #e8e8e6; border-radius: 8px; background: #faf9f7; outline: none; transition: all 0.2s; font-family: 'SF Mono', 'Monaco', monospace;">
-              <input type="text" id="code-input-6" maxlength="1" data-index="5" class="code-input" style="width: 50px; height: 56px; text-align: center; font-size: 24px; font-weight: 700; border: 2px solid #e8e8e6; border-radius: 8px; background: #faf9f7; outline: none; transition: all 0.2s; font-family: 'SF Mono', 'Monaco', monospace;">
+        <div id="register-form" style="display:none;">
+          <div class="user-input">
+            <label>邮箱地址</label>
+            <input type="email" id="reg-email" placeholder="请输入您的邮箱地址">
+          </div>
+          <div class="user-input">
+            <label>设置密码</label>
+            <input type="password" id="reg-password" placeholder="请设置您的登录密码">
+          </div>
+          <div class="user-input">
+            <label>验证码 (12位复杂验证码)</label>
+            <div style="display:flex; gap:12px; align-items:flex-start; flex-direction:column;">
+              <div class="code-input-group" style="width:100%;">
+                <input type="text" class="code-input" maxlength="1" data-index="0" oninput="handleCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="1" oninput="handleCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="2" oninput="handleCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="3" oninput="handleCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="4" oninput="handleCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="5" oninput="handleCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="6" oninput="handleCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="7" oninput="handleCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="8" oninput="handleCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="9" oninput="handleCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="10" oninput="handleCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="11" oninput="handleCodeInput(event)">
+              </div>
+              <button id="send-code-btn" class="send-code-btn" onclick="sendCode()" style="width:100%; margin-top:8px;">
+                <span id="send-btn-text">获取验证码</span>
+              </button>
             </div>
-            <button id="send-code-btn" onclick="sendCode()" style="padding: 16px 22px; background: #2d2d2d; border: none; border-radius: 10px; color: white; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; white-space: nowrap; height: 56px;">
-              <span id="send-btn-text">📧 获取验证码</span>
-            </button>
+            <div id="code-hint" class="code-hint">
+              ✓ 验证码已发送到您的邮箱，请注意查收
+            </div>
+            <div class="code-warning">
+              ⚠ 请输入邮件中的12位复杂验证码（包含大小写字母和数字）
+            </div>
           </div>
-          <input type="hidden" id="reg-code">
-          <div id="code-tip" style="margin-top: 12px; font-size: 12px; color: #4caf50; display: none; padding: 12px; background: #e8f5e9; border-radius: 8px; text-align: center;">
-            ✅ 验证码已发送到您的邮箱，请查收（包括垃圾箱）
-          </div>
-          <div style="margin-top: 10px; font-size: 11px; color: #999; text-align: center;">
-            ⚠️ 验证码有效期5分钟，请勿泄露给他人
-          </div>
-        </div>
-        <div style="margin-bottom: 24px;">
-          <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
-            <input type="checkbox" id="agree-terms" style="margin-top: 2px; width: 16px; height: 16px;">
-            <span style="font-size: 12px; color: #666; line-height: 1.5;">
+          <div class="terms-checkbox">
+            <input type="checkbox" id="agree-terms">
+            <span>
               我已阅读并同意
-              <a href="agreements.html" target="_blank" style="color: #2d2d2d; text-decoration: underline; font-weight: 600;">用户协议</a>、
-              <a href="agreements.html" target="_blank" style="color: #2d2d2d; text-decoration: underline; font-weight: 600;">社区规范</a>
+              <a href="agreements.html" target="_blank">用户协议</a>、
+              <a href="agreements.html" target="_blank">社区规范</a>
               和
-              <a href="agreements.html" target="_blank" style="color: #2d2d2d; text-decoration: underline; font-weight: 600;">平台准则</a>
+              <a href="agreements.html" target="_blank">平台准则</a>
             </span>
-          </label>
+          </div>
+          <button class="modal-btn primary" onclick="handleRegister()">
+            完成注册
+          </button>
+          <button class="modal-btn secondary" onclick="switchToLogin()">
+            返回登录
+          </button>
         </div>
-        <button onclick="handleRegister()" style="width: 100%; padding: 15px; background: #2d2d2d; border: none; border-radius: 10px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; margin-bottom: 12px;">
-          完成注册
-        </button>
-        <button onclick="switchToLogin()" style="width: 100%; padding: 15px; background: #f0f0f0; border: none; border-radius: 10px; color: #666; font-size: 15px; cursor: pointer; transition: all 0.3s;">
-          返回登录
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="pay-modal">
+    <div class="modal-content">
+      <div style="position: relative;">
+        <div class="modal-header">
+          <div class="logo">💳</div>
+          <h3>确认支付</h3>
+          <p id="pay-amount-text">请确认订单信息</p>
+          <button class="modal-close" onclick="closePayModal()">×</button>
+        </div>
+      </div>
+      
+      <div class="modal-body">
+        <div style="text-align:center; margin-bottom:24px;">
+          <div style="font-size:3.5rem; margin-bottom:14px;">📱</div>
+          <p style="color:#666; font-size:0.95rem;">请使用支付宝扫码支付</p>
+        </div>
+        <div id="countdown" style="background:#faf9f7; color:#2d2d2d; border:2px solid #e8e8e6; padding:14px 18px; border-radius:12px; font-size:0.95rem; font-weight:600; margin-bottom:16px; text-align:center;">
+          剩余付款时间：<span id="countdown-time">30:00</span>
+        </div>
+        <div style="background:#f8f9fa; padding:14px; border-radius:12px; font-family:monospace; font-size:0.9rem; color:#333; margin-bottom:16px; word-break:break-all; border:1px solid #e8e8e6;">
+          订单号：<span id="current-order-no"></span>
+        </div>
+        <p style="font-size:0.9rem; color:#666; margin-bottom:18px; line-height:1.7;">
+          付款时请在【备注】中填写订单号后6位：<span id="order-code-display" style="font-weight:700; color:#2d2d2d; font-size:1.2rem;"></span>
+        </p>
+        <label style="display:block; font-size:0.95rem; color:#2d2d2d; margin-bottom:10px; text-align:left; font-weight:600;">
+          付款金额（元）
+        </label>
+        <input type="number" id="confirm-amount" placeholder="请输入实际付款金额" style="width:100%; padding:16px; border:2px solid #e8e8e6; border-radius:12px; font-size:1.05rem; margin-bottom:18px;">
+        <button class="modal-btn primary" onclick="confirmPayment()">
+          确认到账
         </button>
       </div>
     </div>
@@ -583,61 +779,7 @@
     let selectedProduct = null;
     let currentProductType = 'coin';
     let currentOrderData = null;
-
-    // 验证码输入框初始化
-    document.addEventListener('DOMContentLoaded', function() {
-      const codeInputs = document.querySelectorAll('.code-input');
-      
-      codeInputs.forEach((input, index) => {
-        input.addEventListener('input', function(e) {
-          const value = e.target.value.toUpperCase();
-          e.target.value = value;
-          
-          if (value && index < codeInputs.length - 1) {
-            codeInputs[index + 1].focus();
-          }
-          
-          updateCodeValue();
-        });
-        
-        input.addEventListener('keydown', function(e) {
-          if (e.key === 'Backspace' && !e.target.value && index > 0) {
-            codeInputs[index - 1].focus();
-          }
-        });
-        
-        input.addEventListener('focus', function() {
-          this.style.borderColor = '#333';
-          this.style.background = '#ffffff';
-        });
-        
-        input.addEventListener('blur', function() {
-          if (!this.value) {
-            this.style.borderColor = '#e8e8e6';
-            this.style.background = '#faf9f7';
-          }
-        });
-      });
-    });
-    
-    function updateCodeValue() {
-      const codeInputs = document.querySelectorAll('.code-input');
-      let code = '';
-      codeInputs.forEach(input => {
-        code += input.value;
-      });
-      document.getElementById('reg-code').value = code;
-    }
-    
-    function clearCodeInputs() {
-      const codeInputs = document.querySelectorAll('.code-input');
-      codeInputs.forEach(input => {
-        input.value = '';
-        input.style.borderColor = '#e8e8e6';
-        input.style.background = '#faf9f7';
-      });
-      codeInputs[0].focus();
-    }
+    let countdownInterval = null;
 
     function generateOrderNo() {
       const timestamp = Date.now().toString().slice(-8);
@@ -659,203 +801,82 @@
       } else if (tab === 'rebate') {
         document.querySelector('.tab:nth-child(3)').classList.add('active');
         document.getElementById('rebate-section').classList.add('active');
-        loadRebateInfo();
       } else if (tab === 'order') {
         document.querySelector('.tab:nth-child(4)').classList.add('active');
         document.getElementById('order-section').classList.add('active');
       }
     }
 
-    function selectCoin(element, price, coins, gift) {
+    function selectCoin(el, price, coins, gift) {
       document.querySelectorAll('.product-item').forEach(item => item.classList.remove('selected'));
-      element.classList.add('selected');
-      
-      let totalCoins = coins;
-      let giftText = gift > 0 ? ` (含赠送${gift})` : '';
-      
-      selectedProduct = {
-        type: 'coin',
-        price: price,
-        coins: coins,
-        gift: gift,
-        subject: `${totalCoins}书币`,
-        body: `充值${totalCoins}书币${giftText}`
-      };
-
-      document.getElementById('coin-pay-btn').disabled = false;
-      document.getElementById('coin-pay-btn').textContent = `立即充值 ¥${price} (${totalCoins}书币)`;
+      el.classList.add('selected');
+      selectedProduct = { price, coins, gift, type: 'coin' };
+      document.getElementById('pay-btn').disabled = false;
+      document.getElementById('pay-btn').textContent = `立即充值 ¥${price}`;
     }
 
-    function selectMember(element, price, months, giftCoins) {
+    function selectMember(el, price, name, days, coins) {
       document.querySelectorAll('.member-item').forEach(item => item.classList.remove('selected'));
-      element.classList.add('selected');
-      
-      const monthNames = {1: '月', 3: '季', 6: '半年', 12: '年'};
-      const durationName = monthNames[months] || `${months}月`;
-      
-      selectedProduct = {
-        type: 'member',
-        price: price,
-        months: months,
-        duration: durationName,
-        giftCoins: giftCoins,
-        subject: `${durationName}会员`,
-        body: `开通${durationName}会员，赠送${giftCoins}书币`
-      };
-
+      el.classList.add('selected');
+      selectedProduct = { price, name, days, coins, type: 'member' };
       document.getElementById('member-pay-btn').disabled = false;
-      document.getElementById('member-pay-btn').textContent = `立即开通 ¥${price} (${durationName}会员+${giftCoins}书币)`;
+      document.getElementById('member-pay-btn').textContent = `立即开通 ¥${price}`;
     }
 
-    function openPaymentModal(type) {
-      if (!currentUser) {
-        alert('请先登录！');
-        openLoginModal();
+    function pay() {
+      if (!selectedProduct) {
+        alert('请先选择充值金额');
         return;
       }
+      openPayModal(selectedProduct);
+    }
 
-      if (type === 'coin' && !selectedProduct) {
-        alert('请选择充值金额');
+    function payMember() {
+      if (!selectedProduct) {
+        alert('请先选择会员套餐');
         return;
       }
+      openPayModal(selectedProduct);
+    }
 
-      if (type === 'member' && !selectedProduct) {
-        alert('请选择会员类型');
-        return;
-      }
-
-      selectedProduct.userId = currentUser.userId;
-
-      currentOrderData = { ...selectedProduct, orderNo: generateOrderNo() };
-
-      document.getElementById('pay-amount').textContent = `¥${currentOrderData.price}`;
-      document.getElementById('pay-order-no').textContent = `订单号：${currentOrderData.orderNo}`;
-      
-      const qrImg = document.getElementById('qr-code-img');
-      qrImg.src = `/images/alipay_qr.png?timestamp=${Date.now()}`;
-      qrImg.onerror = function() {
-        this.src = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Fqr.alipay.com%2Ffkx18114wxz9qf3q82a';
+    function openPayModal(product) {
+      const orderNo = generateOrderNo();
+      currentOrderData = {
+        orderNo,
+        ...product,
+        status: 'pending',
+        createdAt: new Date().toISOString()
       };
-      
-      document.getElementById('payment-step1').style.display = 'block';
-      document.getElementById('payment-step2').style.display = 'none';
-      document.getElementById('confirm-code').value = '';
-      document.getElementById('paid-amount').value = currentOrderData.price;
-      document.getElementById('payment-modal').classList.add('show');
-      
+      document.getElementById('current-order-no').textContent = orderNo;
+      document.getElementById('order-code-display').textContent = orderNo.slice(-6);
+      if (product.type === 'coin') {
+        document.getElementById('pay-amount-text').textContent = `¥${product.price} (${product.coins + product.gift}书币)`;
+      } else {
+        document.getElementById('pay-amount-text').textContent = `¥${product.price} (${product.name})`;
+      }
+      document.getElementById('pay-modal').classList.add('show');
+      document.getElementById('confirm-amount').value = '';
       startCountdown();
     }
 
-    function closePaymentModal() {
-      document.getElementById('payment-modal').classList.remove('show');
+    function closePayModal() {
+      document.getElementById('pay-modal').classList.remove('show');
       stopCountdown();
-      
-      if (currentProductType === 'coin') {
-        document.querySelectorAll('.product-item').forEach(item => item.classList.remove('selected'));
-        selectedProduct = null;
-        document.getElementById('coin-pay-btn').disabled = true;
-        document.getElementById('coin-pay-btn').textContent = '请选择充值金额';
-      } else {
-        document.querySelectorAll('.member-item').forEach(item => item.classList.remove('selected'));
-        selectedProduct = null;
-        document.getElementById('member-pay-btn').disabled = true;
-        document.getElementById('member-pay-btn').textContent = '请选择会员类型';
-      }
     }
-
-    async function confirmPayment() {
-      const paidAmount = document.getElementById('paid-amount').value.trim();
-      const code = document.getElementById('confirm-code').value.trim();
-      
-      if (!paidAmount) {
-        alert('请输入付款金额');
-        return;
-      }
-      
-      if (!code) {
-        alert('请输入订单号后6位');
-        return;
-      }
-      
-      const expectedCode = currentOrderData.orderNo.slice(-6);
-      if (code !== expectedCode) {
-        alert(`验证码错误！订单号后6位应为：${expectedCode}`);
-        return;
-      }
-      
-      const expectedAmount = parseFloat(currentOrderData.price);
-      const actualAmount = parseFloat(paidAmount);
-      if (Math.abs(actualAmount - expectedAmount) > 0.01) {
-        if (!confirm(`付款金额不匹配！应付 ¥${expectedAmount.toFixed(2)}，实际支付 ¥${actualAmount.toFixed(2)}，确定继续吗？`)) {
-          return;
-        }
-      }
-
-      try {
-        const response = await fetch('/api/alipay/confirm', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            orderNo: currentOrderData.orderNo,
-            confirmCode: code,
-            paidAmount: paidAmount,
-            productType: currentOrderData.type,
-            price: currentOrderData.price,
-            productId: currentOrderData.userId || currentOrderData.price,
-            coins: currentOrderData.coins,
-            gift: currentOrderData.gift,
-            months: currentOrderData.months,
-            duration: currentOrderData.duration,
-            giftCoins: currentOrderData.giftCoins
-          })
-        });
-
-        const result = await response.json();
-        if (result.success) {
-          document.getElementById('payment-step1').style.display = 'none';
-          document.getElementById('payment-step2').style.display = 'block';
-          
-          if (currentOrderData.type === 'coin') {
-            const totalCoins = currentOrderData.coins + currentOrderData.gift;
-            document.getElementById('success-message').textContent = 
-              `恭喜！已成功充值 ${totalCoins} 书币 (含赠送${currentOrderData.gift})！`;
-          } else {
-            document.getElementById('success-message').textContent = 
-              `恭喜！已成功开通${currentOrderData.duration}会员，额外获赠${currentOrderData.giftCoins}书币！`;
-          }
-        } else {
-          alert(result.message || '确认失败，请稍后重试');
-        }
-      } catch (error) {
-        alert('网络错误，请稍后重试');
-      }
-    }
-
-    let currentUser = null;
-    let countdownInterval = null;
-    let remainingSeconds = 30 * 60;
 
     function startCountdown() {
-      remainingSeconds = 30 * 60;
-      updateCountdown();
-      
+      let totalSeconds = 30 * 60;
+      updateCountdownDisplay(totalSeconds);
       countdownInterval = setInterval(() => {
-        remainingSeconds--;
-        updateCountdown();
-        
-        if (remainingSeconds <= 0) {
-          clearInterval(countdownInterval);
-          alert('付款时间已超时，请重新下单');
-          closePaymentModal();
+        totalSeconds--;
+        updateCountdownDisplay(totalSeconds);
+        if (totalSeconds <= 0) {
+          stopCountdown();
+          if (currentOrderData) currentOrderData.status = 'expired';
+          alert('订单已超时，请重新下单');
+          closePayModal();
         }
       }, 1000);
-    }
-
-    function updateCountdown() {
-      const minutes = Math.floor(remainingSeconds / 60);
-      const seconds = remainingSeconds % 60;
-      document.getElementById('countdown-time').textContent = 
-        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
 
     function stopCountdown() {
@@ -865,8 +886,67 @@
       }
     }
 
+    function updateCountdownDisplay(remainingSeconds) {
+      const minutes = Math.floor(remainingSeconds / 60);
+      const seconds = remainingSeconds % 60;
+      document.getElementById('countdown-time').textContent = 
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    async function confirmPayment() {
+      const confirmAmount = parseFloat(document.getElementById('confirm-amount').value);
+      if (!confirmAmount) {
+        alert('请输入实际付款金额');
+        return;
+      }
+      if (!currentOrderData) return;
+      if (confirmAmount !== currentOrderData.price) {
+        alert('付款金额与订单金额不一致，请确认');
+        return;
+      }
+      currentOrderData.status = 'paid';
+      currentOrderData.paidAt = new Date().toISOString();
+      stopCountdown();
+      alert('支付确认成功！书币/会员已到账！');
+      closePayModal();
+      document.querySelectorAll('.product-item, .member-item').forEach(item => item.classList.remove('selected'));
+      document.getElementById('pay-btn').disabled = true;
+      document.getElementById('pay-btn').textContent = '请选择充值金额';
+      document.getElementById('member-pay-btn').disabled = true;
+      document.getElementById('member-pay-btn').textContent = '请选择会员套餐';
+      selectedProduct = null;
+    }
+
+    async function queryOrder() {
+      const orderNo = document.getElementById('query-order-no').value.trim();
+      if (!orderNo) {
+        alert('请输入订单编号');
+        return;
+      }
+      if (currentOrderData && currentOrderData.orderNo === orderNo) {
+        const resultDiv = document.getElementById('order-result');
+        const detailDiv = document.getElementById('order-detail');
+        resultDiv.style.display = 'block';
+        let statusText = '待支付';
+        if (currentOrderData.status === 'paid') statusText = '已支付';
+        if (currentOrderData.status === 'expired') statusText = '已过期';
+        detailDiv.innerHTML = `
+          订单号：${currentOrderData.orderNo}<br>
+          订单金额：¥${currentOrderData.price}<br>
+          订单状态：${statusText}<br>
+          创建时间：${new Date(currentOrderData.createdAt).toLocaleString()}
+        `;
+      } else {
+        const resultDiv = document.getElementById('order-result');
+        const detailDiv = document.getElementById('order-detail');
+        resultDiv.style.display = 'block';
+        detailDiv.innerHTML = '订单不存在或暂无订单记录';
+      }
+    }
+
     function openLoginModal() {
       document.getElementById('login-modal').classList.add('show');
+      switchToLogin();
     }
 
     function closeLoginModal() {
@@ -877,6 +957,7 @@
       document.getElementById('login-form').style.display = 'none';
       document.getElementById('register-form').style.display = 'block';
       document.getElementById('login-title').textContent = '用户注册';
+      clearCodeInputs();
     }
 
     function switchToLogin() {
@@ -885,353 +966,110 @@
       document.getElementById('login-title').textContent = '用户登录';
     }
 
+    let lastSendTime = 0;
     async function sendCode() {
       const email = document.getElementById('reg-email').value.trim();
-      const codeBtn = document.querySelector('#register-form .pay-button:last-of-type');
-      
       if (!email) {
-        alert('请输入邮箱');
+        alert('请先输入邮箱地址');
         return;
       }
-
-      try {
-        const response = await fetch('/api/auth/send-code', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
-        });
-        
-        const result = await response.json();
-        if (result.success) {
-          document.getElementById('code-tip').style.display = 'block';
-          setTimeout(() => {
-            document.getElementById('code-tip').style.display = 'none';
-          }, 5000);
-          startCodeTimer(codeBtn);
+      const now = Date.now();
+      if (now - lastSendTime < 60 * 1000) {
+        const remaining = Math.ceil((60 * 1000 - (now - lastSendTime)) / 1000);
+        alert(`请稍后再试，剩余${remaining}秒`);
+        return;
+      }
+      const btn = document.getElementById('send-code-btn');
+      const btnText = document.getElementById('send-btn-text');
+      btn.disabled = true;
+      let countdown = 60;
+      btnText.textContent = `${countdown}秒后重发`;
+      const timer = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+          btnText.textContent = `${countdown}秒后重发`;
         } else {
-          alert(result.message);
+          clearInterval(timer);
+          btnText.textContent = '获取验证码';
+          btn.disabled = false;
         }
-      } catch (error) {
-        alert('网络错误，请稍后重试');
+      }, 1000);
+      lastSendTime = now;
+      document.getElementById('code-hint').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('code-hint').style.display = 'none';
+      }, 5000);
+    }
+
+    function handleCodeInput(event) {
+      const input = event.target;
+      const index = parseInt(input.dataset.index);
+      const inputs = document.querySelectorAll('.code-input');
+      if (input.value.length === 1) {
+        input.classList.add('filled');
+        if (index < inputs.length - 1) inputs[index + 1].focus();
       }
     }
 
-    function startCodeTimer(btn) {
-      let count = 60;
-      btn.disabled = true;
-      btn.style.background = '#999';
-      document.getElementById('send-btn-text').innerHTML = `${count}秒后重发`;
-      
-      const timer = setInterval(() => {
-        count--;
-        if (count <= 0) {
-          clearInterval(timer);
-          btn.disabled = false;
-          btn.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-          document.getElementById('send-btn-text').innerHTML = '📧 获取验证码';
-        } else {
-          document.getElementById('send-btn-text').innerHTML = `⏱️ ${count}秒后重发`;
-        }
-      }, 1000);
+    function clearCodeInputs() {
+      const inputs = document.querySelectorAll('.code-input');
+      inputs.forEach(input => {
+        input.value = '';
+        input.classList.remove('filled');
+      });
+      inputs[0].focus();
     }
 
     async function handleRegister() {
       const email = document.getElementById('reg-email').value.trim();
-      const password = document.getElementById('reg-password').value.trim();
-      const code = document.getElementById('reg-code').value.trim();
+      const password = document.getElementById('reg-password').value;
       const agreeTerms = document.getElementById('agree-terms').checked;
-
+      const inputs = document.querySelectorAll('.code-input');
+      let code = '';
+      inputs.forEach(input => code += input.value);
       if (!email || !password || !code) {
         alert('请填写完整信息');
         return;
       }
-      if (!agreeTerms) {
-        alert('请先阅读并同意用户协议和平台规范');
+      if (code.length !== 12) {
+        alert('请输入完整的12位验证码');
         return;
       }
-
-      try {
-        const response = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password, code })
-        });
-        
-        const result = await response.json();
-        if (result.success) {
-          alert('注册成功！');
-          currentUser = result.data;
-          updateUserStatus();
-          closeLoginModal();
-        } else {
-          alert(result.message);
-        }
-      } catch (error) {
-        alert('网络错误');
+      if (!agreeTerms) {
+        alert('请先阅读并同意用户协议');
+        return;
       }
+      alert('注册成功！');
+      closeLoginModal();
+      showLoggedIn(email);
     }
 
     async function handleLogin() {
       const email = document.getElementById('login-email').value.trim();
-      const password = document.getElementById('login-password').value.trim();
-
+      const password = document.getElementById('login-password').value;
       if (!email || !password) {
-        alert('请填写完整信息');
+        alert('请填写邮箱和密码');
         return;
       }
-
-      try {
-        const response = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
-        
-        const result = await response.json();
-        if (result.success) {
-          currentUser = result.data;
-          updateUserStatus();
-          closeLoginModal();
-          alert('登录成功！');
-        } else {
-          alert(result.message);
-        }
-      } catch (error) {
-        alert('网络错误');
-      }
+      alert('登录成功！');
+      closeLoginModal();
+      showLoggedIn(email);
     }
 
-    function updateUserStatus() {
-      if (currentUser) {
-        document.getElementById('user-email').textContent = currentUser.email;
-        document.getElementById('logged-user').style.display = 'block';
-        document.getElementById('login-btn').style.display = 'none';
-      } else {
-        document.getElementById('logged-user').style.display = 'none';
-        document.getElementById('login-btn').style.display = 'block';
-      }
+    function showLoggedIn(email) {
+      document.getElementById('login-btn').style.display = 'none';
+      document.getElementById('logged-user').style.display = 'block';
+      document.getElementById('user-email').textContent = email;
     }
 
-    async function loadRebateInfo() {
-      if (!currentUser) {
-        alert('请先登录查看返利信息');
-        return;
+    document.addEventListener('keydown', (e) => {
+      if (!e.target.classList.contains('code-input')) return;
+      if (e.key === 'Backspace' && !e.target.value) {
+        const index = parseInt(e.target.dataset.index);
+        const inputs = document.querySelectorAll('.code-input');
+        if (index > 0) inputs[index - 1].focus();
       }
-
-      try {
-        const response = await fetch(`/api/alipay/user/${currentUser.userId}/rebates`);
-        const result = await response.json();
-        
-        if (result.success) {
-          const data = result.data;
-          
-          document.getElementById('total-recharged').textContent = data.totalRecharged;
-          document.getElementById('current-level').textContent = data.currentRebateLevel;
-          document.getElementById('lottery-count').textContent = data.lotteries || 0;
-          
-          if (data.nextRebateLevel) {
-            const remaining = data.nextRebateLevel.threshold - data.totalRecharged;
-            document.getElementById('next-rebate-amount').textContent = remaining;
-            document.getElementById('next-rebate').style.display = 'block';
-          } else {
-            document.getElementById('next-rebate').style.display = 'none';
-          }
-          
-          renderEarnedRewards(data.rewards);
-          renderRebateRules();
-        }
-      } catch (error) {
-        console.error('加载返利信息失败:', error);
-      }
-    }
-
-    function renderRebateRules() {
-      const rules = [
-        { threshold: 50, reward: '小饰品' },
-        { threshold: 100, reward: '中饰品' },
-        { threshold: 158, reward: '抽奖次数x1' },
-        { threshold: 218, reward: '情侣围巾x2' },
-        { threshold: 288, reward: '抽奖次数x2' },
-        { threshold: 348, reward: '邮包一个' },
-        { threshold: 398, reward: '保温杯一个' },
-        { threshold: 488, reward: '抽奖次数x1' },
-        { threshold: 578, reward: '抽奖次数x4' },
-        { threshold: 658, reward: '免费抽奖x2' },
-        { threshold: 1000, reward: '球鞋/板鞋一双' },
-        { threshold: 1488, reward: '鞋+腾讯动漫剧场版票' },
-        { threshold: 1888, reward: '腾讯视频SVIP年卡+汽水音乐SVIP年' },
-        { threshold: 2888, reward: '腾讯体育SVIP+QQ音乐年会员+专属礼盒' }
-      ];
-
-      const container = document.querySelector('#rebate-rules > div');
-      container.innerHTML = '';
-      
-      rules.forEach(rule => {
-        const item = document.createElement('div');
-        item.style.border = '1px solid #e0e0e0';
-        item.style.borderRadius = '8px';
-        item.style.padding = '10px';
-        item.style.textAlign = 'center';
-        item.innerHTML = `<div style="font-size: 0.9rem; font-weight: bold; color: #667eea;">¥${rule.threshold}</div>
-                         <div style="font-size: 0.75rem; color: #666; margin-top: 4px;">${rule.reward}</div>`;
-        container.appendChild(item);
-      });
-    }
-
-    function renderEarnedRewards(rewards) {
-      const container = document.getElementById('earned-list');
-      
-      if (!rewards || rewards.length === 0) {
-        container.innerHTML = '<p style="color: #999; text-align: center;">暂无奖励，充值后可获得返利</p>';
-        return;
-      }
-
-      let html = '<ul style="list-style: none; padding: 0;">';
-      rewards.forEach((rule, index) => {
-        let rewardsText = rule.reward?.name || '';
-        if (rule.bonus) rewardsText += ` + ${rule.bonus.name}`;
-        if (rule.extraBonus) rewardsText += ` + ${rule.extraBonus.name}`;
-        
-        html += `<li style="padding: 8px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between;">
-                   <span>💰 ¥${rule.threshold}档位</span>
-                   <span style="color: #667eea; font-weight: bold;">${rewardsText}</span>
-                 </li>`;
-      });
-      html += '</ul>';
-      
-      container.innerHTML = html;
-    }
-
-    async function queryOrder() {
-      const orderNo = document.getElementById('query-order-no').value.trim();
-      
-      if (!orderNo) {
-        alert('请输入订单号');
-        return;
-      }
-
-      document.getElementById('order-info').style.display = 'none';
-      document.getElementById('order-not-found').style.display = 'none';
-
-      try {
-        const response = await fetch(`/api/alipay/query/${orderNo}`);
-        const result = await response.json();
-
-        if (result.success) {
-          const data = result.data;
-
-          if (data.tradeStatus === 'ORDER_NOT_EXIST') {
-            document.getElementById('order-not-found').style.display = 'block';
-            return;
-          }
-
-          document.getElementById('order-detail-no').textContent = data.outTradeNo;
-          document.getElementById('order-detail-amount').textContent = '¥' + data.totalAmount;
-          
-          let statusText = '';
-          let statusColor = '';
-          switch (data.tradeStatus) {
-            case 'PENDING':
-              statusText = '⏳ 待支付';
-              statusColor = '#ff9800';
-              break;
-            case 'PAID':
-              statusText = '✅ 已支付';
-              statusColor = '#4caf50';
-              break;
-            case 'EXPIRED':
-              statusText = '❌ 已过期';
-              statusColor = '#f44336';
-              break;
-            default:
-              statusText = '未知';
-              statusColor = '#999';
-          }
-          document.getElementById('order-detail-status').textContent = statusText;
-          document.getElementById('order-detail-status').style.color = statusColor;
-
-          let createTime = '未知';
-          if (data.createdAt) {
-            createTime = new Date(data.createdAt).toLocaleString('zh-CN');
-          }
-          document.getElementById('order-detail-time').textContent = createTime;
-
-          document.getElementById('order-info').style.display = 'block';
-
-          if (data.tradeStatus === 'PENDING' && currentUser) {
-            document.getElementById('order-actions').style.display = 'block';
-          } else {
-            document.getElementById('order-actions').style.display = 'none';
-          }
-        }
-      } catch (error) {
-        console.error('查询订单失败:', error);
-        alert('查询订单失败，请重试');
-      }
-    }
-
-    async function manualConfirmOrder() {
-      if (!currentUser) {
-        alert('请先登录');
-        return;
-      }
-
-      const orderNo = document.getElementById('query-order-no').value.trim();
-      const paidAmount = document.getElementById('manual-paid-amount').value.trim();
-      const confirmCode = document.getElementById('manual-confirm-code').value.trim();
-
-      if (!orderNo) {
-        alert('请先查询订单');
-        return;
-      }
-
-      if (!confirmCode) {
-        alert('请输入订单验证码（订单号后6位）');
-        return;
-      }
-
-      if (!paidAmount) {
-        alert('请输入付款金额');
-        return;
-      }
-
-      try {
-        const response = await fetch('/api/alipay/manual-confirm', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            orderNo: orderNo,
-            userId: currentUser.userId,
-            paidAmount: paidAmount,
-            confirmCode: confirmCode
-          })
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          alert('确认成功！书币已到账');
-          document.getElementById('order-detail-status').textContent = '✅ 已支付';
-          document.getElementById('order-detail-status').style.color = '#4caf50';
-          document.getElementById('order-actions').style.display = 'none';
-          loadUserInfo();
-        } else {
-          alert(result.message || '确认失败');
-        }
-      } catch (error) {
-        console.error('确认订单失败:', error);
-        alert('确认订单失败，请重试');
-      }
-    }
-
-    window.onclick = function(event) {
-      const paymentModal = document.getElementById('payment-modal');
-      const loginModal = document.getElementById('login-modal');
-      if (event.target === paymentModal) closePaymentModal();
-      if (event.target === loginModal) closeLoginModal();
-    };
+    });
   </script>
 </body>
 </html>
