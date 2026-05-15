@@ -1003,6 +1003,9 @@
           </div>
           <button class="modal-footer-btn primary" onclick="handleLogin()">登录账户</button>
           <button class="modal-footer-btn secondary" onclick="switchToRegister()">创建新账户</button>
+          <div style="text-align:center;margin-top:12px;">
+            <a href="#" onclick="switchToForgotPassword(); return false;" style="color:#007aff;font-size:0.9rem;text-decoration:none;">忘记密码？</a>
+          </div>
         </div>
 
         <div id="register-form" style="display:none;">
@@ -1036,6 +1039,35 @@
           </div>
           <button class="modal-footer-btn primary" onclick="handleRegister()">完成注册</button>
           <button class="modal-footer-btn secondary" onclick="switchToLogin()">返回登录</button>
+        </div>
+
+        <div id="forgot-password-form" style="display:none;">
+          <div class="form-group">
+            <label>邮箱地址</label>
+            <input type="email" id="forgot-email" placeholder="请输入您注册的邮箱地址">
+          </div>
+          <div class="form-group">
+            <label>验证码（6位复杂字符）</label>
+            <div class="send-code-wrapper">
+              <div class="code-input-group">
+                <input type="text" class="code-input" maxlength="1" data-index="0" id="reset-code-0" oninput="handleResetCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="1" id="reset-code-1" oninput="handleResetCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="2" id="reset-code-2" oninput="handleResetCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="3" id="reset-code-3" oninput="handleResetCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="4" id="reset-code-4" oninput="handleResetCodeInput(event)">
+                <input type="text" class="code-input" maxlength="1" data-index="5" id="reset-code-5" oninput="handleResetCodeInput(event)">
+              </div>
+              <button id="forgot-send-code-btn" class="send-code-btn" onclick="sendResetCode()">发送验证码</button>
+            </div>
+            <div id="reset-code-hint" class="code-hint">✓ 验证码已发送到您的邮箱，请注意查收</div>
+            <div class="code-warning">⚠ 验证码包含大小写字母和数字</div>
+          </div>
+          <div class="form-group">
+            <label>新密码</label>
+            <input type="password" id="new-password" placeholder="请设置您的新密码">
+          </div>
+          <button class="modal-footer-btn primary" onclick="handleResetPassword()">重置密码</button>
+          <button class="modal-footer-btn secondary" onclick="switchToLoginFromForgot()">返回登录</button>
         </div>
       </div>
     </div>
@@ -1375,12 +1407,14 @@
     function switchToRegister() {
       document.getElementById('login-form').style.display = 'none';
       document.getElementById('register-form').style.display = 'block';
+      document.getElementById('forgot-password-form').style.display = 'none';
       document.getElementById('login-title').textContent = '用户注册';
       clearCodeInputs();
     }
 
     function switchToLogin() {
       document.getElementById('register-form').style.display = 'none';
+      document.getElementById('forgot-password-form').style.display = 'none';
       document.getElementById('login-form').style.display = 'block';
       document.getElementById('login-title').textContent = '用户登录';
     }
@@ -1536,6 +1570,147 @@
       } catch (error) {
         console.error('登录失败:', error);
         showNotification('error', '登录失败', '网络错误，请稍后重试');
+      }
+    }
+
+    function switchToForgotPassword() {
+      document.getElementById('login-form').style.display = 'none';
+      document.getElementById('register-form').style.display = 'none';
+      document.getElementById('forgot-password-form').style.display = 'block';
+      document.getElementById('login-title').textContent = '忘记密码';
+      clearResetCodeInputs();
+    }
+
+    function switchToLoginFromForgot() {
+      document.getElementById('forgot-password-form').style.display = 'none';
+      document.getElementById('login-form').style.display = 'block';
+      document.getElementById('login-title').textContent = '用户登录';
+      clearResetCodeInputs();
+    }
+
+    function clearResetCodeInputs() {
+      const inputs = document.querySelectorAll('#forgot-password-form .code-input');
+      inputs.forEach(input => {
+        input.value = '';
+        input.classList.remove('filled');
+      });
+      document.getElementById('forgot-email').value = '';
+      document.getElementById('new-password').value = '';
+      document.getElementById('reset-code-hint').style.display = 'none';
+    }
+
+    let lastResetSendTime = 0;
+
+    async function sendResetCode() {
+      const email = document.getElementById('forgot-email').value.trim();
+      if (!email) {
+        showNotification('error', '请输入', '请先输入邮箱地址');
+        return;
+      }
+      
+      const now = Date.now();
+      if (now - lastResetSendTime < 60 * 1000) {
+        const remaining = Math.ceil((60 * 1000 - (now - lastResetSendTime)) / 1000);
+        showNotification('info', '请稍候', remaining + '秒后可重新获取');
+        return;
+      }
+      
+      const btn = document.getElementById('forgot-send-code-btn');
+      btn.disabled = true;
+      let countdown = 60;
+      btn.textContent = countdown + '秒后重发';
+      const timer = setInterval(() => {
+        countdown--;
+        if (countdown > 0) btn.textContent = countdown + '秒后重发';
+        else {
+          clearInterval(timer);
+          btn.textContent = '发送验证码';
+          btn.disabled = false;
+        }
+      }, 1000);
+      
+      lastResetSendTime = now;
+      
+      try {
+        const response = await fetch('/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          document.getElementById('reset-code-hint').style.display = 'block';
+          setTimeout(() => document.getElementById('reset-code-hint').style.display = 'none', 5000);
+          showNotification('success', '发送成功', '验证码已发送到您的邮箱');
+        } else {
+          showNotification('error', '发送失败', result.message);
+          clearInterval(timer);
+          btn.textContent = '发送验证码';
+          btn.disabled = false;
+          lastResetSendTime = 0;
+        }
+      } catch (error) {
+        console.error('发送验证码失败:', error);
+        showNotification('error', '发送失败', '网络错误，请稍后重试');
+        clearInterval(timer);
+        btn.textContent = '发送验证码';
+        btn.disabled = false;
+        lastResetSendTime = 0;
+      }
+    }
+
+    function handleResetCodeInput(event) {
+      const input = event.target;
+      const index = parseInt(input.dataset.index);
+      const inputs = document.querySelectorAll('#forgot-password-form .code-input');
+      
+      if (input.value.length === 1) {
+        input.classList.add('filled');
+        if (index < inputs.length - 1) inputs[index + 1].focus();
+      }
+    }
+
+    async function handleResetPassword() {
+      const email = document.getElementById('forgot-email').value.trim();
+      const newPassword = document.getElementById('new-password').value;
+      const inputs = document.querySelectorAll('#forgot-password-form .code-input');
+      let code = '';
+      inputs.forEach(input => code += input.value);
+      
+      if (!email || !newPassword || !code) {
+        showNotification('error', '请填写', '请填写完整信息');
+        return;
+      }
+      if (code.length !== 6) {
+        showNotification('error', '请输入', '请输入完整的6位验证码');
+        return;
+      }
+      if (newPassword.length < 6) {
+        showNotification('error', '密码太短', '密码至少需要6位');
+        return;
+      }
+      
+      try {
+        const response = await fetch('/api/auth/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, code, newPassword })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showNotification('success', '重置成功', '密码已重置，请使用新密码登录');
+          switchToLoginFromForgot();
+          document.getElementById('login-email').value = email;
+        } else {
+          showNotification('error', '重置失败', result.message);
+        }
+      } catch (error) {
+        console.error('重置密码失败:', error);
+        showNotification('error', '重置失败', '网络错误，请稍后重试');
       }
     }
 
