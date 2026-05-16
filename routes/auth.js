@@ -13,9 +13,9 @@ const CAPTCHA_SECRET_KEY = '4inhWL7rtPiyS1QU5IqnLlv86';
 
 async function verifyCaptcha(ticket, randstr, userIp) {
     try {
-        if (!ticket || ticket === 'test' || ticket === 'skip') {
-            console.log('⚠️ 使用测试验证模式');
-            return true;
+        if (!ticket || ticket === 'test' || ticket === 'skip' || ticket.length < 5) {
+            console.log('⚠️ 验证码无效，必须完成真实验证');
+            return false;
         }
 
         const params = new URLSearchParams();
@@ -33,10 +33,15 @@ async function verifyCaptcha(ticket, randstr, userIp) {
 
         console.log('腾讯云验证码校验结果:', result);
 
-        return result.response === '1';
+        if (result.response === '1') {
+            return true;
+        } else {
+            console.warn('❌ 验证码校验失败');
+            return false;
+        }
     } catch (error) {
-        console.error('腾讯云验证码校验失败，使用备用验证:', error);
-        return true;
+        console.error('腾讯云验证码校验失败:', error);
+        return false;
     }
 }
 

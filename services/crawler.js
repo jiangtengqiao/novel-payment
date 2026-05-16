@@ -106,6 +106,78 @@ class NovelCrawler {
         views: 280000,
         status: '连载',
         source: '系统'
+      },
+      {
+        id: 'crawled-book-5',
+        title: '星门',
+        author: '老鹰吃小鸡',
+        description: '这是一个神秘的空间，连接着无数世界...',
+        cover: null,
+        genre: '玄幻',
+        rating: 8.8,
+        views: 320000,
+        status: '连载',
+        source: '系统'
+      },
+      {
+        id: 'crawled-book-6',
+        title: '灵境行者',
+        author: '卖报小郎君',
+        description: '随着太阳的直射点越来越近，北半球开始进入盛夏...',
+        cover: null,
+        genre: '都市',
+        rating: 8.6,
+        views: 260000,
+        status: '连载',
+        source: '系统'
+      },
+      {
+        id: 'crawled-book-7',
+        title: '夜的眸',
+        author: 'xyu',
+        description: '在黑暗的深处，有一双眼睛在注视着你...',
+        cover: null,
+        genre: '悬疑',
+        rating: 8.5,
+        views: 180000,
+        status: '连载',
+        source: '系统'
+      },
+      {
+        id: 'crawled-book-8',
+        title: '明克街13号',
+        author: '纯洁滴小龙',
+        description: '如果让你重新选择，你还会做医生吗？...',
+        cover: null,
+        genre: '都市',
+        rating: 8.4,
+        views: 200000,
+        status: '连载',
+        source: '系统'
+      },
+      {
+        id: 'crawled-book-9',
+        title: '我的属性修行人生',
+        author: '滚开',
+        description: '这是一个以属性加点为主的世界...',
+        cover: null,
+        genre: '玄幻',
+        rating: 8.3,
+        views: 220000,
+        status: '连载',
+        source: '系统'
+      },
+      {
+        id: 'crawled-book-10',
+        title: '大梦主',
+        author: '忘语',
+        description: '一个现代少年穿越到修仙世界...',
+        cover: null,
+        genre: '仙侠',
+        rating: 8.5,
+        views: 240000,
+        status: '连载',
+        source: '系统'
       }
     ];
   }
