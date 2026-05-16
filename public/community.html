@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社区论坛 - 小说平台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans SC', -apple-system, sans-serif;
+            background: linear-gradient(180deg, #f8f6f0 0%, #f5f3eb 100%);
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 16px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        .header-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #667eea;
+            text-shadow: 0 0 10px rgba(102,126,234,0.5);
+        }
+        .back-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .main-content {
+            max-width: 1440px;
+            margin: 50px auto;
+            padding: 0 30px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+        .sidebar-section {
+            margin-bottom: 35px;
+        }
+        .sidebar-section h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .sidebar-menu {
+            list-style: none;
+        }
+        .sidebar-menu li {
+            margin-bottom: 12px;
+        }
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #555;
+            text-decoration: none;
+            font-size: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .sidebar-menu .icon {
+            font-size: 18px;
+        }
+
+        .community-stats {
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f4f8 100%);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .main-area {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .hero-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            border-radius: 24px;
+            padding: 45px;
+            color: white;
+            text-align: center;
+        }
+        .hero-card h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        .hero-card p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .action-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .action-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(102,126,234,0.2);
+        }
+        .action-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+        .action-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+        }
+        .section-more {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .posts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .post-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f4f8 100%);
+            border-radius: 16px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .post-card:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .post-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .post-author-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .post-author {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+        }
+        .post-time {
+            font-size: 12px;
+            color: #999;
+        }
+        .post-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 12px;
+        }
+        .post-content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .post-tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .post-tag {
+            font-size: 12px;
+            padding: 5px 14px;
+            background: white;
+            border-radius: 20px;
+            color: #667eea;
+            font-weight: 500;
+        }
+        .post-stats {
+            display: flex;
+            gap: 30px;
+            font-size: 13px;
+            color: #888;
+        }
+        .post-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hot-topics {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        }
+        .hot-topics h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        .hot-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .hot-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f4f8 100%);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .hot-item:hover {
+            transform: translateX(5px);
+        }
+        .hot-rank {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+        }
+        .hot-rank.top {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+        }
+        .hot-rank.normal {
+            background: #999;
+        }
+        .hot-info {
+            flex: 1;
+        }
+        .hot-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .hot-count {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .footer {
+            background: linear-gradient(180deg, #1a1a2e 0%, #0f172a 100%);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+        .footer-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-section h4 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        .footer-section ul {
+            list-style: none;
+        }
+        .footer-section li {
+            margin-bottom: 12px;
+        }
+        .footer-section a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .footer-bottom {
+            border-top: 1px solid #2a2a3e;
+            padding-top: 30px;
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: static;
+            }
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">📚 小说平台</div>
+            <div class="nav-links">
+                <a href="/">首页</a>
+                <a href="/creator">创作者中心</a>
+                <a href="/community" class="active">社区论坛</a>
+                <a href="/payment">充值中心</a>
+            </div>
+            <button class="back-btn" onclick="goBack()">← 返回首页</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>📋 社区导航</h3>
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active"><span class="icon">🔥</span>热门讨论</a></li>
+                    <li><a href="#"><span class="icon">📖</span>新书推荐</a></li>
+                    <li><a href="#"><span class="icon">💬</span>书评交流</a></li>
+                    <li><a href="#"><span class="icon">🏆</span>排行榜</a></li>
+                    <li><a href="#"><span class="icon">🎁</span>福利活动</a></li>
+                    <li><a href="#"><span class="icon">📢</span>官方公告</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3>📊 社区数据</h3>
+                <div class="community-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">帖子总数</span>
+                        <span class="stat-value">125万+</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">活跃用户</span>
+                        <span class="stat-value">56万</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">今日新增</span>
+                        <span class="stat-value">2,847</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">回复总数</span>
+                        <span class="stat-value">890万+</span>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-section">
+                <h3>🎯 热门标签</h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <span style="font-size: 12px; padding: 6px 12px; background: #f0f4ff; color: #667eea; border-radius: 20px;">玄幻</span>
+                    <span style="font-size: 12px; padding: 6px 12px; background: #fff0f0; color: #ee5a5a; border-radius: 20px;">仙侠</span>
+                    <span style="font-size: 12px; padding: 6px 12px; background: #f0fff0; color: #2e7d32; border-radius: 20px;">都市</span>
+                    <span style="font-size: 12px; padding: 6px 12px; background: #fff8e1; color: #ef6c00; border-radius: 20px;">历史</span>
+                    <span style="font-size: 12px; padding: 6px 12px; background: #e3f2fd; color: #1976d2; border-radius: 20px;">科幻</span>
+                    <span style="font-size: 12px; padding: 6px 12px; background: #fce4ec; color: #c2185b; border-radius: 20px;">言情</span>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-area">
+            <div class="hero-card">
+                <h1>欢迎来到社区论坛</h1>
+                <p>与百万书友一起讨论小说，分享阅读心得，发现更多精彩好书！</p>
+            </div>
+
+            <div class="quick-actions">
+                <div class="action-card">
+                    <div class="action-icon">✍️</div>
+                    <div class="action-title">发帖讨论</div>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">📚</div>
+                    <div class="action-title">推荐好书</div>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">⭐</div>
+                    <div class="action-title">发表书评</div>
+                </div>
+                <div class="action-card">
+                    <div class="action-icon">🔍</div>
+                    <div class="action-title">搜索帖子</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">🔥 热门讨论</div>
+                    <a href="#" class="section-more">查看更多 ></a>
+                </div>
+                <div class="posts-list">
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-avatar">书</div>
+                            <div class="post-author-info">
+                                <span class="post-author">书友小明</span>
+                                <span class="post-time">2小时前</span>
+                            </div>
+                        </div>
+                        <div class="post-title">《斗破苍穹》最新章节太燃了！萧炎终于突破斗帝了！</div>
+                        <div class="post-content">今天更新的章节真的太精彩了！萧炎在古界大战中突破斗帝境界，一招毁天灭地，直接碾压魂天帝！看到这里我激动得不行，土豆的文笔越来越厉害了...</div>
+                        <div class="post-tags">
+                            <span class="post-tag">斗破苍穹</span>
+                            <span class="post-tag">讨论</span>
+                            <span class="post-tag">剧透</span>
+                        </div>
+                        <div class="post-stats">
+                            <span class="post-stat">👁 3,247</span>
+                            <span class="post-stat">💬 456</span>
+                            <span class="post-stat">❤️ 1,892</span>
+                        </div>
+                    </div>
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-avatar">读</div>
+                            <div class="post-author-info">
+                                <span class="post-author">资深书虫</span>
+                                <span class="post-time">5小时前</span>
+                            </div>
+                        </div>
+                        <div class="post-title">推荐几本近期发现的宝藏小说，熬夜看完太爽了！</div>
+                        <div class="post-content">最近书荒找了很久，终于发现了几本超级好看的小说！《深空彼岸》的世界观设定太宏大了，辰东不愧是大神！还有《夜的命名术》，脑洞真的很大...</div>
+                        <div class="post-tags">
+                            <span class="post-tag">推荐</span>
+                            <span class="post-tag">书单</span>
+                            <span class="post-tag">新书</span>
+                        </div>
+                        <div class="post-stats">
+                            <span class="post-stat">👁 8,921</span>
+                            <span class="post-stat">💬 1,234</span>
+                            <span class="post-stat">❤️ 5,678</span>
+                        </div>
+                    </div>
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-avatar">评</div>
+                            <div class="post-author-info">
+                                <span class="post-author">书评达人</span>
+                                <span class="post-time">昨天</span>
+                            </div>
+                        </div>
+                        <div class="post-title">深度解析《诡秘之主》的世界观和人物塑造</div>
+                        <div class="post-content">乌贼的《诡秘之主》真的是近年来最优秀的玄幻小说之一！从序列体系到人物成长，每一个细节都经得起推敲。克莱恩的成长轨迹太真实了...</div>
+                        <div class="post-tags">
+                            <span class="post-tag">书评</span>
+                            <span class="post-tag">分析</span>
+                            <span class="post-tag">诡秘之主</span>
+                        </div>
+                        <div class="post-stats">
+                            <span class="post-stat">👁 15,678</span>
+                            <span class="post-stat">💬 2,345</span>
+                            <span class="post-stat">❤️ 8,901</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hot-topics">
+                <h3>🔥 今日热议 TOP10</h3>
+                <div class="hot-list">
+                    <div class="hot-item">
+                        <span class="hot-rank top">1</span>
+                        <div class="hot-info">
+                            <div class="hot-title">《斗破苍穹》萧炎突破斗帝</div>
+                            <div class="hot-count">3.2万讨论</div>
+                        </div>
+                    </div>
+                    <div class="hot-item">
+                        <span class="hot-rank top">2</span>
+                        <div class="hot-info">
+                            <div class="hot-title">《深空彼岸》最新章评</div>
+                            <div class="hot-count">2.8万讨论</div>
+                        </div>
+                    </div>
+                    <div class="hot-item">
+                        <span class="hot-rank top">3</span>
+                        <div class="hot-info">
+                            <div class="hot-title">书荒求推荐！</div>
+                            <div class="hot-count">2.1万讨论</div>
+                        </div>
+                    </div>
+                    <div class="hot-item">
+                        <span class="hot-rank normal">4</span>
+                        <div class="hot-info">
+                            <div class="hot-title">《凡人修仙传》韩立的逆袭</div>
+                            <div class="hot-count">1.8万讨论</div>
+                        </div>
+                    </div>
+                    <div class="hot-item">
+                        <span class="hot-rank normal">5</span>
+                        <div class="hot-info">
+                            <div class="hot-title">全职高手动画开播</div>
+                            <div class="hot-count">1.5万讨论</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>关于我们</h4>
+                    <ul>
+                        <li><a href="/agreements">平台介绍</a></li>
+                        <li><a href="/agreements">联系我们</a></li>
+                        <li><a href="/agreements">加入我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>帮助中心</h4>
+                    <ul>
+                        <li><a href="/agreements">常见问题</a></li>
+                        <li><a href="/agreements">发帖规范</a></li>
+                        <li><a href="/agreements">举报流程</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>社区服务</h4>
+                    <ul>
+                        <li><a href="/community">讨论区</a></li>
+                        <li><a href="/community">书评区</a></li>
+                        <li><a href="/community">活动区</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>法律声明</h4>
+                    <ul>
+                        <li><a href="/agreements">用户协议</a></li>
+                        <li><a href="/agreements">隐私政策</a></li>
+                        <li><a href="/agreements">社区规范</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © 2026 小说阅读平台 版权所有
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创作者中心 - 小说平台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans SC', -apple-system, sans-serif;
+            background: linear-gradient(180deg, #f8f6f0 0%, #f5f3eb 100%);
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 16px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        .header-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #667eea;
+            text-shadow: 0 0 10px rgba(102,126,234,0.5);
+        }
+        .back-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .main-content {
+            max-width: 1440px;
+            margin: 50px auto;
+            padding: 0 30px;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            border-radius: 24px;
+            padding: 60px;
+            text-align: center;
+            margin-bottom: 50px;
+            color: white;
+        }
+        .hero-section h1 {
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+        .hero-section p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin-top: 40px;
+        }
+        .hero-stat-item {
+            text-align: center;
+        }
+        .hero-stat-number {
+            font-size: 48px;
+            font-weight: 900;
+        }
+        .hero-stat-label {
+            font-size: 15px;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        .stat-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .stat-value {
+            font-size: 36px;
+            font-weight: 900;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .stat-label {
+            font-size: 15px;
+            color: #888;
+        }
+
+        .info-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        }
+        .info-card h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        .info-card p {
+            font-size: 15px;
+            color: #666;
+            line-height: 2;
+            margin-bottom: 20px;
+        }
+        .info-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .info-card li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 15px;
+            color: #555;
+        }
+        .info-card li:last-child {
+            border-bottom: none;
+        }
+        .info-card li::before {
+            content: '✓';
+            color: #667eea;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .benefits-section {
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            margin-bottom: 50px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        }
+        .benefits-section h2 {
+            font-size: 28px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 35px;
+        }
+        .benefit-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f4f8 100%);
+            border-radius: 18px;
+            padding: 35px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .benefit-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(102,126,234,0.15);
+        }
+        .benefit-icon {
+            font-size: 56px;
+            margin-bottom: 20px;
+        }
+        .benefit-title {
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .benefit-desc {
+            font-size: 14px;
+            color: #777;
+            line-height: 1.8;
+        }
+
+        .steps-section {
+            margin-bottom: 50px;
+        }
+        .steps-section h2 {
+            font-size: 28px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        .step-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            position: relative;
+        }
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 22px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 6px 20px rgba(102,126,234,0.3);
+        }
+        .step-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .step-desc {
+            font-size: 14px;
+            color: #777;
+            line-height: 1.7;
+        }
+
+        .faq-section {
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            margin-bottom: 50px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        }
+        .faq-section h2 {
+            font-size: 28px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        .faq-item {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 25px;
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        .faq-question {
+            font-size: 17px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+        .faq-answer {
+            font-size: 15px;
+            color: #666;
+            line-height: 2;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 24px;
+            padding: 60px;
+            text-align: center;
+            color: white;
+        }
+        .cta-section h2 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        .cta-section p {
+            font-size: 18px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+        .cta-btn {
+            background: white;
+            color: #667eea;
+            padding: 16px 50px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+        .cta-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            background: linear-gradient(180deg, #1a1a2e 0%, #0f172a 100%);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+        .footer-inner {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-section h4 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        .footer-section ul {
+            list-style: none;
+        }
+        .footer-section li {
+            margin-bottom: 12px;
+        }
+        .footer-section a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .footer-bottom {
+            border-top: 1px solid #2a2a3e;
+            padding-top: 30px;
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">📚 小说平台</div>
+            <div class="nav-links">
+                <a href="/">首页</a>
+                <a href="/creator" class="active">创作者中心</a>
+                <a href="/community">社区论坛</a>
+                <a href="/payment">充值中心</a>
+            </div>
+            <button class="back-btn" onclick="goBack()">← 返回首页</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="hero-section">
+            <h1>欢迎加入创作者中心</h1>
+            <p>在这里，你的故事将被百万读者阅读，你的创作将获得应有的回报</p>
+            <div class="hero-stats">
+                <div class="hero-stat-item">
+                    <div class="hero-stat-number">50,000+</div>
+                    <div class="hero-stat-label">签约作者</div>
+                </div>
+                <div class="hero-stat-item">
+                    <div class="hero-stat-number">50亿+</div>
+                    <div class="hero-stat-label">累计稿酬发放</div>
+                </div>
+                <div class="hero-stat-item">
+                    <div class="hero-stat-number">98%</div>
+                    <div class="hero-stat-label">准时发放稿酬</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📝</div>
+                <div class="stat-value">200万+</div>
+                <div class="stat-label">作品总数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value">50万+</div>
+                <div class="stat-label">作者人数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value">50亿</div>
+                <div class="stat-label">稿酬总额</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-value">98%</div>
+                <div class="stat-label">作者满意度</div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="info-card">
+                <h3>📌 成为作者的好处</h3>
+                <ul>
+                    <li>无门槛入驻，一键发布作品</li>
+                    <li>高达50%的分成比例</li>
+                    <li>专业编辑团队指导</li>
+                    <li>全平台推广资源支持</li>
+                    <li>完善的培训体系</li>
+                    <li>稳定的稿酬发放</li>
+                    <li>多样的作者福利</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h3>📈 创作数据统计</h3>
+                <p>平台每日新增作品超过5000部，平均每部作品拥有10万+阅读量。签约作者月均收入超过8000元，顶尖作者年收入可达数百万。</p>
+                <p>我们提供完善的数据后台，让你随时掌握作品的阅读量、收藏量、订阅量等关键数据，助力你的创作决策。</p>
+                <p>加入我们，开启你的创作之旅！</p>
+            </div>
+        </div>
+
+        <section class="benefits-section">
+            <h2>🎁 作者专属福利</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <div class="benefit-title">优厚稿酬</div>
+                    <div class="benefit-desc">基础稿酬+全勤奖励+订阅分成+打赏分成，多劳多得，上不封顶</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <div class="benefit-title">精准推荐</div>
+                    <div class="benefit-desc">智能算法推荐，让你的作品精准触达目标读者，提升曝光机会</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🏆</div>
+                    <div class="benefit-title">签约奖励</div>
+                    <div class="benefit-desc">签约即享签约奖金，完本还有额外奖励，激励你的创作热情</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📚</div>
+                    <div class="benefit-title">版权运营</div>
+                    <div class="benefit-desc">专业版权团队助力IP衍生开发，漫画、影视、游戏全方位拓展</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎓</div>
+                    <div class="benefit-title">培训支持</div>
+                    <div class="benefit-desc">定期举办写作培训、行业分享，帮助你不断提升写作水平</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎁</div>
+                    <div class="benefit-title">节日福利</div>
+                    <div class="benefit-desc">节假日专属福利、生日礼包、年度盛典，让你感受到家的温暖</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="steps-section">
+            <h2>🚀 入驻流程</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-title">注册账号</div>
+                    <div class="step-desc">注册平台账号，完成实名认证，开启创作之路</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-title">发布作品</div>
+                    <div class="step-desc">创建作品，上传封面，发布前三章内容</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-title">申请签约</div>
+                    <div class="step-desc">达到签约标准后，提交签约申请，等待编辑审核</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <div class="step-title">正式创作</div>
+                    <div class="step-desc">签约成功，享受专属福利，开始稳定更新</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <h2>❓ 常见问题</h2>
+            <div class="faq-item">
+                <div class="faq-question">Q: 签约有什么要求？</div>
+                <div class="faq-answer">A: 作品字数达到3万字以上，内容优质，有一定的读者基础即可申请签约。我们看重作品的潜力和作者的创作态度。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Q: 稿酬是如何计算的？</div>
+                <div class="faq-answer">A: 稿酬由基础稿酬、全勤奖励、订阅分成和打赏分成组成。基础稿酬按字数计算，订阅分成根据VIP章节订阅量分成，打赏分成比例高达50%。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Q: 签约后有什么义务？</div>
+                <div class="faq-answer">A: 签约作者需要保证作品的稳定更新，遵守平台规则，不得发布违规内容。我们鼓励作者保持高质量的创作。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Q: 作品版权归谁所有？</div>
+                <div class="faq-answer">A: 作品的著作权归作者所有，平台获得独家信息网络传播权等相关权利，双方共同开发作品的衍生价值。</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Q: 遇到问题如何联系编辑？</div>
+                <div class="faq-answer">A: 签约后会分配专属责任编辑，可以通过作者后台私信联系，也可以加入作者交流群获取帮助。</div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2>准备好了吗？开始你的创作之旅！</h2>
+            <p>立即入驻，成为百万作者中的一员，让你的故事被全世界看到！</p>
+            <button class="cta-btn">立即入驻</button>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>关于我们</h4>
+                    <ul>
+                        <li><a href="/agreements">平台介绍</a></li>
+                        <li><a href="/agreements">联系我们</a></li>
+                        <li><a href="/agreements">加入我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>帮助中心</h4>
+                    <ul>
+                        <li><a href="/agreements">常见问题</a></li>
+                        <li><a href="/agreements">创作指南</a></li>
+                        <li><a href="/agreements">稿酬说明</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>作家服务</h4>
+                    <ul>
+                        <li><a href="/creator">成为作家</a></li>
+                        <li><a href="/creator">签约申请</a></li>
+                        <li><a href="/creator">作家福利</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>法律声明</h4>
+                    <ul>
+                        <li><a href="/agreements">用户协议</a></li>
+                        <li><a href="/agreements">隐私政策</a></li>
+                        <li><a href="/agreements">版权声明</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                © 2026 小说阅读平台 版权所有
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>
