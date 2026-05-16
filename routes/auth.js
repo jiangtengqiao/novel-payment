@@ -8,8 +8,8 @@ const resetCodes = new Map();
 const lastSendTime = new Map();
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_EDy6uahn_LeRYvWZ9NyvwyNrvRGsKb72P';
-const CAPTCHA_APP_ID = '192339751';
-const CAPTCHA_SECRET_KEY = '4inhWL7rtPiyS1QU5IqnLlv86';
+const CAPTCHA_APP_ID = process.env.CAPTCHA_APP_ID || '192339751';
+const CAPTCHA_SECRET_KEY = process.env.CAPTCHA_SECRET_KEY || '4inhWL7rtPiyS1QU5IqnLlv86';
 
 async function verifyCaptcha(ticket, randstr, userIp) {
     try {
