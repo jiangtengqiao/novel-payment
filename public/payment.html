@@ -1130,11 +1130,17 @@
     const CAPTCHA_APP_ID = '192339751';
     let currentCaptchaResult = null;
     
-    // 调用腾讯云验证码（临时禁用，直接回调成功）
+    // 调用腾讯云验证码
     function showCaptcha(callback) {
-      console.log('临时禁用腾讯云验证码');
-      currentCaptchaResult = { ticket: 'test-ticket', randstr: 'test-randstr' };
-      callback(true);
+      const captcha = new TencentCaptcha(CAPTCHA_APP_ID, function(res) {
+        if (res.ret === 0) {
+          currentCaptchaResult = { ticket: res.ticket, randstr: res.randstr };
+          callback(true);
+        } else {
+          callback(false);
+        }
+      }, {});
+      captcha.show();
     }
 
     function showNotification(type, title, message) {
