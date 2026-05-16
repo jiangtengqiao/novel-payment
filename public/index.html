@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小说书城 - 海量小说免费看</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #f8f9fa 100%);
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 32px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #495057;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .category-tabs {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            padding: 10px 24px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .category-tab:hover, .category-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 24px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .book-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+
+        .book-info {
+            padding: 16px;
+        }
+
+        .book-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .book-author {
+            font-size: 13px;
+            color: #868e96;
+            margin-bottom: 8px;
+        }
+
+        .book-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: #adb5bd;
+        }
+
+        .free-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .paid-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #f8d7da;
+            color: #721c24;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .header-inner {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .search-box {
+                margin: 0;
+                max-width: 100%;
+            }
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">📚 小说书城</div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索小说、作者...">
+            </div>
+            <nav class="nav-links">
+                <a href="/">书城</a>
+                <a href="payment.html">充值</a>
+                <a href="#" id="userLink">登录</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="category-tabs">
+            <div class="category-tab active" data-category="">全部</div>
+            <div class="category-tab" data-category="玄幻">玄幻</div>
+            <div class="category-tab" data-category="仙侠">仙侠</div>
+            <div class="category-tab" data-category="都市">都市</div>
+            <div class="category-tab" data-category="历史">历史</div>
+            <div class="category-tab" data-category="游戏">游戏</div>
+            <div class="category-tab" data-category="悬疑">悬疑</div>
+            <div class="category-tab" data-category="科幻">科幻</div>
+        </div>
+
+        <section class="section" id="hotSection">
+            <h2 class="section-title">🔥 热门推荐</h2>
+            <div class="books-grid" id="hotGrid"></div>
+        </section>
+
+        <section class="section" id="newSection">
+            <h2 class="section-title">✨ 最新更新</h2>
+            <div class="books-grid" id="newGrid"></div>
+        </section>
+
+        <section class="section" id="likeSection">
+            <h2 class="section-title">❤️ 高分好评</h2>
+            <div class="books-grid" id="likeGrid"></div>
+        </section>
+    </div>
+
+    <script>
+        let currentUser = localStorage.getItem('currentUser');
+        
+        function updateUserLink() {
+            const link = document.getElementById('userLink');
+            if (currentUser) {
+                link.textContent = currentUser.split('@')[0];
+            } else {
+                link.textContent = '登录';
+            }
+        }
+        
+        updateUserLink();
+
+        function formatNumber(num) {
+            if (num >= 10000) {
+                return (num / 10000).toFixed(1) + '万';
+            }
+            return num.toString();
+        }
+
+        function renderBookCard(book) {
+            return `
+                <div class="book-card" onclick="openBook('${book.id}')">
+                    <div class="book-cover">📖</div>
+                    <div class="book-info">
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-author">${book.author}</div>
+                        <div class="book-meta">
+                            <span>${book.isFree ? '<span class="free-tag">免费</span>' : '<span class="paid-tag">付费</span>'}</span>
+                            <span>👁 ${formatNumber(book.views)}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function loadRecommendations() {
+            try {
+                const res = await fetch('/api/books/recommend');
+                const data = await res.json();
+                
+                document.getElementById('hotGrid').innerHTML = data.hot.map(renderBookCard).join('');
+                document.getElementById('newGrid').innerHTML = data.new.map(renderBookCard).join('');
+                document.getElementById('likeGrid').innerHTML = data.topLikes.map(renderBookCard).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function loadByCategory(category) {
+            try {
+                const res = await fetch(`/api/books/list?category=${category}`);
+                const data = await res.json();
+                
+                document.getElementById('hotGrid').innerHTML = data.books.map(renderBookCard).join('');
+                document.getElementById('newSection').style.display = 'none';
+                document.getElementById('likeSection').style.display = 'none';
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function openBook(bookId) {
+            localStorage.setItem('currentBookId', bookId);
+            window.location.href = 'reader.html?bookId=' + bookId;
+        }
+
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                const category = tab.dataset.category;
+                if (category) {
+                    loadByCategory(category);
+                } else {
+                    document.getElementById('newSection').style.display = 'block';
+                    document.getElementById('likeSection').style.display = 'block';
+                    loadRecommendations();
+                }
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter') {
+                const search = e.target.value;
+                if (!search) return;
+                try {
+                    const res = await fetch(`/api/books/list?search=${encodeURIComponent(search)}`);
+                    const data = await res.json();
+                    document.getElementById('hotGrid').innerHTML = data.books.map(renderBookCard).join('');
+                    document.getElementById('newSection').style.display = 'none';
+                    document.getElementById('likeSection').style.display = 'none';
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+        });
+
+        loadRecommendations();
+    </script>
+</body>
+</html>
+

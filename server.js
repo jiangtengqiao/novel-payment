@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -6,18 +7,22 @@ const { v4: uuidv4 } = require('uuid');
 const paymentRoutes = require('./routes/payment');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
+const booksRoutes = require('./routes/books');
+const usersRoutes = require('./routes/users');
+const { initSampleData } = require('./db/seed');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const users = new Map();
-const orders = new Map();
-const verificationCodes = new Map();
-const lastSendTime = new Map();
-const rebateRecords = new Map();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-global.users = users;
-global.orders = orders;
+app.use('/api/alipay', paymentRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/books', booksRoutes);
+app.use('/api/users', usersRoutes);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -42,14 +47,6 @@ const upload = multer({
   }
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/api/alipay', paymentRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/admin', adminRoutes);
-
 app.post('/api/upload', upload.single('qrcode'), (req, res) => {
   if (!req.file) {
     return res.json({ success: false, message: '请选择要上传的图片' });
@@ -62,7 +59,7 @@ app.get('/upload', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'payment.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.get('/payment-success', (req, res) => {
@@ -73,9 +70,12 @@ app.get('/agreements', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'agreements.html'));
 });
 
+initSampleData();
+
 const HOST = '0.0.0.0';
 
 app.listen(PORT, HOST, () => {
-  console.log(`小说平台支付服务器运行在 http://0.0.0.0:${PORT}`);
+  console.log(`小说平台服务器运行在 http://0.0.0.0:${PORT}`);
   console.log(`外部访问地址: http://115.190.92.241:${PORT}`);
 });
+
