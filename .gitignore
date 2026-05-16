@@ -3,3 +3,12 @@ node_modules/
 .DS_Store
 *.log
 npm-debug.log*
+
+# 数据库文件（每次启动会重新生成）
+data/books.json
+data/chapters.json
+data/users.json
+data/orders.json
+data/circles.json
+data/posts.json
+data/ads.json

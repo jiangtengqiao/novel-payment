@@ -1,130 +1,313 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小说书城 - 海量小说免费看</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>小说阅读平台 - 畅享海量正版小说</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #f8f9fa 100%);
-            color: #1a1a1a;
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f5f5f5;
+            color: #333;
             line-height: 1.6;
         }
 
-        .header {
+        /* 顶部导航 */
+        .top-nav {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 12px 0;
+            color: white;
+            font-size: 13px;
+        }
+        .top-nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top-nav a {
+            color: #ccc;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+        .top-nav a:hover { color: #fff; }
+
+        /* 主导航 */
+        .main-nav {
             background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
-
-        .header-inner {
-            max-width: 1200px;
+        .main-nav-inner {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 16px 24px;
+            padding: 0 24px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            height: 70px;
         }
-
         .logo {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 28px;
+            font-weight: 900;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-right: 50px;
         }
-
-        .search-box {
-            flex: 1;
-            max-width: 400px;
-            margin: 0 32px;
-            position: relative;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 12px 20px;
-            border: 2px solid #e9ecef;
-            border-radius: 25px;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
         .nav-links {
             display: flex;
-            gap: 24px;
+            gap: 40px;
+            flex: 1;
         }
-
         .nav-links a {
+            color: #333;
             text-decoration: none;
-            color: #495057;
+            font-size: 16px;
             font-weight: 500;
-            transition: color 0.3s;
+            padding: 10px 0;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
         }
-
-        .nav-links a:hover {
+        .nav-links a:hover, .nav-links a.active {
             color: #667eea;
+            border-bottom-color: #667eea;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 32px 24px;
-        }
-
-        .category-tabs {
+        .search-box {
             display: flex;
-            gap: 16px;
-            margin-bottom: 32px;
-            flex-wrap: wrap;
+            align-items: center;
+            background: #f5f5f5;
+            border-radius: 25px;
+            padding: 8px 20px;
+            width: 320px;
+        }
+        .search-box input {
+            border: none;
+            background: none;
+            outline: none;
+            flex: 1;
+            font-size: 14px;
+        }
+        .search-box button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .user-actions {
+            display: flex;
+            gap: 15px;
+            margin-left: 30px;
+        }
+        .user-actions button {
+            padding: 10px 24px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .btn-login {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        .btn-login:hover {
+            background: #667eea;
+            color: white;
+        }
+        .btn-register {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
 
-        .category-tab {
-            padding: 10px 24px;
+        /* 轮播图 */
+        .banner-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .banner-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.05)"/></svg>');
+            background-size: 300px;
+        }
+        .banner-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .banner-content h1 {
+            font-size: 48px;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        .banner-content p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 30px;
+        }
+        .banner-stats {
+            display: flex;
+            gap: 50px;
+            margin-top: 40px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 36px;
+            font-weight: 900;
+            color: white;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            margin-top: 5px;
+        }
+        .banner-card {
             background: white;
-            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .banner-card h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .hot-books {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .hot-book-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .hot-book-item:hover {
+            background: #f5f5f5;
+        }
+        .hot-book-rank {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+        }
+        .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); }
+        .rank-2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); }
+        .rank-3 { background: linear-gradient(135deg, #CD7F32, #8B4513); }
+        .rank-other { background: #999; }
+        .hot-book-info {
+            flex: 1;
+        }
+        .hot-book-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+        .hot-book-author {
+            font-size: 12px;
+            color: #999;
+            margin-top: 3px;
+        }
+
+        /* 分类导航 */
+        .category-nav {
+            background: white;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .category-nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+        }
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background: #f5f5f5;
             border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s;
-            font-weight: 500;
+            white-space: nowrap;
+            text-decoration: none;
+            color: #333;
         }
-
-        .category-tab:hover, .category-tab.active {
+        .category-item:hover {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border-color: transparent;
+            transform: translateY(-3px);
+        }
+        .category-icon {
+            font-size: 20px;
         }
 
+        /* 主内容区 */
+        .main-content {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
         .section {
-            margin-bottom: 48px;
+            margin-bottom: 50px;
         }
-
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
         .section-title {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
-            margin-bottom: 24px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
-
         .section-title::before {
             content: '';
             width: 4px;
@@ -132,244 +315,550 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 2px;
         }
-
-        .books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 24px;
+        .section-more {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
         }
 
+        /* 书籍网格 */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 25px;
+        }
         .book-card {
             background: white;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
             transition: all 0.3s;
             cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
-
         .book-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
         }
-
         .book-cover {
             width: 100%;
-            height: 220px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            height: 240px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .book-info {
+            padding: 15px;
+        }
+        .book-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .book-author {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #999;
+        }
+        .book-category {
+            background: #f0f0f0;
+            padding: 3px 10px;
+            border-radius: 10px;
+            color: #666;
+        }
+        .book-views {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        /* 排行榜 */
+        .ranking-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .ranking-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .ranking-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .ranking-icon {
+            font-size: 28px;
+        }
+        .ranking-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .ranking-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .ranking-item:hover {
+            background: #f5f5f5;
+        }
+        .ranking-num {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 60px;
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
         }
-
-        .book-info {
-            padding: 16px;
+        .ranking-info {
+            flex: 1;
+            min-width: 0;
         }
-
-        .book-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            white-space: nowrap;
+        .ranking-book-title {
+            font-size: 14px;
+            font-weight: 500;
             overflow: hidden;
             text-overflow: ellipsis;
+            white-space: nowrap;
         }
-
-        .book-author {
-            font-size: 13px;
-            color: #868e96;
-            margin-bottom: 8px;
-        }
-
-        .book-meta {
-            display: flex;
-            gap: 12px;
+        .ranking-book-author {
             font-size: 12px;
-            color: #adb5bd;
+            color: #999;
+            margin-top: 3px;
         }
 
-        .free-tag {
-            display: inline-block;
-            padding: 2px 8px;
-            background: #d4edda;
-            color: #155724;
-            border-radius: 4px;
-            font-size: 11px;
+        /* 底部 */
+        .footer {
+            background: #1a1a2e;
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+        .footer-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        .footer-brand h3 {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .footer-brand p {
+            font-size: 14px;
+            color: #999;
+            line-height: 1.8;
+        }
+        .footer-section h4 {
+            font-size: 16px;
             font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .footer-section ul {
+            list-style: none;
+        }
+        .footer-section li {
+            margin-bottom: 12px;
+        }
+        .footer-section a {
+            color: #999;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        .footer-section a:hover {
+            color: #667eea;
+        }
+        .footer-bottom {
+            border-top: 1px solid #2a2a3e;
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: #666;
+        }
+        .footer-links {
+            display: flex;
+            gap: 30px;
+        }
+        .footer-links a {
+            color: #999;
+            text-decoration: none;
+        }
+        .footer-links a:hover {
+            color: #667eea;
         }
 
-        .paid-tag {
-            display: inline-block;
-            padding: 2px 8px;
-            background: #f8d7da;
-            color: #721c24;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .books-grid { grid-template-columns: repeat(4, 1fr); }
+            .ranking-section { grid-template-columns: repeat(2, 1fr); }
         }
-
         @media (max-width: 768px) {
-            .header-inner {
-                flex-direction: column;
-                gap: 16px;
-            }
-            .search-box {
-                margin: 0;
-                max-width: 100%;
-            }
-            .books-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-                gap: 16px;
-            }
+            .books-grid { grid-template-columns: repeat(2, 1fr); }
+            .ranking-section { grid-template-columns: 1fr; }
+            .banner-inner { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-inner">
-            <div class="logo">📚 小说书城</div>
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="搜索小说、作者...">
+    <!-- 顶部导航 -->
+    <div class="top-nav">
+        <div class="top-nav-inner">
+            <span>欢迎来到小说阅读平台，畅享海量正版小说！</span>
+            <div>
+                <a href="/agreements">用户协议</a>
+                <a href="/agreements">隐私政策</a>
+                <a href="/agreements">联系我们</a>
             </div>
-            <nav class="nav-links">
-                <a href="/">书城</a>
-                <a href="payment.html">充值</a>
-                <a href="#" id="userLink">登录</a>
-            </nav>
         </div>
-    </header>
-
-    <div class="container">
-        <div class="category-tabs">
-            <div class="category-tab active" data-category="">全部</div>
-            <div class="category-tab" data-category="玄幻">玄幻</div>
-            <div class="category-tab" data-category="仙侠">仙侠</div>
-            <div class="category-tab" data-category="都市">都市</div>
-            <div class="category-tab" data-category="历史">历史</div>
-            <div class="category-tab" data-category="游戏">游戏</div>
-            <div class="category-tab" data-category="悬疑">悬疑</div>
-            <div class="category-tab" data-category="科幻">科幻</div>
-        </div>
-
-        <section class="section" id="hotSection">
-            <h2 class="section-title">🔥 热门推荐</h2>
-            <div class="books-grid" id="hotGrid"></div>
-        </section>
-
-        <section class="section" id="newSection">
-            <h2 class="section-title">✨ 最新更新</h2>
-            <div class="books-grid" id="newGrid"></div>
-        </section>
-
-        <section class="section" id="likeSection">
-            <h2 class="section-title">❤️ 高分好评</h2>
-            <div class="books-grid" id="likeGrid"></div>
-        </section>
     </div>
 
+    <!-- 主导航 -->
+    <nav class="main-nav">
+        <div class="main-nav-inner">
+            <div class="logo">📚 小说平台</div>
+            <div class="nav-links">
+                <a href="/" class="active">首页</a>
+                <a href="#books">书库</a>
+                <a href="#ranking">排行榜</a>
+                <a href="/payment">充值</a>
+                <a href="/creator">作家专区</a>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="搜索书名、作者" id="searchInput">
+                <button onclick="handleSearch()">搜索</button>
+            </div>
+            <div class="user-actions">
+                <button class="btn-login" onclick="showLogin()">登录</button>
+                <button class="btn-register" onclick="showRegister()">注册</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 轮播图 -->
+    <section class="banner-section">
+        <div class="banner-inner">
+            <div class="banner-content">
+                <h1>海量正版小说<br>畅享阅读乐趣</h1>
+                <p>汇聚百万精品小说，玄幻、仙侠、都市、言情应有尽有<br>支持离线阅读，随时随地畅读好书</p>
+                <div class="banner-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">100万+</div>
+                        <div class="stat-label">精品小说</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">5000万+</div>
+                        <div class="stat-label">注册用户</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">10亿+</div>
+                        <div class="stat-label">累计阅读</div>
+                    </div>
+                </div>
+            </div>
+            <div class="banner-card">
+                <h3>🔥 热门推荐</h3>
+                <div class="hot-books" id="hotBooks">
+                    <div class="hot-book-item">
+                        <div class="hot-book-rank rank-1">1</div>
+                        <div class="hot-book-info">
+                            <div class="hot-book-title">斗破苍穹</div>
+                            <div class="hot-book-author">天蚕土豆</div>
+                        </div>
+                    </div>
+                    <div class="hot-book-item">
+                        <div class="hot-book-rank rank-2">2</div>
+                        <div class="hot-book-info">
+                            <div class="hot-book-title">完美世界</div>
+                            <div class="hot-book-author">辰东</div>
+                        </div>
+                    </div>
+                    <div class="hot-book-item">
+                        <div class="hot-book-rank rank-3">3</div>
+                        <div class="hot-book-info">
+                            <div class="hot-book-title">遮天</div>
+                            <div class="hot-book-author">辰东</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 分类导航 -->
+    <div class="category-nav">
+        <div class="category-nav-inner">
+            <a href="#" class="category-item"><span class="category-icon">⚔️</span>玄幻</a>
+            <a href="#" class="category-item"><span class="category-icon">🗡️</span>仙侠</a>
+            <a href="#" class="category-item"><span class="category-icon">🏙️</span>都市</a>
+            <a href="#" class="category-item"><span class="category-icon">📜</span>历史</a>
+            <a href="#" class="category-item"><span class="category-icon">🎮</span>游戏</a>
+            <a href="#" class="category-item"><span class="category-icon">🔍</span>悬疑</a>
+            <a href="#" class="category-item"><span class="category-icon">🚀</span>科幻</a>
+            <a href="#" class="category-item"><span class="category-icon">💕</span>言情</a>
+            <a href="#" class="category-item"><span class="category-icon">🎭</span>轻小说</a>
+            <a href="#" class="category-item"><span class="category-icon">📚</span>更多分类</a>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 热门推荐 -->
+        <section class="section" id="books">
+            <div class="section-header">
+                <div class="section-title">🔥 热门推荐</div>
+                <a href="#" class="section-more">查看更多 ></a>
+            </div>
+            <div class="books-grid" id="hotBooksGrid">
+                <!-- 动态加载 -->
+            </div>
+        </section>
+
+        <!-- 新书上架 -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-title">📖 新书上架</div>
+                <a href="#" class="section-more">查看更多 ></a>
+            </div>
+            <div class="books-grid" id="newBooksGrid">
+                <!-- 动态加载 -->
+            </div>
+        </section>
+
+        <!-- 排行榜 -->
+        <section class="section" id="ranking">
+            <div class="section-header">
+                <div class="section-title">🏆 排行榜</div>
+            </div>
+            <div class="ranking-section">
+                <div class="ranking-card">
+                    <div class="ranking-header">
+                        <span class="ranking-icon">🔥</span>
+                        <span class="ranking-title">热门榜</span>
+                    </div>
+                    <div class="ranking-list" id="hotRanking">
+                        <!-- 动态加载 -->
+                    </div>
+                </div>
+                <div class="ranking-card">
+                    <div class="ranking-header">
+                        <span class="ranking-icon">⭐</span>
+                        <span class="ranking-title">收藏榜</span>
+                    </div>
+                    <div class="ranking-list" id="collectRanking">
+                        <!-- 动态加载 -->
+                    </div>
+                </div>
+                <div class="ranking-card">
+                    <div class="ranking-header">
+                        <span class="ranking-icon">💰</span>
+                        <span class="ranking-title">畅销榜</span>
+                    </div>
+                    <div class="ranking-list" id="sellRanking">
+                        <!-- 动态加载 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>📚 小说平台</h3>
+                    <p>小说平台是一个专业的网络文学阅读平台，汇聚百万精品小说，为读者提供优质的阅读体验。我们致力于打造最好的网络文学平台，让每一位读者都能找到自己喜欢的作品。</p>
+                </div>
+                <div class="footer-section">
+                    <h4>关于我们</h4>
+                    <ul>
+                        <li><a href="/agreements">平台介绍</a></li>
+                        <li><a href="/agreements">联系我们</a></li>
+                        <li><a href="/agreements">加入我们</a></li>
+                        <li><a href="/agreements">合作伙伴</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>帮助中心</h4>
+                    <ul>
+                        <li><a href="/agreements">常见问题</a></li>
+                        <li><a href="/agreements">充值说明</a></li>
+                        <li><a href="/agreements">会员权益</a></li>
+                        <li><a href="/agreements">意见反馈</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>作家服务</h4>
+                    <ul>
+                        <li><a href="/creator">成为作家</a></li>
+                        <li><a href="/creator">创作指南</a></li>
+                        <li><a href="/creator">稿费说明</a></li>
+                        <li><a href="/creator">作家福利</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>法律声明</h4>
+                    <ul>
+                        <li><a href="/agreements">用户协议</a></li>
+                        <li><a href="/agreements">隐私政策</a></li>
+                        <li><a href="/agreements">版权声明</a></li>
+                        <li><a href="/agreements">免责声明</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>© 2026 小说阅读平台 版权所有</div>
+                <div class="footer-links">
+                    <a href="/agreements">用户协议</a>
+                    <a href="/agreements">隐私政策</a>
+                    <a href="/agreements">社区规范</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        let currentUser = localStorage.getItem('currentUser');
-        
-        function updateUserLink() {
-            const link = document.getElementById('userLink');
-            if (currentUser) {
-                link.textContent = currentUser.split('@')[0];
-            } else {
-                link.textContent = '登录';
+        // 加载书籍数据
+        async function loadBooks() {
+            try {
+                const response = await fetch('/api/books/list?limit=12');
+                const data = await response.json();
+                
+                if (data.success && data.books) {
+                    renderBooks('hotBooksGrid', data.books.slice(0, 6));
+                    renderBooks('newBooksGrid', data.books.slice(6, 12));
+                    renderRankings(data.books);
+                }
+            } catch (error) {
+                console.error('加载书籍失败:', error);
             }
         }
-        
-        updateUserLink();
 
-        function formatNumber(num) {
-            if (num >= 10000) {
-                return (num / 10000).toFixed(1) + '万';
-            }
-            return num.toString();
-        }
+        function renderBooks(containerId, books) {
+            const container = document.getElementById(containerId);
+            if (!container || !books) return;
 
-        function renderBookCard(book) {
-            return `
-                <div class="book-card" onclick="openBook('${book.id}')">
-                    <div class="book-cover">📖</div>
+            container.innerHTML = books.map(book => `
+                <div class="book-card" onclick="goToBook('${book.id}')">
+                    <img class="book-cover" src="${book.cover || 'https://via.placeholder.com/200x300?text=Book'}" alt="${book.title}">
                     <div class="book-info">
                         <div class="book-title">${book.title}</div>
                         <div class="book-author">${book.author}</div>
                         <div class="book-meta">
-                            <span>${book.isFree ? '<span class="free-tag">免费</span>' : '<span class="paid-tag">付费</span>'}</span>
-                            <span>👁 ${formatNumber(book.views)}</span>
+                            <span class="book-category">${book.category}</span>
+                            <span class="book-views">👁 ${(book.views / 10000).toFixed(1)}万</span>
                         </div>
                     </div>
                 </div>
-            `;
+            `).join('');
         }
 
-        async function loadRecommendations() {
-            try {
-                const res = await fetch('/api/books/recommend');
-                const data = await res.json();
-                
-                document.getElementById('hotGrid').innerHTML = data.hot.map(renderBookCard).join('');
-                document.getElementById('newGrid').innerHTML = data.new.map(renderBookCard).join('');
-                document.getElementById('likeGrid').innerHTML = data.topLikes.map(renderBookCard).join('');
-            } catch (err) {
-                console.error(err);
+        function renderRankings(books) {
+            if (!books) return;
+            
+            const hotRanking = document.getElementById('hotRanking');
+            const collectRanking = document.getElementById('collectRanking');
+            const sellRanking = document.getElementById('sellRanking');
+
+            const sortedByViews = [...books].sort((a, b) => b.views - a.views).slice(0, 5);
+            const sortedByLikes = [...books].sort((a, b) => b.likes - a.likes).slice(0, 5);
+
+            if (hotRanking) {
+                hotRanking.innerHTML = sortedByViews.map((book, index) => `
+                    <div class="ranking-item" onclick="goToBook('${book.id}')">
+                        <div class="ranking-num ${index < 3 ? 'rank-' + (index + 1) : 'rank-other'}">${index + 1}</div>
+                        <div class="ranking-info">
+                            <div class="ranking-book-title">${book.title}</div>
+                            <div class="ranking-book-author">${book.author}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            if (collectRanking) {
+                collectRanking.innerHTML = sortedByLikes.map((book, index) => `
+                    <div class="ranking-item" onclick="goToBook('${book.id}')">
+                        <div class="ranking-num ${index < 3 ? 'rank-' + (index + 1) : 'rank-other'}">${index + 1}</div>
+                        <div class="ranking-info">
+                            <div class="ranking-book-title">${book.title}</div>
+                            <div class="ranking-book-author">${book.author}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            if (sellRanking) {
+                sellRanking.innerHTML = books.slice(0, 5).map((book, index) => `
+                    <div class="ranking-item" onclick="goToBook('${book.id}')">
+                        <div class="ranking-num ${index < 3 ? 'rank-' + (index + 1) : 'rank-other'}">${index + 1}</div>
+                        <div class="ranking-info">
+                            <div class="ranking-book-title">${book.title}</div>
+                            <div class="ranking-book-author">${book.author}</div>
+                        </div>
+                    </div>
+                `).join('');
             }
         }
 
-        async function loadByCategory(category) {
-            try {
-                const res = await fetch(`/api/books/list?category=${category}`);
-                const data = await res.json();
-                
-                document.getElementById('hotGrid').innerHTML = data.books.map(renderBookCard).join('');
-                document.getElementById('newSection').style.display = 'none';
-                document.getElementById('likeSection').style.display = 'none';
-            } catch (err) {
-                console.error(err);
+        function goToBook(bookId) {
+            window.location.href = `/reader?bookId=${bookId}`;
+        }
+
+        function handleSearch() {
+            const keyword = document.getElementById('searchInput').value;
+            if (keyword) {
+                window.location.href = `/?search=${encodeURIComponent(keyword)}`;
             }
         }
 
-        function openBook(bookId) {
-            localStorage.setItem('currentBookId', bookId);
-            window.location.href = 'reader.html?bookId=' + bookId;
+        function showLogin() {
+            window.location.href = '/payment';
         }
 
-        document.querySelectorAll('.category-tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                const category = tab.dataset.category;
-                if (category) {
-                    loadByCategory(category);
-                } else {
-                    document.getElementById('newSection').style.display = 'block';
-                    document.getElementById('likeSection').style.display = 'block';
-                    loadRecommendations();
-                }
-            });
-        });
+        function showRegister() {
+            window.location.href = '/payment';
+        }
 
-        document.getElementById('searchInput').addEventListener('keypress', async (e) => {
-            if (e.key === 'Enter') {
-                const search = e.target.value;
-                if (!search) return;
-                try {
-                    const res = await fetch(`/api/books/list?search=${encodeURIComponent(search)}`);
-                    const data = await res.json();
-                    document.getElementById('hotGrid').innerHTML = data.books.map(renderBookCard).join('');
-                    document.getElementById('newSection').style.display = 'none';
-                    document.getElementById('likeSection').style.display = 'none';
-                } catch (err) {
-                    console.error(err);
-                }
-            }
-        });
-
-        loadRecommendations();
+        // 页面加载时获取数据
+        loadBooks();
     </script>
 </body>
 </html>
-
