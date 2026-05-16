@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>协议中心 - 小说平台</title>
+    <title>协议中心 - 小说阅读平台</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -14,143 +14,305 @@
 
         body {
             font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
-            color: #1a1a1a;
+            background: linear-gradient(180deg, #f8f6f0 0%, #f5f3eb 100%);
+            color: #333;
             line-height: 1.8;
             min-height: 100vh;
         }
 
-        .header {
-            background: white;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        /* 顶部导航 */
+        .top-nav {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 0;
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
 
-        .header-inner {
-            max-width: 1200px;
+        .nav-inner {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 16px 24px;
+            padding: 0 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            height: 64px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #e8d5b7 0%, #d4af37 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .nav-title {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
         }
 
         .back-btn {
-            background: none;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 15px;
-            color: #495057;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 20px;
             border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
             transition: all 0.3s;
         }
 
         .back-btn:hover {
-            background: #f8f9fa;
-            color: #212529;
+            background: rgba(255,255,255,0.2);
+            transform: translateX(-2px);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 32px auto;
-            padding: 0 24px;
-            display: grid;
-            grid-template-columns: 240px 1fr;
-            gap: 32px;
+        /* 主要内容 */
+        .main-content {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 40px;
         }
 
-        .sidebar {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-            height: fit-content;
-            position: sticky;
-            top: 100px;
+        /* 页面标题 */
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
         }
 
-        .sidebar-title {
-            font-size: 18px;
+        .page-title {
+            font-size: 36px;
             font-weight: 700;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid #f0f0f0;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+            letter-spacing: 4px;
         }
 
-        .agreement-item {
-            padding: 12px 16px;
-            margin-bottom: 8px;
-            border-radius: 8px;
+        .page-subtitle {
+            font-size: 16px;
+            color: #666;
+            letter-spacing: 2px;
+        }
+
+        /* 协议选择器 */
+        .agreement-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 14px 32px;
+            background: white;
+            border: 2px solid #e8e8e8;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .tab-btn:hover {
+            border-color: #d4af37;
+            color: #d4af37;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-color: #1a1a2e;
+            color: white;
+            box-shadow: 0 4px 16px rgba(26,26,46,0.3);
+        }
+
+        /* 协议容器 */
+        .agreement-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        /* 章节列表 */
+        .chapter-list {
+            padding: 32px;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fafafa;
+        }
+
+        .chapter-list-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .chapter-item {
+            padding: 16px 20px;
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 15px;
-            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .agreement-item:hover {
-            background: #f8f9fa;
-            color: #212529;
+        .chapter-item:hover {
+            border-color: #d4af37;
+            background: #fffef8;
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
-        .agreement-item.active {
+        .chapter-item.loaded {
+            background: #f0fff4;
+            border-color: #68d391;
+        }
+
+        .chapter-icon {
+            width: 32px;
+            height: 32px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
+            font-size: 14px;
+            font-weight: 700;
         }
 
-        .content {
-            background: white;
-            border-radius: 12px;
-            padding: 40px 48px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        .chapter-info {
+            flex: 1;
+        }
+
+        .chapter-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .chapter-meta {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* 协议内容区域 */
+        .agreement-content {
+            padding: 48px 64px;
+            min-height: 400px;
         }
 
         .content-header {
-            margin-bottom: 32px;
-            padding-bottom: 24px;
-            border-bottom: 2px solid #f0f0f0;
+            text-align: center;
+            margin-bottom: 48px;
+            padding-bottom: 32px;
+            border-bottom: 3px solid #f0f0f0;
         }
 
         .content-title {
             font-size: 28px;
             font-weight: 700;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #1a1a2e;
+            margin-bottom: 16px;
+            letter-spacing: 3px;
         }
 
-        .last-updated {
+        .content-meta {
             font-size: 14px;
-            color: #868e96;
+            color: #999;
+            display: flex;
+            justify-content: center;
+            gap: 24px;
         }
 
-        .content-body {
-            font-size: 16px;
-            line-height: 2;
-            color: #212529;
-        }
-
+        /* 章节内容 */
         .section {
-            margin-bottom: 32px;
-            padding: 24px;
-            background: #fafafa;
-            border-radius: 8px;
+            margin-bottom: 48px;
+            padding: 32px;
+            background: #fafbfc;
+            border-radius: 12px;
             border-left: 4px solid #667eea;
         }
 
         .section-title {
             font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #212529;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-number {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
         }
 
         .section-content {
-            white-space: pre-wrap;
-            word-wrap: break-word;
+            font-size: 15px;
+            color: #444;
+            line-height: 2;
+            text-align: justify;
         }
 
         .section-content p {
@@ -158,111 +320,473 @@
             text-indent: 2em;
         }
 
-        .section-content ul, .section-content ol {
-            margin-left: 2em;
-            margin-bottom: 16px;
+        .section-content ul {
+            margin: 16px 0;
+            padding-left: 2em;
         }
 
         .section-content li {
             margin-bottom: 8px;
         }
 
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            color: #666;
+        }
+
+        /* 加载更多按钮 */
+        .load-more-section {
+            text-align: center;
+            padding: 32px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .load-more-btn {
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 16px rgba(102,126,234,0.3);
+        }
+
+        .load-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.4);
+        }
+
+        .load-more-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* 统计信息 */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            padding: 24px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f0f0 100%);
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #999;
+            letter-spacing: 1px;
+        }
+
+        /* 响应式 */
         @media (max-width: 768px) {
-            .container {
+            .nav-inner {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main-content {
+                padding: 0 20px;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+
+            .agreement-content {
+                padding: 32px 24px;
+            }
+
+            .chapter-grid {
                 grid-template-columns: 1fr;
             }
 
-            .sidebar {
-                position: static;
+            .stats {
+                flex-direction: column;
+                gap: 24px;
             }
+        }
 
-            .content {
-                padding: 24px;
+        /* 快捷跳转 */
+        .quick-nav {
+            position: fixed;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 999;
+        }
+
+        .quick-btn {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            font-size: 16px;
+        }
+
+        .quick-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .quick-nav {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-inner">
-            <button class="back-btn" onclick="goBack()">← 返回</button>
-            <div class="logo" style="font-size: 20px; font-weight: 700;">📜 协议中心</div>
-            <div style="width: 80px;"></div>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="sidebar">
-            <div class="sidebar-title">协议列表</div>
-            <div class="agreement-item active" data-id="userAgreement">📄 用户服务协议</div>
-            <div class="agreement-item" data-id="privacyPolicy">🔒 隐私政策</div>
-            <div class="agreement-item" data-id="communityGuidelines">📋 社区规范</div>
-        </div>
-
-        <div class="content" id="agreementContent">
-            <div class="content-header">
-                <div class="content-title" id="contentTitle">用户服务协议</div>
-                <div class="last-updated" id="lastUpdated">最后更新：2026-05-15</div>
+    <!-- 顶部导航 -->
+    <nav class="top-nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-brand">
+                <div class="nav-logo">📚</div>
+                <span class="nav-title">小说阅读平台</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">首页</a>
+                <a href="/reader" class="nav-link">阅读</a>
+                <a href="/community" class="nav-link">社区</a>
+                <a href="/payment" class="nav-link">充值</a>
             </div>
-            <div class="content-body" id="contentBody">
-                <div class="loading">正在加载协议内容...</div>
+            <button onclick="history.back()" class="back-btn">← 返回</button>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="main-content">
+        <!-- 页面标题 -->
+        <div class="page-header">
+            <h1 class="page-title">📜 平台协议中心</h1>
+            <p class="page-subtitle">用户服务协议 · 隐私政策 · 社区规范</p>
+        </div>
+
+        <!-- 协议选择器 -->
+        <div class="agreement-tabs">
+            <button class="tab-btn active" data-type="userAgreement" onclick="switchAgreement('userAgreement')">
+                📝 用户服务协议
+            </button>
+            <button class="tab-btn" data-type="privacyPolicy" onclick="switchAgreement('privacyPolicy')">
+                🔒 隐私政策
+            </button>
+            <button class="tab-btn" data-type="communityRules" onclick="switchAgreement('communityRules')">
+                👥 社区规范
+            </button>
+        </div>
+
+        <!-- 协议容器 -->
+        <div class="agreement-container">
+            <!-- 章节列表 -->
+            <div class="chapter-list" id="chapterList">
+                <div class="chapter-list-title">
+                    📚 协议章节
+                </div>
+                <div class="chapter-grid" id="chapterGrid">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+
+            <!-- 协议内容 -->
+            <div class="agreement-content" id="agreementContent">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">正在加载协议内容...</p>
+                </div>
+            </div>
+
+            <!-- 统计信息 -->
+            <div class="stats" id="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="statChapters">0</div>
+                    <div class="stat-label">章节数量</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statWords">0</div>
+                    <div class="stat-label">协议字数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statUpdated">2026-05-16</div>
+                    <div class="stat-label">最后更新</div>
+                </div>
             </div>
         </div>
+    </main>
+
+    <!-- 快捷导航 -->
+    <div class="quick-nav">
+        <button class="quick-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="回到顶部">↑</button>
+        <button class="quick-btn" onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" title="到底部">↓</button>
     </div>
 
     <script>
-        let agreements = {};
+        // 全局变量
+        let currentAgreement = 'userAgreement';
+        let agreementsData = null;
+        let loadedSections = new Set();
+        let sectionsPerPage = 10;
+        let currentPage = 1;
 
-        async function loadAgreements() {
+        // 初始化
+        async function init() {
             try {
+                showLoading();
                 const response = await fetch('/data/agreements.json');
-                agreements = await response.json();
-                renderAgreement('userAgreement');
+                agreementsData = await response.json();
+                renderChapterList();
+                loadInitialSections();
+                updateStats();
             } catch (error) {
                 console.error('加载协议失败:', error);
-                document.getElementById('contentBody').innerHTML = '<p style="color: #dc3545;">协议加载失败，请刷新页面重试。</p>';
+                document.getElementById('agreementContent').innerHTML = `
+                    <div class="loading">
+                        <p class="loading-text">加载协议失败，请刷新页面重试</p>
+                    </div>
+                `;
             }
         }
 
-        function renderAgreement(id) {
-            const agreement = agreements[id];
-            if (!agreement) return;
+        // 显示加载状态
+        function showLoading() {
+            document.getElementById('agreementContent').innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">正在加载协议内容...</p>
+                </div>
+            `;
+        }
 
-            document.getElementById('contentTitle').textContent = agreement.title;
-            document.getElementById('lastUpdated').textContent = '最后更新：' + agreement.lastUpdated;
+        // 切换协议
+        function switchAgreement(type) {
+            currentAgreement = type;
+            currentPage = 1;
+            loadedSections.clear();
 
-            let html = '';
-            agreement.sections.forEach(section => {
-                html += `
-                    <div class="section">
-                        <div class="section-title">${section.title}</div>
-                        <div class="section-content">${section.content}</div>
-                    </div>
-                `;
-            });
-
-            document.getElementById('contentBody').innerHTML = html;
-
-            document.querySelectorAll('.agreement-item').forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.id === id) {
-                    item.classList.add('active');
+            // 更新标签状态
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.type === type) {
+                    btn.classList.add('active');
                 }
             });
+
+            // 重新渲染
+            renderChapterList();
+            loadInitialSections();
+            updateStats();
+
+            // 滚动到内容区
+            document.getElementById('agreementContent').scrollIntoView({ behavior: 'smooth' });
         }
 
-        document.querySelectorAll('.agreement-item').forEach(item => {
-            item.addEventListener('click', () => {
-                renderAgreement(item.dataset.id);
+        // 渲染章节列表
+        function renderChapterList() {
+            const data = agreementsData[currentAgreement];
+            const chapters = data.sections || [];
+            const chapterGrid = document.getElementById('chapterGrid');
+
+            // 只显示前50个章节（协议内容重复）
+            const displayChapters = chapters.slice(0, 50);
+
+            chapterGrid.innerHTML = displayChapters.map((section, index) => `
+                <div class="chapter-item ${loadedSections.has(index) ? 'loaded' : ''}" 
+                     onclick="loadSection(${index})" 
+                     onmouseenter="preloadSection(${index})">
+                    <div class="chapter-icon">${index + 1}</div>
+                    <div class="chapter-info">
+                        <div class="chapter-title">${section.title}</div>
+                        <div class="chapter-meta">${loadedSections.has(index) ? '✓ 已加载' : '点击加载'}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 加载初始章节（只加载前3个）
+        function loadInitialSections() {
+            const sections = agreementsData[currentAgreement].sections || [];
+            for (let i = 0; i < Math.min(3, sections.length); i++) {
+                loadSection(i);
+            }
+            currentPage = 1;
+        }
+
+        // 加载章节内容
+        function loadSection(index) {
+            if (loadedSections.has(index)) {
+                // 已加载，滚动到该章节
+                const section = document.getElementById(`section-${index}`);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                return;
+            }
+
+            const sections = agreementsData[currentAgreement].sections;
+            if (!sections || index >= sections.length) return;
+
+            const section = sections[index];
+            loadedSections.add(index);
+
+            // 更新章节列表状态
+            const chapterItems = document.querySelectorAll('.chapter-item');
+            if (chapterItems[index]) {
+                chapterItems[index].classList.add('loaded');
+                chapterItems[index].querySelector('.chapter-meta').textContent = '✓ 已加载';
+            }
+
+            // 渲染内容
+            const contentDiv = document.getElementById('agreementContent');
+            const sectionHtml = `
+                <div class="section" id="section-${index}" style="animation: fadeIn 0.3s ease-in;">
+                    <h2 class="section-title">
+                        <span class="section-number">${index + 1}</span>
+                        ${section.title}
+                    </h2>
+                    <div class="section-content">
+                        ${formatContent(section.content)}
+                    </div>
+                </div>
+            `;
+
+            // 插入到正确位置
+            const existingSections = contentDiv.querySelectorAll('.section');
+            if (existingSections.length === 0) {
+                // 首次加载
+                const data = agreementsData[currentAgreement];
+                contentDiv.innerHTML = `
+                    <div class="content-header">
+                        <h1 class="content-title">${data.title}</h1>
+                        <div class="content-meta">
+                            <span>📅 最后更新：${data.lastUpdated || '2026-05-16'}</span>
+                            <span>📝 ${sections.length} 个章节</span>
+                        </div>
+                    </div>
+                    ${sectionHtml}
+                `;
+            } else {
+                // 插入新章节
+                let inserted = false;
+                for (let i = 0; i < existingSections.length; i++) {
+                    const existingIndex = parseInt(existingSections[i].id.replace('section-', ''));
+                    if (index < existingIndex) {
+                        existingSections[i].insertAdjacentHTML('beforebegin', sectionHtml);
+                        inserted = true;
+                        break;
+                    }
+                }
+                if (!inserted) {
+                    contentDiv.insertAdjacentHTML('beforeend', sectionHtml);
+                }
+            }
+        }
+
+        // 预加载章节
+        function preloadSection(index) {
+            // 鼠标悬停时预加载，但不显示
+            if (!loadedSections.has(index)) {
+                // 可以在这里添加预加载逻辑
+            }
+        }
+
+        // 格式化内容
+        function formatContent(content) {
+            if (!content) return '<p>内容加载中...</p>';
+
+            // 处理换行和段落
+            const paragraphs = content.split('\n\n').filter(p => p.trim());
+            return paragraphs.map(p => {
+                // 检查是否是列表
+                if (p.includes('（') && p.includes('）')) {
+                    // 处理列表项
+                    const items = p.split(/(?=[（（])|(?<=[））])/);
+                    if (items.length > 1) {
+                        const listItems = items.map(item => `<li>${item.trim()}</li>`).join('');
+                        return `<ul>${listItems}</ul>`;
+                    }
+                }
+                // 普通段落
+                return `<p>${p.replace(/\n/g, '<br>')}</p>`;
+            }).join('');
+        }
+
+        // 更新统计
+        function updateStats() {
+            const data = agreementsData[currentAgreement];
+            const sections = data.sections || [];
+
+            document.getElementById('statChapters').textContent = Math.min(sections.length, 50);
+            document.getElementById('statUpdated').textContent = data.lastUpdated || '2026-05-16';
+
+            // 计算总字数
+            let totalWords = 0;
+            sections.slice(0, 50).forEach(section => {
+                totalWords += (section.content || '').length;
             });
-        });
-
-        function goBack() {
-            window.history.back();
+            document.getElementById('statWords').textContent = Math.round(totalWords / 4);
         }
 
-        loadAgreements();
+        // 添加动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
-
