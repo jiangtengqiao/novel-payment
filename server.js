@@ -18,7 +18,7 @@ const creatorRoutes = require('./routes/creator');
 
 const { clearSampleData } = require('./db/seed');
 const { initRealBooks } = require('./db/init-books');
-const { startCrawl } = require('./services/crawler');
+const crawler = require('./services/crawler');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -45,28 +45,53 @@ initRealBooks();
 
 console.log('🕷️  启动后台爬虫...');
 
+// 爬虫状态API
+app.get('/api/crawler/status', (req, res) => {
+  res.json({
+    success: true,
+    stats: crawler.getStats()
+  });
+});
+
+// 手动触发爬虫
+app.post('/api/crawler/trigger', async (req, res) => {
+  try {
+    const pages = req.body.pages || 1;
+    const stats = await crawler.crawlAndSave(pages);
+    res.json({
+      success: true,
+      stats
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+});
+
 // 服务器启动5秒后立即爬取初始数据
 setTimeout(async () => {
   try {
-    const stats = await startCrawl(2);
+    const stats = await crawler.crawlAndSave(2);
     console.log('✅ 初始爬虫完成:', stats);
   } catch (error) {
     console.error('❌ 初始爬虫跳过:', error.message);
   }
 }, 5000);
 
-// 每5分钟爬取1页，快速更新
-console.log('⏰ 设置每5分钟定时爬虫任务...');
+// 每10分钟爬取1页，分散更新避免压力
+console.log('⏰ 设置每10分钟定时爬虫任务...');
 const cron = require('node-cron');
 
-// 每5分钟执行，每次爬取1页
-cron.schedule('*/5 * * * *', async () => {
+// 每10分钟执行，每次爬取1页
+cron.schedule('*/10 * * * *', async () => {
   const now = new Date();
   const timeStr = now.toLocaleTimeString('zh-CN');
   console.log(`🕐 [${timeStr}] 启动定时爬虫任务...`);
   
   try {
-    const stats = await startCrawl(1);
+    const stats = await crawler.crawlAndSave(1);
     console.log(`✅ [${timeStr}] 定时爬虫完成:`, stats);
   } catch (error) {
     console.error(`❌ [${timeStr}] 定时爬虫失败:`, error.message);
@@ -75,7 +100,7 @@ cron.schedule('*/5 * * * *', async () => {
   timezone: 'Asia/Shanghai'
 });
 
-console.log('✅ 每5分钟定时爬虫已设置！');
+console.log('✅ 每10分钟定时爬虫已设置！');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -145,6 +170,10 @@ app.get('/circles', (req, res) => {
 
 app.get('/creator', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'creator.html'));
+});
+
+app.get('/crawler-status', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'crawler-status.html'));
 });
 
 app.get('/profile', (req, res) => {
