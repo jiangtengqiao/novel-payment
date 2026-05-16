@@ -8,6 +8,32 @@ const resetCodes = new Map();
 const lastSendTime = new Map();
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_EDy6uahn_LeRYvWZ9NyvwyNrvRGsKb72P';
+const CAPTCHA_APP_ID = '192339751';
+const CAPTCHA_SECRET_KEY = '4inhWL7rtPiyS1QU5IqnLlv86';
+
+async function verifyCaptcha(ticket, randstr, userIp) {
+    try {
+        const params = new URLSearchParams();
+        params.append('aid', CAPTCHA_APP_ID);
+        params.append('AppSecretKey', CAPTCHA_SECRET_KEY);
+        params.append('Ticket', ticket);
+        params.append('Randstr', randstr);
+        params.append('UserIP', userIp || '127.0.0.1');
+
+        const response = await fetch('https://ssl.captcha.qq.com/ticket/verify?' + params.toString(), {
+            method: 'GET'
+        });
+
+        const result = await response.json();
+
+        console.log('腾讯云验证码校验结果:', result);
+
+        return result.response === '1';
+    } catch (error) {
+        console.error('腾讯云验证码校验失败:', error);
+        return false;
+    }
+}
 
 async function sendEmail(to, subject, html) {
   if (!RESEND_API_KEY) {
@@ -567,10 +593,21 @@ function generateResetEmail(to, code) {
 
 router.post('/send-code', async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, captchaTicket, captchaRandstr } = req.body;
     
     if (!email) {
       return res.status(400).json({ success: false, message: '请输入邮箱' });
+    }
+    
+    if (!captchaTicket || !captchaRandstr) {
+      return res.status(400).json({ success: false, message: '请先完成验证码验证' });
+    }
+    
+    const userIp = req.ip || req.connection.remoteAddress || '127.0.0.1';
+    const captchaValid = await verifyCaptcha(captchaTicket, captchaRandstr, userIp);
+    
+    if (!captchaValid) {
+      return res.status(400).json({ success: false, message: '验证码验证失败，请重试' });
     }
     
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -638,10 +675,21 @@ router.post('/send-code', async (req, res) => {
 
 router.post('/forgot-password', async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, captchaTicket, captchaRandstr } = req.body;
     
     if (!email) {
       return res.status(400).json({ success: false, message: '请输入邮箱' });
+    }
+    
+    if (!captchaTicket || !captchaRandstr) {
+      return res.status(400).json({ success: false, message: '请先完成验证码验证' });
+    }
+    
+    const userIp = req.ip || req.connection.remoteAddress || '127.0.0.1';
+    const captchaValid = await verifyCaptcha(captchaTicket, captchaRandstr, userIp);
+    
+    if (!captchaValid) {
+      return res.status(400).json({ success: false, message: '验证码验证失败，请重试' });
     }
     
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -706,12 +754,23 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
-router.post('/reset-password', (req, res) => {
+router.post('/reset-password', async (req, res) => {
   try {
-    const { email, code, newPassword } = req.body;
+    const { email, code, newPassword, captchaTicket, captchaRandstr } = req.body;
     
     if (!email || !code || !newPassword) {
       return res.status(400).json({ success: false, message: '缺少必要参数' });
+    }
+    
+    if (!captchaTicket || !captchaRandstr) {
+      return res.status(400).json({ success: false, message: '请先完成验证码验证' });
+    }
+    
+    const userIp = req.ip || req.connection.remoteAddress || '127.0.0.1';
+    const captchaValid = await verifyCaptcha(captchaTicket, captchaRandstr, userIp);
+    
+    if (!captchaValid) {
+      return res.status(400).json({ success: false, message: '验证码验证失败，请重试' });
     }
     
     if (!users.has(email)) {
@@ -753,12 +812,23 @@ router.post('/reset-password', (req, res) => {
   }
 });
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   try {
-    const { email, password, code } = req.body;
+    const { email, password, code, captchaTicket, captchaRandstr } = req.body;
     
     if (!email || !password || !code) {
       return res.status(400).json({ success: false, message: '缺少必要参数' });
+    }
+    
+    if (!captchaTicket || !captchaRandstr) {
+      return res.status(400).json({ success: false, message: '请先完成验证码验证' });
+    }
+    
+    const userIp = req.ip || req.connection.remoteAddress || '127.0.0.1';
+    const captchaValid = await verifyCaptcha(captchaTicket, captchaRandstr, userIp);
+    
+    if (!captchaValid) {
+      return res.status(400).json({ success: false, message: '验证码验证失败，请重试' });
     }
     
     if (users.has(email)) {
@@ -805,12 +875,23 @@ router.post('/register', (req, res) => {
   }
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, captchaTicket, captchaRandstr } = req.body;
     
     if (!email || !password) {
       return res.status(400).json({ success: false, message: '请填写邮箱和密码' });
+    }
+    
+    if (!captchaTicket || !captchaRandstr) {
+      return res.status(400).json({ success: false, message: '请先完成验证码验证' });
+    }
+    
+    const userIp = req.ip || req.connection.remoteAddress || '127.0.0.1';
+    const captchaValid = await verifyCaptcha(captchaTicket, captchaRandstr, userIp);
+    
+    if (!captchaValid) {
+      return res.status(400).json({ success: false, message: '验证码验证失败，请重试' });
     }
     
     const user = users.get(email);
