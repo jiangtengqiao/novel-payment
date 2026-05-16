@@ -18,25 +18,28 @@ async function verifyCaptcha(ticket, randstr, userIp) {
             return false;
         }
 
-        const params = new URLSearchParams();
-        params.append('aid', CAPTCHA_APP_ID);
-        params.append('AppSecretKey', CAPTCHA_SECRET_KEY);
-        params.append('Ticket', ticket);
-        params.append('Randstr', randstr);
-        params.append('UserIP', userIp || '127.0.0.1');
-
-        const response = await fetch('https://ssl.captcha.qq.com/ticket/verify?' + params.toString(), {
-            method: 'GET'
+        const response = await fetch('https://ssl.captcha.qq.com/ticket/verify', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                aid: CAPTCHA_APP_ID,
+                AppSecretKey: CAPTCHA_SECRET_KEY,
+                Ticket: ticket,
+                Randstr: randstr,
+                UserIP: userIp || '127.0.0.1'
+            })
         });
 
         const result = await response.json();
 
         console.log('腾讯云验证码校验结果:', result);
 
-        if (result.response === '1') {
+        if (result.response === 1 || result.response === '1') {
             return true;
         } else {
-            console.warn('❌ 验证码校验失败');
+            console.warn('❌ 验证码校验失败:', result.errmsg || result);
             return false;
         }
     } catch (error) {
