@@ -17,6 +17,7 @@ const circlesRoutes = require('./routes/circles');
 const creatorRoutes = require('./routes/creator');
 
 const { clearSampleData } = require('./db/seed');
+const { initRealBooks } = require('./db/init-books');
 const { startCrawl } = require('./services/crawler');
 
 const app = express();
@@ -40,16 +41,17 @@ app.use('/api/circles', circlesRoutes);
 app.use('/api/creator', creatorRoutes);
 
 clearSampleData();
+initRealBooks();
 
 console.log('🕷️  启动后台爬虫...');
 setTimeout(async () => {
   try {
-    const stats = await startCrawl(2);
-    console.log('✅ 初始爬取完成:', stats);
+    const stats = await startCrawl(1);
+    console.log('✅ 爬虫完成:', stats);
   } catch (error) {
-    console.error('❌ 初始爬取失败:', error);
+    console.error('❌ 爬虫跳过（有初始数据）:', error.message);
   }
-}, 5000);
+}, 10000);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
