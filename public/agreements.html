@@ -1,655 +1,268 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>小说平台协议</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #faf9f7;
-      min-height: 100vh;
-      padding: 20px;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    .header {
-      text-align: center;
-      color: #2d2d2d;
-      margin-bottom: 25px;
-    }
-    .back-btn {
-      background: #f5f5f3;
-      border: 1px solid #e8e8e6;
-      color: #2d2d2d;
-      padding: 8px 16px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      margin-bottom: 20px;
-      transition: all 0.3s;
-    }
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-    .tab {
-      flex: 1;
-      min-width: 140px;
-      padding: 14px;
-      background: #f5f5f3;
-      border: 1px solid #e8e8e6;
-      border-radius: 10px;
-      color: #666;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .tab:hover { background: #f0f0ee; }
-    .tab.active {
-      background: #ffffff;
-      color: #2d2d2d;
-      border-color: #ddd;
-      font-weight: 600;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    .content {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 35px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      border: 1px solid #f0f0ee;
-      display: none;
-      animation: fadeIn 0.3s ease;
-      line-height: 2;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .content.active { display: block; }
-    .content h2 {
-      color: #2d2d2d;
-      margin-bottom: 25px;
-      padding-bottom: 12px;
-      border-bottom: 2px solid #f5f5f3;
-      font-size: 1.7rem;
-      font-weight: 700;
-    }
-    .content h3 {
-      color: #2d2d2d;
-      margin: 30px 0 15px;
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-    .content h4 {
-      color: #444;
-      margin: 20px 0 10px;
-      font-size: 1.05rem;
-      font-weight: 600;
-    }
-    .content p {
-      color: #555;
-      line-height: 2;
-      margin-bottom: 16px;
-      text-align: justify;
-    }
-    .content ul, .content ol {
-      margin: 15px 0 25px;
-      padding-left: 25px;
-    }
-    .content li {
-      color: #555;
-      line-height: 2;
-      margin-bottom: 12px;
-    }
-    .update-time {
-      margin-top: 40px;
-      text-align: right;
-      color: #888;
-      font-size: 0.85rem;
-      padding-top: 18px;
-      border-top: 1px solid #f0f0ee;
-    }
-    .loading-skeleton {
-      display: none;
-      padding: 35px;
-    }
-    .skeleton-line {
-      height: 20px;
-      background: linear-gradient(90deg, #f0f0ee 25%, #e8e8e6 50%, #f0f0ee 75%);
-      background-size: 200% 100%;
-      animation: skeleton-loading 1.5s infinite;
-      margin-bottom: 15px;
-      border-radius: 4px;
-    }
-    @keyframes skeleton-loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>协议中心 - 小说平台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+            color: #1a1a1a;
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 15px;
+            color: #495057;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #f8f9fa;
+            color: #212529;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 32px auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 32px;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .agreement-item {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 15px;
+            color: #495057;
+        }
+
+        .agreement-item:hover {
+            background: #f8f9fa;
+            color: #212529;
+        }
+
+        .agreement-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px 48px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+
+        .content-header {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .content-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .last-updated {
+            font-size: 14px;
+            color: #868e96;
+        }
+
+        .content-body {
+            font-size: 16px;
+            line-height: 2;
+            color: #212529;
+        }
+
+        .section {
+            margin-bottom: 32px;
+            padding: 24px;
+            background: #fafafa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #212529;
+        }
+
+        .section-content {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .section-content p {
+            margin-bottom: 16px;
+            text-indent: 2em;
+        }
+
+        .section-content ul, .section-content ol {
+            margin-left: 2em;
+            margin-bottom: 16px;
+        }
+
+        .section-content li {
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            .content {
+                padding: 24px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <button class="back-btn" onclick="location.href='payment.html'">← 返回首页</button>
-      <h1 style="margin-top:15px;">📜 小说平台协议</h1>
+    <header class="header">
+        <div class="header-inner">
+            <button class="back-btn" onclick="goBack()">← 返回</button>
+            <div class="logo" style="font-size: 20px; font-weight: 700;">📜 协议中心</div>
+            <div style="width: 80px;"></div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-title">协议列表</div>
+            <div class="agreement-item active" data-id="userAgreement">📄 用户服务协议</div>
+            <div class="agreement-item" data-id="privacyPolicy">🔒 隐私政策</div>
+            <div class="agreement-item" data-id="communityGuidelines">📋 社区规范</div>
+        </div>
+
+        <div class="content" id="agreementContent">
+            <div class="content-header">
+                <div class="content-title" id="contentTitle">用户服务协议</div>
+                <div class="last-updated" id="lastUpdated">最后更新：2026-05-15</div>
+            </div>
+            <div class="content-body" id="contentBody">
+                <div class="loading">正在加载协议内容...</div>
+            </div>
+        </div>
     </div>
 
-    <div class="tabs">
-      <button class="tab active" onclick="showContent('community')">社区交流规范</button>
-      <button class="tab" onclick="showContent('user')">用户协议</button>
-      <button class="tab" onclick="showContent('platform')">平台准则</button>
-      <button class="tab" onclick="showContent('announcement')">平台公告</button>
-    </div>
+    <script>
+        let agreements = {};
 
-    <div class="loading-skeleton" id="skeleton">
-      <div class="skeleton-line" style="width: 60%;"></div>
-      <div class="skeleton-line" style="width: 100%;"></div>
-      <div class="skeleton-line" style="width: 95%;"></div>
-      <div class="skeleton-line" style="width: 80%;"></div>
-      <div class="skeleton-line" style="width: 100%;"></div>
-      <div class="skeleton-line" style="width: 70%;"></div>
-      <div class="skeleton-line" style="width: 100%;"></div>
-      <div class="skeleton-line" style="width: 85%;"></div>
-    </div>
+        async function loadAgreements() {
+            try {
+                const response = await fetch('/data/agreements.json');
+                agreements = await response.json();
+                renderAgreement('userAgreement');
+            } catch (error) {
+                console.error('加载协议失败:', error);
+                document.getElementById('contentBody').innerHTML = '<p style="color: #dc3545;">协议加载失败，请刷新页面重试。</p>';
+            }
+        }
 
-    <div class="content active" id="community">
-      <h2>社区交流规范</h2>
-      <p>欢迎来到小说平台社区！为了营造一个文明、和谐、健康、积极向上的网络交流环境，保障广大用户的合法权益，促进网络文学事业的健康发展，根据《中华人民共和国网络安全法》、《中华人民共和国著作权法》、《互联网信息服务管理办法》等相关法律法规的规定，结合本平台的实际情况，特制定本社区交流规范。</p>
-      
-      <h3>第一章 总则</h3>
-      <p>第一条 本规范适用于本平台所有注册用户和访客。所有使用本平台服务的用户，均应遵守本规范的各项规定。</p>
-      <p>第二条 本平台致力于为用户提供一个尊重、包容、友好的交流空间，鼓励用户分享阅读心得、交流创作经验、探讨文学话题。</p>
-      <p>第三条 用户在本平台的一切行为，必须遵守国家法律法规，不得损害国家利益、社会公共利益和他人的合法权益。</p>
-      <p>第四条 本平台尊重用户的言论自由，但同时也强调用户应对自己的言论负责，不得滥用言论自由权利。</p>
-      
-      <h3>第二章 用户基本行为准则</h3>
-      <h4>2.1 尊重他人</h4>
-      <p>用户在社区交流中，应当尊重他人的人格尊严、宗教信仰、民族习惯等，不得发表侮辱、诽谤、歧视、骚扰、威胁他人的言论或信息。</p>
-      <ul>
-        <li>不得使用辱骂性、攻击性、侮辱性的语言攻击他人</li>
-        <li>不得捏造事实诽谤他人，损害他人名誉</li>
-        <li>不得基于性别、年龄、民族、种族、国籍、宗教信仰、身体状况等对他人进行歧视</li>
-        <li>不得对他人进行人身攻击、人肉搜索或泄露他人隐私</li>
-        <li>不得恶意骚扰、纠缠、恐吓、威胁他人</li>
-      </ul>
-      
-      <h4>2.2 内容真实合法</h4>
-      <p>用户发布的内容应当真实、合法，不得编造、传播虚假信息、谣言或误导性信息。</p>
-      <ul>
-        <li>不得编造、传播虚假的政治、经济、社会、文化等信息</li>
-        <li>不得编造、传播虚假的作品评价、推荐等信息</li>
-        <li>不得发布未经证实的消息或传闻</li>
-        <li>不得恶意曲解他人言论或断章取义</li>
-      </ul>
-      
-      <h4>2.3 保护知识产权</h4>
-      <p>用户在社区交流中，应当尊重他人的知识产权，不得侵犯他人的著作权、商标权、专利权等合法权益。</p>
-      <ul>
-        <li>不得未经授权发布、传播他人享有著作权的作品内容</li>
-        <li>不得抄袭、剽窃他人的原创内容</li>
-        <li>不得盗用他人的账号、头像、笔名等身份信息</li>
-        <li>转载他人内容时，应当注明出处和作者信息</li>
-      </ul>
-      
-      <h4>2.4 维护社区秩序</h4>
-      <p>用户应当自觉维护社区的正常交流秩序，不得从事扰乱社区秩序的行为。</p>
-      <ul>
-        <li>不得发布大量重复内容或无意义内容刷屏</li>
-        <li>不得恶意灌水、刷屏、顶帖，影响他人正常浏览</li>
-        <li>不得发布广告、垃圾信息或恶意链接</li>
-        <li>不得组织、煽动、参与网络暴力活动</li>
-        <li>不得利用漏洞或技术手段干扰平台正常运行</li>
-      </ul>
-      
-      <h3>第三章 禁止发布的内容</h3>
-      <h4>3.1 反对宪法确定的基本原则的内容</h4>
-      <p>用户不得发布反对宪法确定的基本原则的言论或信息，包括但不限于：</p>
-      <ul>
-        <li>反对中国共产党的领导，反对社会主义制度</li>
-        <li>否定、歪曲、质疑中国特色社会主义道路、理论、制度、文化</li>
-        <li>宣扬历史虚无主义，否定革命历史、英雄烈士事迹</li>
-        <li>其他反对宪法确定的基本原则的内容</li>
-      </ul>
-      
-      <h4>3.2 危害国家安全的内容</h4>
-      <p>用户不得发布危害国家安全的言论或信息，包括但不限于：</p>
-      <ul>
-        <li>泄露国家秘密、情报或其他危害国家安全的信息</li>
-        <li>煽动分裂国家、破坏国家统一</li>
-        <li>宣扬恐怖主义、极端主义或暴力恐怖活动</li>
-        <li>危害国家主权、领土完整或国家尊严</li>
-        <li>其他危害国家安全的内容</li>
-      </ul>
-      
-      <h4>3.3 损害国家荣誉和利益的内容</h4>
-      <p>用户不得发布损害国家荣誉和利益的言论或信息，包括但不限于：</p>
-      <ul>
-        <li>侮辱、诋毁国家形象、国家标志</li>
-        <li>歪曲、丑化、亵渎、否定英雄烈士事迹和精神</li>
-        <li>恶意抹黑、攻击国家机关、公职人员</li>
-        <li>其他损害国家荣誉和利益的内容</li>
-      </ul>
-      
-      <h4>3.4 破坏社会稳定的内容</h4>
-      <p>用户不得发布破坏社会稳定的言论或信息，包括但不限于：</p>
-      <ul>
-        <li>煽动民族仇恨、民族歧视，破坏民族团结</li>
-        <li>宣扬地域歧视、职业歧视、性别歧视等</li>
-        <li>编造、传播虚假险情、疫情、灾情、警情</li>
-        <li>煽动非法集会、结社、游行、示威、聚众扰乱社会秩序</li>
-        <li>其他破坏社会稳定的内容</li>
-      </ul>
-      
-      <h4>3.5 淫秽色情内容</h4>
-      <p>用户不得发布淫秽色情的言论或信息，包括但不限于：</p>
-      <ul>
-        <li>具体描写性行为或露骨宣扬色情的内容</li>
-        <li>展示人体隐私部位的内容</li>
-        <li>传播淫秽色情链接、图片、视频、音频等</li>
-        <li>发布招嫖、卖淫、嫖娼等信息</li>
-        <li>其他淫秽色情或低俗下流的内容</li>
-      </ul>
-      
-      <h4>3.6 暴力内容</h4>
-      <p>用户不得发布暴力的言论或信息，包括但不限于：</p>
-      <ul>
-        <li>宣扬、美化、教唆暴力犯罪的内容</li>
-        <li>展示血腥、暴力、恐怖场景的图片、视频等</li>
-        <li>描写极端暴力行为或犯罪方法的内容</li>
-        <li>其他宣扬暴力的内容</li>
-      </ul>
-      
-      <h4>3.7 封建迷信内容</h4>
-      <p>用户不得发布封建迷信的言论或信息，包括但不限于：</p>
-      <ul>
-        <li>宣扬算命、看相、风水、卜卦等封建迷信活动</li>
-        <li>宣扬邪教、伪科学、反科学的内容</li>
-        <li>宣扬鬼怪、神灵等迷信思想</li>
-        <li>其他封建迷信内容</li>
-      </ul>
-      
-      <h4>3.8 其他违法违规内容</h4>
-      <p>用户不得发布其他违反法律法规的言论或信息，包括但不限于：</p>
-      <ul>
-        <li>宣扬毒品、赌博、非法金融活动的内容</li>
-        <li>买卖、传播管制器具、违禁品的内容</li>
-        <li>传授犯罪方法的内容</li>
-        <li>侵犯他人隐私、商业秘密等合法权益的内容</li>
-        <li>其他违反法律法规或公序良俗的内容</li>
-      </ul>
-      
-      <h3>第四章 用户账号管理</h3>
-      <h4>4.1 账号注册</h4>
-      <p>用户在注册账号时，应当提供真实、准确、完整的个人信息，不得使用虚假信息或他人信息注册。</p>
-      <ul>
-        <li>每个用户原则上只能注册一个账号</li>
-        <li>不得使用含有违法、违规、侵权、侮辱、歧视、引人不适等内容的用户名、头像、签名等</li>
-        <li>不得使用与国家领导人、知名人士、平台管理员等相同或近似的名称</li>
-        <li>用户账号信息发生变更时，应当及时更新</li>
-      </ul>
-      
-      <h4>4.2 账号使用</h4>
-      <p>用户应当妥善保管自己的账号和密码，对账号下的一切行为负责。</p>
-      <ul>
-        <li>账号仅限本人使用，不得转借、出租、出售、赠与他人</li>
-        <li>发现账号被盗用或异常使用时，应当及时通知平台并采取措施</li>
-        <li>不得使用非法手段获取、使用他人账号</li>
-      </ul>
-      
-      <h4>4.3 账号注销</h4>
-      <p>用户有权注销自己的账号。注销账号后，账号下的相关信息将被删除或匿名化处理，但法律法规另有规定的除外。</p>
-      
-      <h3>第五章 内容审核与处理</h3>
-      <h4>5.1 审核机制</h4>
-      <p>本平台有权对用户发布的内容进行审核，对于违反本规范或法律法规的内容，平台有权采取处理措施。</p>
-      <ul>
-        <li>平台采用机器审核和人工审核相结合的方式</li>
-        <li>平台有权对用户发布的内容进行实时或非实时审核</li>
-        <li>平台有权根据审核结果对内容进行处理</li>
-      </ul>
-      
-      <h4>5.2 处理措施</h4>
-      <p>对于违反本规范的用户或内容，平台有权采取以下一种或多种处理措施：</p>
-      <ul>
-        <li>警告：通过站内信、弹窗等方式向用户发出警告</li>
-        <li>删除内容：删除违规内容，包括但不限于帖子、评论、私信等</li>
-        <li>限制功能：限制用户的部分功能使用，如发帖、评论、私信等</li>
-        <li>禁言：在一定期限内禁止用户发布内容</li>
-        <li>封禁账号：永久或暂时封禁用户账号</li>
-        <li>其他必要的处理措施</li>
-      </ul>
-      
-      <h4>5.3 处理程序</h4>
-      <p>平台在采取处理措施前，会根据情况进行调查核实，确保处理结果的公正性。用户对处理结果有异议的，可以向平台申诉。</p>
-      
-      <h3>第六章 举报与申诉</h3>
-      <h4>6.1 举报</h4>
-      <p>用户发现其他用户有违反本规范或法律法规的行为，可以向平台举报。</p>
-      <ul>
-        <li>用户应当提供真实、有效的举报信息和证据</li>
-        <li>平台会对举报人的信息予以保密</li>
-        <li>平台会对举报内容进行核实和处理</li>
-        <li>不得恶意举报、诬告陷害他人</li>
-      </ul>
-      
-      <h4>6.2 申诉</h4>
-      <p>用户对平台的处理结果有异议的，可以向平台提出申诉。</p>
-      <ul>
-        <li>用户应当在收到处理结果后的合理期限内提出申诉</li>
-        <li>用户应当提供真实、有效的申诉理由和证据</li>
-        <li>平台会对申诉进行复核并反馈结果</li>
-        <li>申诉期间，原处理决定继续执行</li>
-      </ul>
-      
-      <h3>第七章 附则</h3>
-      <p>第一条 本平台有权根据实际情况对本规范进行修改和完善，修改后的规范一经公布即生效。</p>
-      <p>第二条 用户继续使用本平台服务即视为同意修改后的规范。如用户不同意修改后的规范，应当停止使用本平台服务。</p>
-      <p>第三条 本规范的解释权归本平台所有。</p>
-      <p>第四条 如本规范的任何条款与法律法规相冲突，以法律法规为准。</p>
-      <p>第五条 本规范自发布之日起施行。</p>
-      
-      <p>感谢各位用户的理解、支持与配合！让我们共同努力，营造一个和谐、文明、健康、向上的社区环境！</p>
-      
-      <div class="update-time" id="community-time"></div>
-    </div>
+        function renderAgreement(id) {
+            const agreement = agreements[id];
+            if (!agreement) return;
 
-    <div class="content" id="user">
-      <h2>用户协议</h2>
-      <p>欢迎使用小说平台（以下简称"本平台"）！本协议是您与本平台之间关于使用本平台服务的法律协议。请您在使用本平台服务之前，仔细阅读本协议的全部内容，特别是免除或限制责任的条款。</p>
-      
-      <h3>第一章 协议的订立与生效</h3>
-      <p>第一条 本协议是您与本平台之间关于使用本平台服务的具有法律约束力的协议。您在注册、登录、使用本平台服务时，即表示您已阅读、理解并同意接受本协议的全部内容。</p>
-      <p>第二条 如果您不同意本协议的任何内容，您可以选择不使用本平台服务。如果您继续使用本平台服务，即视为您同意本协议的全部内容。</p>
-      <p>第三条 本平台有权根据业务发展需要，适时修改本协议。修改后的协议一经公布即生效。如您继续使用本平台服务，即视为您同意修改后的协议。</p>
-      <p>第四条 本平台有权根据法律法规或业务需要，对本平台服务进行更新、升级、调整、暂停或终止，无需提前通知您。</p>
-      
-      <h3>第二章 服务内容</h3>
-      <p>第一条 本平台为用户提供网络文学相关服务，包括但不限于：</p>
-      <ul>
-        <li>作品阅读服务：提供各类网络文学作品的在线阅读服务</li>
-        <li>作品创作服务：提供作品创作、发布、编辑、管理等服务</li>
-        <li>社区交流服务：提供评论、书评、论坛、私信等交流服务</li>
-        <li>支付服务：提供书币充值、会员购买、打赏等支付服务</li>
-        <li>其他增值服务：包括但不限于个性化推荐、搜索、收藏等服务</li>
-      </ul>
-      
-      <p>第二条 本平台提供的服务内容可能随时更新，具体以平台实际提供的内容为准。</p>
-      <p>第三条 本平台保留随时修改、中断或终止部分或全部服务的权利，无需对您或第三方负责。</p>
-      
-      <h3>第三章 用户注册与账号</h3>
-      <h4>3.1 注册条件</h4>
-      <p>您应当具备完全民事行为能力，如您为未成年人，应在监护人的指导下使用本平台服务。</p>
-      
-      <h4>3.2 注册信息</h4>
-      <p>您在注册时应当提供真实、准确、完整的个人信息，并及时更新您的信息，确保信息的真实性、准确性和完整性。</p>
-      
-      <h4>3.3 账号安全</h4>
-      <p>您应当妥善保管您的账号和密码，对账号下的一切行为承担责任。如您发现账号被盗用或异常使用，应当立即通知本平台。</p>
-      
-      <h3>第四章 用户权利与义务</h3>
-      <h4>4.1 用户权利</h4>
-      <p>作为本平台用户，您享有以下权利：</p>
-      <ul>
-        <li>依法使用本平台提供的各项服务</li>
-        <li>对本平台服务提出建议和意见</li>
-        <li>个人信息受法律保护，不受非法侵犯</li>
-        <li>对侵权行为进行投诉和举报</li>
-        <li>按照平台规则获取相应的收益或奖励</li>
-        <li>法律、法规规定的其他权利</li>
-      </ul>
-      
-      <h4>4.2 用户义务</h4>
-      <p>作为本平台用户，您应当履行以下义务：</p>
-      <ul>
-        <li>遵守国家法律法规和本平台各项规则</li>
-        <li>不得利用本平台从事任何违法违规活动</li>
-        <li>不得侵犯他人的合法权益</li>
-        <li>维护本平台的正常运行秩序</li>
-        <li>按照约定支付相应的费用</li>
-        <li>妥善保管个人账号和密码</li>
-        <li>法律、法规规定的其他义务</li>
-      </ul>
-      
-      <h3>第五章 知识产权</h3>
-      <p>第一条 本平台上的内容（包括但不限于文字、图片、音频、视频、软件、程序、页面设计、排版等），除用户自行创作并依法享有著作权的内容外，其知识产权归本平台或相关权利人所有。</p>
-      <p>第二条 您在本平台上创作、发布的原创内容，其知识产权归您所有，但您同意授予本平台非独家、免费、全球范围内的使用权，包括但不限于复制、修改、改编、翻译、展示、传播等权利。</p>
-      <p>第三条 您不得未经授权使用、复制、传播本平台或他人享有知识产权的内容。</p>
-      <p>第四条 如您认为本平台上的内容侵犯了您的知识产权，请您及时通知本平台并提供相应的证明材料，本平台将依法进行处理。</p>
-      
-      <h3>第六章 付费服务</h3>
-      <p>第一条 本平台提供部分付费服务，如付费阅读、会员服务等。您可以根据需要选择使用付费服务。</p>
-      <p>第二条 付费服务的价格、规则、有效期等信息，以平台页面展示的内容为准。</p>
-      <p>第三条 您应当按照约定支付相应的费用。如您逾期未支付费用，本平台有权暂停或终止提供相应的服务。</p>
-      <p>第四条 除法律法规另有规定外，您支付的费用原则上不予退还。</p>
-      
-      <h3>第七章 个人信息保护</h3>
-      <p>第一条 本平台重视您的个人信息保护，将按照法律法规和隐私政策的规定，保护您的个人信息。</p>
-      <p>第二条 本平台将采取合理的安全措施，保护您的个人信息安全。</p>
-      <p>第三条 您可以查阅、更正、删除您的个人信息，具体操作请参阅隐私政策。</p>
-      <p>第四条 请您仔细阅读隐私政策，了解我们如何收集、使用、保护您的个人信息。</p>
-      
-      <h3>第八章 免责声明</h3>
-      <p>第一条 本平台按照"现状"和"可用"的基础提供服务，不保证服务的连续性、及时性、安全性、无错误。</p>
-      <p>第二条 因不可抗力、网络故障、系统维护等原因导致服务中断或损失，本平台不承担责任。</p>
-      <p>第三条 您对您使用本平台服务的行为承担责任，如因您的行为导致本平台或第三方损失的，您应当承担赔偿责任。</p>
-      <p>第四条 本平台不对用户发布的内容的真实性、准确性、合法性负责。</p>
-      
-      <h3>第九章 违约责任</h3>
-      <p>第一条 如您违反本协议约定，本平台有权采取相应的处理措施，包括但不限于警告、删除内容、限制功能、封禁账号等。</p>
-      <p>第二条 如因您的违约行为导致本平台或第三方损失的，您应当承担相应的赔偿责任。</p>
-      <p>第三条 本平台有权根据法律法规或司法机关、行政机关的要求，向其提供您的相关信息。</p>
-      
-      <h3>第十章 争议解决</h3>
-      <p>第一条 本协议的订立、执行、解释及争议解决均适用中华人民共和国法律。</p>
-      <p>第二条 如您与本平台发生争议，应当首先友好协商解决。协商不成的，任何一方均可向本平台所在地人民法院提起诉讼。</p>
-      
-      <h3>第十一章 其他</h3>
-      <p>第一条 本协议的部分条款无效的，不影响其他条款的效力。</p>
-      <p>第二条 本平台未行使或延迟行使本协议项下的任何权利或规定，不构成对该权利或规定的放弃。</p>
-      <p>第三条 本协议未尽事宜，可由本平台另行制定补充规则，补充规则与本协议具有同等法律效力。</p>
-      
-      <div class="update-time" id="user-time"></div>
-    </div>
+            document.getElementById('contentTitle').textContent = agreement.title;
+            document.getElementById('lastUpdated').textContent = '最后更新：' + agreement.lastUpdated;
 
-    <div class="content" id="platform">
-      <h2>平台准则</h2>
-      <p>本准则规定了本平台在运营过程中应当遵循的基本原则和标准，旨在保障用户的合法权益，促进平台的健康发展。</p>
-      
-      <h3>第一章 平台运营原则</h3>
-      <p>第一条 合法合规原则。本平台严格遵守国家法律法规，依法开展经营活动。</p>
-      <p>第二条 用户至上原则。本平台重视用户体验，致力于为用户提供优质、便捷、安全的服务。</p>
-      <p>第三条 公平公正原则。本平台公平公正地对待每一位用户，尊重用户的合法权益。</p>
-      <p>第四条 诚信经营原则。本平台坚持诚信经营，信守承诺，不欺骗、不误导用户。</p>
-      <p>第五条 创新发展原则。本平台不断创新服务内容和方式，满足用户日益增长的需求。</p>
-      
-      <h3>第二章 内容管理准则</h3>
-      <p>第一条 本平台坚持正确的政治方向和舆论导向，弘扬社会主义核心价值观。</p>
-      <p>第二条 本平台建立健全内容审核机制，对内容进行严格审核。</p>
-      <p>第三条 本平台鼓励和支持健康、积极、向上的内容创作和传播。</p>
-      <p>第四条 本平台依法打击违法违规内容，维护清朗的网络空间。</p>
-      <p>第五条 本平台尊重和保护知识产权，鼓励原创，反对抄袭。</p>
-      
-      <h3>第三章 用户服务准则</h3>
-      <p>第一条 本平台建立完善的用户服务体系，及时响应用户的咨询和反馈。</p>
-      <p>第二条 本平台重视用户隐私保护，采取必要措施保护用户个人信息安全。</p>
-      <p>第三条 本平台保障用户的知情权、选择权、参与权等合法权益。</p>
-      <p>第四条 本平台建立便捷的用户投诉举报渠道，及时处理用户投诉。</p>
-      <p>第五条 本平台持续优化服务体验，提升用户满意度。</p>
-      
-      <h3>第四章 安全保障准则</h3>
-      <p>第一条 本平台建立健全网络安全保障体系，保障平台安全稳定运行。</p>
-      <p>第二条 本平台采取必要的技术措施，防范网络攻击、数据泄露等安全风险。</p>
-      <p>第三条 本平台建立安全应急预案，及时处置安全事件。</p>
-      <p>第四条 本平台定期进行安全检查和评估，持续改进安全保障工作。</p>
-      
-      <h3>第五章 合作共赢准则</h3>
-      <p>第一条 本平台与合作伙伴建立长期、稳定、互利共赢的合作关系。</p>
-      <p>第二条 本平台尊重合作伙伴的合法权益，按照约定履行义务。</p>
-      <p>第三条 本平台与合作伙伴共同维护良好的市场秩序，促进行业健康发展。</p>
-      
-      <h3>第六章 社会责任准则</h3>
-      <p>第一条 本平台积极承担社会责任，为社会发展做出贡献。</p>
-      <p>第二条 本平台坚持经济效益与社会效益相统一，注重社会效益。</p>
-      <p>第三条 本平台积极参与公益事业，传播正能量。</p>
-      <p>第四条 本平台自觉接受社会监督，不断改进工作。</p>
-      
-      <h3>第七章 附则</h3>
-      <p>第一条 本准则是本平台运营管理的基本准则，本平台全体员工应当严格遵守。</p>
-      <p>第二条 本平台有权根据实际情况对本准则进行修订。</p>
-      <p>第三条 本准则自发布之日起施行。</p>
-      
-      <div class="update-time" id="platform-time"></div>
-    </div>
+            let html = '';
+            agreement.sections.forEach(section => {
+                html += `
+                    <div class="section">
+                        <div class="section-title">${section.title}</div>
+                        <div class="section-content">${section.content}</div>
+                    </div>
+                `;
+            });
 
-    <div class="content" id="announcement">
-      <h2>平台公告</h2>
-      
-      <h3>🎉 平台正式上线公告</h3>
-      <p>亲爱的用户：</p>
-      <p>大家好！经过精心的筹备和测试，小说平台今天正式上线了！我们非常高兴能够与大家见面，为广大文学爱好者提供优质的阅读和创作服务。</p>
-      
-      <h4>上线活动</h4>
-      <ul>
-        <li>新用户注册即送100书币！活动时间：上线起至本月底</li>
-        <li>首月会员开通享8折优惠！</li>
-        <li>邀请好友注册，双方都可以获得额外书币奖励！</li>
-      </ul>
-      
-      <h4>平台特色</h4>
-      <ul>
-        <li>海量正版书籍资源，种类丰富，满足各种阅读需求</li>
-        <li>专业的创作平台，支持原创作者发布作品</li>
-        <li>活跃的社区交流，与书友分享阅读心得</li>
-        <li>个性化推荐算法，精准推荐您喜爱的作品</li>
-        <li>简洁清爽的界面设计，舒适的阅读体验</li>
-      </ul>
-      
-      <p>感谢大家对小说平台的关注和支持！我们将不断努力，为大家提供更好的服务！</p>
-      
-      <h3>🚀 功能更新公告</h3>
-      <h4>新增功能</h4>
-      <ul>
-        <li>夜间阅读模式：支持多种护眼主题，保护您的眼睛</li>
-        <li>字体大小调节：支持自定义字体大小，满足不同阅读需求</li>
-        <li>自动翻页：解放您的双手，享受流畅阅读</li>
-        <li>阅读统计：记录您的阅读时长、阅读进度等数据</li>
-        <li>书评功能：发布您的书评，与书友交流</li>
-      </ul>
-      
-      <h4>优化改进</h4>
-      <ul>
-        <li>优化阅读界面，阅读体验更加舒适</li>
-        <li>提升加载速度，打开书籍更快</li>
-        <li>修复了一些已知的bug</li>
-      </ul>
-      
-      <h3>🔥 充值优惠活动公告</h3>
-      <p>为感谢广大用户的支持，本平台特推出充值优惠活动！</p>
-      
-      <h4>活动内容</h4>
-      <ul>
-        <li>充值满50元，额外赠送10%书币</li>
-        <li>充值满100元，额外赠送15%书币</li>
-        <li>充值满200元，额外赠送20%书币</li>
-        <li>充值满500元，额外赠送25%书币</li>
-      </ul>
-      
-      <h4>活动时间</h4>
-      <p>即日起至本月底，机会难得，不要错过！</p>
-      
-      <h3>📚 优秀作品推荐公告</h3>
-      <p>本平台每周都会为大家推荐一些优秀作品！本周推荐作品如下：</p>
-      
-      <ul>
-        <li>《追梦人》：一部感人至深的青春励志小说</li>
-        <li>《星际穿越》：精彩的科幻冒险故事</li>
-        <li>《古风雅韵》：优美的古代言情佳作</li>
-        <li>《侦探笔记》：扣人心弦的悬疑推理小说</li>
-      </ul>
-      
-      <p>欢迎大家阅读这些优秀作品！</p>
-      
-      <h3>⚠️ 安全提醒公告</h3>
-      <p>近期，我们发现有不法分子冒充平台工作人员进行诈骗活动，为保障大家的财产安全，特此提醒：</p>
-      
-      <ul>
-        <li>本平台不会以任何理由向您索要账号密码、验证码等信息</li>
-        <li>本平台不会要求您转账到个人账户</li>
-        <li>请认准本平台的官方网站和APP，不要点击陌生链接</li>
-        <li>如遇可疑情况，请及时联系客服核实</li>
-      </ul>
-      
-      <p>感谢大家的理解和配合！让我们共同维护安全的网络环境！</p>
-      
-      <h3>📢 维护通知</h3>
-      <p>为了给大家提供更好的服务体验，本平台将于近期进行系统维护升级。</p>
-      
-      <h4>维护时间</h4>
-      <p>具体时间将另行通知，请关注平台公告。</p>
-      
-      <h4>影响范围</h4>
-      <p>维护期间，部分功能可能暂时无法使用，请大家提前做好安排。</p>
-      
-      <p>给大家带来的不便，敬请谅解！维护完成后，服务将更加稳定和优质！</p>
-      
-      <h3>💬 意见反馈</h3>
-      <p>如果您对我们的平台有任何意见或建议，欢迎通过以下方式联系我们：</p>
-      
-      <ul>
-        <li>客服邮箱：support@novelplatform.com</li>
-        <li>客服QQ：123456789</li>
-        <li>客服微信：novelplatform2024</li>
-      </ul>
-      
-      <p>您的意见和建议对我们非常重要，我们会认真听取并不断改进！</p>
-      
-      <div class="update-time" id="announcement-time"></div>
-    </div>
-  </div>
+            document.getElementById('contentBody').innerHTML = html;
 
-  <script>
-    function showContent(type) {
-      const skeleton = document.getElementById('skeleton');
-      const contents = document.querySelectorAll('.content');
-      const tabs = document.querySelectorAll('.tab');
-      
-      // Show loading skeleton
-      contents.forEach(el => el.classList.remove('active'));
-      skeleton.style.display = 'block';
-      
-      // Simulate loading
-      setTimeout(() => {
-        skeleton.style.display = 'none';
-        contents.forEach(el => el.classList.remove('active'));
-        tabs.forEach(el => el.classList.remove('active'));
-        document.getElementById(type).classList.add('active');
-        event.target.classList.add('active');
-      }, 200);
-    }
-    
-    function setUpdateTime() {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const day = String(now.getDate()).padStart(2, '0');
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const timeStr = `最后更新：${year}年${month}月${day}日 ${hours}:${minutes}`;
-      
-      document.getElementById('community-time').textContent = timeStr;
-      document.getElementById('user-time').textContent = timeStr;
-      document.getElementById('platform-time').textContent = timeStr;
-      document.getElementById('announcement-time').textContent = timeStr;
-    }
-    
-    setUpdateTime();
-  </script>
+            document.querySelectorAll('.agreement-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.id === id) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        document.querySelectorAll('.agreement-item').forEach(item => {
+            item.addEventListener('click', () => {
+                renderAgreement(item.dataset.id);
+            });
+        });
+
+        function goBack() {
+            window.history.back();
+        }
+
+        loadAgreements();
+    </script>
 </body>
 </html>
+

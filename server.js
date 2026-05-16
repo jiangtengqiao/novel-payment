@@ -4,25 +4,41 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
+
 const paymentRoutes = require('./routes/payment');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const booksRoutes = require('./routes/books');
 const usersRoutes = require('./routes/users');
-const { initSampleData } = require('./db/seed');
+const crawlerRoutes = require('./routes/crawler');
+const adsRoutes = require('./routes/ads');
+const communityRoutes = require('./routes/community');
+const circlesRoutes = require('./routes/circles');
+const creatorRoutes = require('./routes/creator');
+
+const { clearSampleData } = require('./db/seed');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/data', express.static(path.join(__dirname, 'data')));
 
 app.use('/api/alipay', paymentRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/books', booksRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/crawler', crawlerRoutes);
+app.use('/api/ads', adsRoutes);
+app.use('/api/community', communityRoutes);
+app.use('/api/circles', circlesRoutes);
+app.use('/api/creator', creatorRoutes);
+
+clearSampleData();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -62,6 +78,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+app.get('/payment', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'payment.html'));
+});
+
 app.get('/payment-success', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'payment-success.html'));
 });
@@ -70,12 +90,46 @@ app.get('/agreements', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'agreements.html'));
 });
 
-initSampleData();
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+app.get('/reader', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'reader.html'));
+});
+
+app.get('/community', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'community.html'));
+});
+
+app.get('/circles', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'circles.html'));
+});
+
+app.get('/creator', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'creator.html'));
+});
+
+app.get('/profile', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'profile.html'));
+});
 
 const HOST = '0.0.0.0';
 
 app.listen(PORT, HOST, () => {
   console.log(`小说平台服务器运行在 http://0.0.0.0:${PORT}`);
   console.log(`外部访问地址: http://115.190.92.241:${PORT}`);
+  console.log('\n可用页面:');
+  console.log('  首页: /');
+  console.log('  充值: /payment');
+  console.log('  阅读: /reader');
+  console.log('  协议: /agreements');
+  console.log('  管理: /admin');
+  console.log('\n可用API:');
+  console.log('  爬虫: POST /api/crawler/start');
+  console.log('  书籍: GET /api/books/list');
+  console.log('  广告: GET /api/ads/list');
+  console.log('  社区: GET /api/community/posts');
+  console.log('  圈子: GET /api/circles/circles');
 });
 
