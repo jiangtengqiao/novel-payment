@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { NovelCrawler, startCrawl, crawler } = require('../services/crawler');
-
-const activeCrawler = new NovelCrawler();
+const crawler = require('../services/crawler');
 
 router.post('/start', async (req, res) => {
   try {
