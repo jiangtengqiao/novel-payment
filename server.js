@@ -55,29 +55,27 @@ setTimeout(async () => {
   }
 }, 5000);
 
-// 每小时爬取1页，缓缓更新，避免拥挤
-console.log('⏰ 设置每小时定时爬虫任务...');
+// 每5分钟爬取1页，快速更新
+console.log('⏰ 设置每5分钟定时爬虫任务...');
 const cron = require('node-cron');
 
-// 每小时的第0分钟执行，每次爬取1-2页
-cron.schedule('0 * * * *', async () => {
-  const hour = new Date().getHours();
-  console.log(`🕐 [${hour}:00] 启动定时爬虫任务...`);
+// 每5分钟执行，每次爬取1页
+cron.schedule('*/5 * * * *', async () => {
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('zh-CN');
+  console.log(`🕐 [${timeStr}] 启动定时爬虫任务...`);
   
   try {
-    // 不同时段爬取不同数量，分散负载
-    let pages = hour % 2 === 0 ? 1 : 2; 
-    
-    const stats = await startCrawl(pages);
-    console.log(`✅ [${hour}:00] 定时爬虫完成:`, stats);
+    const stats = await startCrawl(1);
+    console.log(`✅ [${timeStr}] 定时爬虫完成:`, stats);
   } catch (error) {
-    console.error(`❌ [${hour}:00] 定时爬虫失败:`, error.message);
+    console.error(`❌ [${timeStr}] 定时爬虫失败:`, error.message);
   }
 }, {
   timezone: 'Asia/Shanghai'
 });
 
-console.log('✅ 定时爬虫已设置！');
+console.log('✅ 每5分钟定时爬虫已设置！');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
