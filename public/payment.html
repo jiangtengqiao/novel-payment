@@ -1505,7 +1505,8 @@
           if (result.success) {
             document.getElementById('code-hint').style.display = 'block';
             setTimeout(() => document.getElementById('code-hint').style.display = 'none', 5000);
-            showNotification('success', '发送成功', '验证码已发送到您的邮箱');
+            const msg = result.debugCode ? `验证码已发送（测试验证码: ${result.debugCode}）` : '验证码已发送到您的邮箱';
+            showNotification('success', '发送成功', msg);
           } else {
             showNotification('error', '发送失败', result.message);
             clearInterval(timer);
@@ -1726,7 +1727,8 @@
           if (result.success) {
             document.getElementById('reset-code-hint').style.display = 'block';
             setTimeout(() => document.getElementById('reset-code-hint').style.display = 'none', 5000);
-            showNotification('success', '发送成功', '验证码已发送到您的邮箱');
+            const msg = result.debugCode ? `验证码已发送（测试验证码: ${result.debugCode}）` : '验证码已发送到您的邮箱';
+            showNotification('success', '发送成功', msg);
           } else {
             showNotification('error', '发送失败', result.message);
             clearInterval(timer);

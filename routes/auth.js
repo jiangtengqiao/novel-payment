@@ -672,9 +672,10 @@ router.post('/send-code', async (req, res) => {
     if (emailSent) {
       res.json({
         success: true,
-        message: '验证码已发送到您的邮箱',
+        message: '验证码已发送到您的邮箱（测试模式：验证码为 ' + code + '）',
         email,
-        expiresIn: 5 * 60
+        expiresIn: 5 * 60,
+        debugCode: code
       });
     } else {
       res.status(500).json({
@@ -753,9 +754,10 @@ router.post('/forgot-password', async (req, res) => {
     if (emailSent) {
       res.json({
         success: true,
-        message: '重置验证码已发送到您的邮箱',
+        message: '重置验证码已发送到您的邮箱（测试模式：验证码为 ' + code + '）',
         email,
-        expiresIn: 10 * 60
+        expiresIn: 10 * 60,
+        debugCode: code
       });
     } else {
       res.status(500).json({
