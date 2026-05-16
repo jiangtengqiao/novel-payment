@@ -33,6 +33,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            cursor: pointer;
         }
         .nav-links {
             display: flex;
@@ -44,6 +45,7 @@
             font-size: 16px;
             font-weight: 500;
             transition: all 0.3s;
+            cursor: pointer;
         }
         .nav-links a:hover, .nav-links a.active {
             color: #667eea;
@@ -108,6 +110,7 @@
             padding: 12px;
             border-radius: 10px;
             transition: all 0.3s;
+            cursor: pointer;
         }
         .sidebar-menu a:hover, .sidebar-menu a.active {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -214,6 +217,7 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
+            cursor: pointer;
         }
 
         .posts-list {
@@ -302,6 +306,10 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            cursor: pointer;
+        }
+        .post-stat:hover {
+            color: #667eea;
         }
 
         .hot-topics {
@@ -367,6 +375,76 @@
             color: #999;
         }
 
+        .create-post-form {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        }
+        .create-post-form.active {
+            display: block;
+        }
+        .create-post-form h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .submit-btn {
+            padding: 14px 36px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+        }
+        .cancel-btn {
+            padding: 14px 36px;
+            background: white;
+            color: #666;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: all 0.3s;
+        }
+        .cancel-btn:hover {
+            background: #f5f5f5;
+        }
+
         .footer {
             background: linear-gradient(180deg, #1a1a2e 0%, #0f172a 100%);
             color: white;
@@ -400,6 +478,7 @@
             color: #aaa;
             text-decoration: none;
             font-size: 14px;
+            cursor: pointer;
         }
         .footer-bottom {
             border-top: 1px solid #2a2a3e;
@@ -425,9 +504,9 @@
 <body>
     <header class="header">
         <div class="header-inner">
-            <div class="logo">📚 小说平台</div>
+            <div class="logo" onclick="goHome()">📚 小说平台</div>
             <div class="nav-links">
-                <a href="/">首页</a>
+                <a href="/" onclick="goHome()">首页</a>
                 <a href="/creator">创作者中心</a>
                 <a href="/community" class="active">社区论坛</a>
                 <a href="/payment">充值中心</a>
@@ -439,46 +518,41 @@
     <main class="main-content">
         <aside class="sidebar">
             <div class="sidebar-section">
-                <h3>📋 社区导航</h3>
+                <h3>社区导航</h3>
                 <ul class="sidebar-menu">
-                    <li><a href="#" class="active"><span class="icon">🔥</span>热门讨论</a></li>
-                    <li><a href="#"><span class="icon">📖</span>新书推荐</a></li>
-                    <li><a href="#"><span class="icon">💬</span>书评交流</a></li>
-                    <li><a href="#"><span class="icon">🏆</span>排行榜</a></li>
-                    <li><a href="#"><span class="icon">🎁</span>福利活动</a></li>
-                    <li><a href="#"><span class="icon">📢</span>官方公告</a></li>
+                    <li><a href="#" class="active" onclick="filterPosts('all')"><span class="icon">🔥</span>热门讨论</a></li>
+                    <li><a href="#" onclick="filterPosts('recommend')"><span class="icon">📖</span>新书推荐</a></li>
+                    <li><a href="#" onclick="filterPosts('review')"><span class="icon">💬</span>书评交流</a></li>
+                    <li><a href="#" onclick="filterPosts('activity')"><span class="icon">🎁</span>福利活动</a></li>
+                    <li><a href="#" onclick="filterPosts('announcement')"><span class="icon">📢</span>官方公告</a></li>
                 </ul>
             </div>
             <div class="sidebar-section">
-                <h3>📊 社区数据</h3>
+                <h3>社区数据</h3>
                 <div class="community-stats">
                     <div class="stat-row">
                         <span class="stat-label">帖子总数</span>
-                        <span class="stat-value">125万+</span>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-label">活跃用户</span>
-                        <span class="stat-value">56万</span>
+                        <span class="stat-value" id="totalPosts">-</span>
                     </div>
                     <div class="stat-row">
                         <span class="stat-label">今日新增</span>
-                        <span class="stat-value">2,847</span>
+                        <span class="stat-value" id="todayPosts">-</span>
                     </div>
                     <div class="stat-row">
-                        <span class="stat-label">回复总数</span>
-                        <span class="stat-value">890万+</span>
+                        <span class="stat-label">活跃用户</span>
+                        <span class="stat-value" id="activeUsers">-</span>
                     </div>
                 </div>
             </div>
             <div class="sidebar-section">
-                <h3>🎯 热门标签</h3>
+                <h3>热门标签</h3>
                 <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    <span style="font-size: 12px; padding: 6px 12px; background: #f0f4ff; color: #667eea; border-radius: 20px;">玄幻</span>
-                    <span style="font-size: 12px; padding: 6px 12px; background: #fff0f0; color: #ee5a5a; border-radius: 20px;">仙侠</span>
-                    <span style="font-size: 12px; padding: 6px 12px; background: #f0fff0; color: #2e7d32; border-radius: 20px;">都市</span>
-                    <span style="font-size: 12px; padding: 6px 12px; background: #fff8e1; color: #ef6c00; border-radius: 20px;">历史</span>
-                    <span style="font-size: 12px; padding: 6px 12px; background: #e3f2fd; color: #1976d2; border-radius: 20px;">科幻</span>
-                    <span style="font-size: 12px; padding: 6px 12px; background: #fce4ec; color: #c2185b; border-radius: 20px;">言情</span>
+                    <span class="tag" onclick="filterPosts('fantasy')" style="font-size: 12px; padding: 6px 12px; background: #f0f4ff; color: #667eea; border-radius: 20px; cursor: pointer;">玄幻</span>
+                    <span class="tag" onclick="filterPosts('xianxia')" style="font-size: 12px; padding: 6px 12px; background: #fff0f0; color: #ee5a5a; border-radius: 20px; cursor: pointer;">仙侠</span>
+                    <span class="tag" onclick="filterPosts('urban')" style="font-size: 12px; padding: 6px 12px; background: #f0fff0; color: #2e7d32; border-radius: 20px; cursor: pointer;">都市</span>
+                    <span class="tag" onclick="filterPosts('history')" style="font-size: 12px; padding: 6px 12px; background: #fff8e1; color: #ef6c00; border-radius: 20px; cursor: pointer;">历史</span>
+                    <span class="tag" onclick="filterPosts('scifi')" style="font-size: 12px; padding: 6px 12px; background: #e3f2fd; color: #1976d2; border-radius: 20px; cursor: pointer;">科幻</span>
+                    <span class="tag" onclick="filterPosts('romance')" style="font-size: 12px; padding: 6px 12px; background: #fce4ec; color: #c2185b; border-radius: 20px; cursor: pointer;">言情</span>
                 </div>
             </div>
         </aside>
@@ -486,138 +560,65 @@
         <div class="main-area">
             <div class="hero-card">
                 <h1>欢迎来到社区论坛</h1>
-                <p>与百万书友一起讨论小说，分享阅读心得，发现更多精彩好书！</p>
+                <p>与书友一起讨论小说，分享阅读心得，发现更多精彩好书！</p>
             </div>
 
             <div class="quick-actions">
-                <div class="action-card">
+                <div class="action-card" onclick="showCreatePost()">
                     <div class="action-icon">✍️</div>
                     <div class="action-title">发帖讨论</div>
                 </div>
-                <div class="action-card">
+                <div class="action-card" onclick="filterPosts('recommend')">
                     <div class="action-icon">📚</div>
                     <div class="action-title">推荐好书</div>
                 </div>
-                <div class="action-card">
+                <div class="action-card" onclick="filterPosts('review')">
                     <div class="action-icon">⭐</div>
                     <div class="action-title">发表书评</div>
                 </div>
-                <div class="action-card">
+                <div class="action-card" onclick="showSearch()">
                     <div class="action-icon">🔍</div>
                     <div class="action-title">搜索帖子</div>
                 </div>
             </div>
 
+            <div class="create-post-form" id="createPostForm">
+                <h3>发布新帖</h3>
+                <form id="postForm">
+                    <div class="form-group">
+                        <label>帖子标题</label>
+                        <input type="text" id="postTitle" placeholder="请输入帖子标题" required>
+                    </div>
+                    <div class="form-group">
+                        <label>帖子类型</label>
+                        <select id="postType">
+                            <option value="discussion">讨论</option>
+                            <option value="recommend">推荐</option>
+                            <option value="review">书评</option>
+                            <option value="question">提问</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>帖子内容</label>
+                        <textarea id="postContent" placeholder="请输入帖子内容" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">发布帖子</button>
+                    <button type="button" class="cancel-btn" onclick="hideCreatePost()">取消</button>
+                </form>
+            </div>
+
             <div class="section">
                 <div class="section-header">
-                    <div class="section-title">🔥 热门讨论</div>
-                    <a href="#" class="section-more">查看更多 ></a>
+                    <div class="section-title" id="postsSectionTitle">🔥 热门讨论</div>
+                    <a class="section-more" onclick="showCreatePost()">发布新帖 ></a>
                 </div>
-                <div class="posts-list">
-                    <div class="post-card">
-                        <div class="post-header">
-                            <div class="post-avatar">书</div>
-                            <div class="post-author-info">
-                                <span class="post-author">书友小明</span>
-                                <span class="post-time">2小时前</span>
-                            </div>
-                        </div>
-                        <div class="post-title">《斗破苍穹》最新章节太燃了！萧炎终于突破斗帝了！</div>
-                        <div class="post-content">今天更新的章节真的太精彩了！萧炎在古界大战中突破斗帝境界，一招毁天灭地，直接碾压魂天帝！看到这里我激动得不行，土豆的文笔越来越厉害了...</div>
-                        <div class="post-tags">
-                            <span class="post-tag">斗破苍穹</span>
-                            <span class="post-tag">讨论</span>
-                            <span class="post-tag">剧透</span>
-                        </div>
-                        <div class="post-stats">
-                            <span class="post-stat">👁 3,247</span>
-                            <span class="post-stat">💬 456</span>
-                            <span class="post-stat">❤️ 1,892</span>
-                        </div>
-                    </div>
-                    <div class="post-card">
-                        <div class="post-header">
-                            <div class="post-avatar">读</div>
-                            <div class="post-author-info">
-                                <span class="post-author">资深书虫</span>
-                                <span class="post-time">5小时前</span>
-                            </div>
-                        </div>
-                        <div class="post-title">推荐几本近期发现的宝藏小说，熬夜看完太爽了！</div>
-                        <div class="post-content">最近书荒找了很久，终于发现了几本超级好看的小说！《深空彼岸》的世界观设定太宏大了，辰东不愧是大神！还有《夜的命名术》，脑洞真的很大...</div>
-                        <div class="post-tags">
-                            <span class="post-tag">推荐</span>
-                            <span class="post-tag">书单</span>
-                            <span class="post-tag">新书</span>
-                        </div>
-                        <div class="post-stats">
-                            <span class="post-stat">👁 8,921</span>
-                            <span class="post-stat">💬 1,234</span>
-                            <span class="post-stat">❤️ 5,678</span>
-                        </div>
-                    </div>
-                    <div class="post-card">
-                        <div class="post-header">
-                            <div class="post-avatar">评</div>
-                            <div class="post-author-info">
-                                <span class="post-author">书评达人</span>
-                                <span class="post-time">昨天</span>
-                            </div>
-                        </div>
-                        <div class="post-title">深度解析《诡秘之主》的世界观和人物塑造</div>
-                        <div class="post-content">乌贼的《诡秘之主》真的是近年来最优秀的玄幻小说之一！从序列体系到人物成长，每一个细节都经得起推敲。克莱恩的成长轨迹太真实了...</div>
-                        <div class="post-tags">
-                            <span class="post-tag">书评</span>
-                            <span class="post-tag">分析</span>
-                            <span class="post-tag">诡秘之主</span>
-                        </div>
-                        <div class="post-stats">
-                            <span class="post-stat">👁 15,678</span>
-                            <span class="post-stat">💬 2,345</span>
-                            <span class="post-stat">❤️ 8,901</span>
-                        </div>
-                    </div>
+                <div class="posts-list" id="postsList">
                 </div>
             </div>
 
             <div class="hot-topics">
-                <h3>🔥 今日热议 TOP10</h3>
-                <div class="hot-list">
-                    <div class="hot-item">
-                        <span class="hot-rank top">1</span>
-                        <div class="hot-info">
-                            <div class="hot-title">《斗破苍穹》萧炎突破斗帝</div>
-                            <div class="hot-count">3.2万讨论</div>
-                        </div>
-                    </div>
-                    <div class="hot-item">
-                        <span class="hot-rank top">2</span>
-                        <div class="hot-info">
-                            <div class="hot-title">《深空彼岸》最新章评</div>
-                            <div class="hot-count">2.8万讨论</div>
-                        </div>
-                    </div>
-                    <div class="hot-item">
-                        <span class="hot-rank top">3</span>
-                        <div class="hot-info">
-                            <div class="hot-title">书荒求推荐！</div>
-                            <div class="hot-count">2.1万讨论</div>
-                        </div>
-                    </div>
-                    <div class="hot-item">
-                        <span class="hot-rank normal">4</span>
-                        <div class="hot-info">
-                            <div class="hot-title">《凡人修仙传》韩立的逆袭</div>
-                            <div class="hot-count">1.8万讨论</div>
-                        </div>
-                    </div>
-                    <div class="hot-item">
-                        <span class="hot-rank normal">5</span>
-                        <div class="hot-info">
-                            <div class="hot-title">全职高手动画开播</div>
-                            <div class="hot-count">1.5万讨论</div>
-                        </div>
-                    </div>
+                <h3>🔥 今日热议 TOP5</h3>
+                <div class="hot-list" id="hotList">
                 </div>
             </div>
         </div>
@@ -629,33 +630,33 @@
                 <div class="footer-section">
                     <h4>关于我们</h4>
                     <ul>
-                        <li><a href="/agreements">平台介绍</a></li>
-                        <li><a href="/agreements">联系我们</a></li>
-                        <li><a href="/agreements">加入我们</a></li>
+                        <li><a onclick="goTo('/agreements')">平台介绍</a></li>
+                        <li><a onclick="goTo('/agreements')">联系我们</a></li>
+                        <li><a onclick="goTo('/agreements')">加入我们</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>帮助中心</h4>
                     <ul>
-                        <li><a href="/agreements">常见问题</a></li>
-                        <li><a href="/agreements">发帖规范</a></li>
-                        <li><a href="/agreements">举报流程</a></li>
+                        <li><a onclick="goTo('/agreements')">常见问题</a></li>
+                        <li><a onclick="goTo('/agreements')">发帖规范</a></li>
+                        <li><a onclick="goTo('/agreements')">举报流程</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>社区服务</h4>
                     <ul>
-                        <li><a href="/community">讨论区</a></li>
-                        <li><a href="/community">书评区</a></li>
-                        <li><a href="/community">活动区</a></li>
+                        <li><a onclick="goTo('/community')">讨论区</a></li>
+                        <li><a onclick="goTo('/community')">书评区</a></li>
+                        <li><a onclick="goTo('/community')">活动区</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>法律声明</h4>
                     <ul>
-                        <li><a href="/agreements">用户协议</a></li>
-                        <li><a href="/agreements">隐私政策</a></li>
-                        <li><a href="/agreements">社区规范</a></li>
+                        <li><a onclick="goTo('/agreements')">用户协议</a></li>
+                        <li><a onclick="goTo('/agreements')">隐私政策</a></li>
+                        <li><a onclick="goTo('/agreements')">社区规范</a></li>
                     </ul>
                 </div>
             </div>
@@ -666,9 +667,247 @@
     </footer>
 
     <script>
-        function goBack() {
-            window.history.back();
+        let currentFilter = 'all';
+        let allPosts = [];
+
+        function goHome() {
+            window.location.href = '/';
         }
+
+        function goBack() {
+            window.location.href = '/';
+        }
+
+        function goTo(url) {
+            window.location.href = url;
+        }
+
+        async function loadCommunityStats() {
+            try {
+                const response = await fetch('/api/community/stats');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('totalPosts').textContent = data.totalPosts || 0;
+                    document.getElementById('todayPosts').textContent = data.todayPosts || 0;
+                    document.getElementById('activeUsers').textContent = data.activeUsers || 0;
+                }
+            } catch (error) {
+                console.error('加载社区统计失败:', error);
+            }
+        }
+
+        async function loadPosts() {
+            try {
+                const response = await fetch('/api/community/posts?type=' + currentFilter);
+                const data = await response.json();
+                
+                if (data.success) {
+                    allPosts = data.posts || [];
+                    renderPosts(allPosts);
+                    renderHotTopics(allPosts.slice(0, 5));
+                }
+            } catch (error) {
+                console.error('加载帖子失败:', error);
+                renderSamplePosts();
+            }
+        }
+
+        function renderPosts(posts) {
+            const postsList = document.getElementById('postsList');
+            
+            if (posts.length === 0) {
+                postsList.innerHTML = '<p style="color: #888; text-align: center; padding: 40px;">暂无帖子，快来发布第一篇吧！</p>';
+                return;
+            }
+            
+            postsList.innerHTML = posts.map(post => `
+                <div class="post-card" onclick="viewPost('${post.id}')">
+                    <div class="post-header">
+                        <div class="post-avatar">${post.author.charAt(0)}</div>
+                        <div class="post-author-info">
+                            <span class="post-author">${post.author}</span>
+                            <span class="post-time">${post.time}</span>
+                        </div>
+                    </div>
+                    <div class="post-title">${post.title}</div>
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-tags">
+                        ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="post-stats">
+                        <span class="post-stat" onclick="event.stopPropagation(); likePost('${post.id}')">❤️ ${post.likes || 0}</span>
+                        <span class="post-stat" onclick="event.stopPropagation(); commentPost('${post.id}')">💬 ${post.comments || 0}</span>
+                        <span class="post-stat">👁 ${post.views || 0}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderHotTopics(posts) {
+            const hotList = document.getElementById('hotList');
+            
+            hotList.innerHTML = posts.map((post, index) => `
+                <div class="hot-item" onclick="viewPost('${post.id}')">
+                    <span class="hot-rank ${index < 3 ? 'top' : 'normal'}">${index + 1}</span>
+                    <div class="hot-info">
+                        <div class="hot-title">${post.title}</div>
+                        <div class="hot-count">${post.comments || 0} 评论</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderSamplePosts() {
+            const samplePosts = [
+                {
+                    id: '1',
+                    title: '《斗破苍穹》最新章节太燃了！萧炎终于突破斗帝了！',
+                    author: '书友小明',
+                    time: '2小时前',
+                    content: '今天更新的章节真的太精彩了！萧炎在古界大战中突破斗帝境界，一招毁天灭地，直接碾压魂天帝！',
+                    tags: ['斗破苍穹', '讨论'],
+                    likes: 1892,
+                    comments: 456,
+                    views: 3247
+                },
+                {
+                    id: '2',
+                    title: '推荐几本近期发现的宝藏小说，熬夜看完太爽了！',
+                    author: '资深书虫',
+                    time: '5小时前',
+                    content: '最近书荒找了很久，终于发现了几本超级好看的小说！《深空彼岸》的世界观设定太宏大了，辰东不愧是大神！',
+                    tags: ['推荐', '书单'],
+                    likes: 5678,
+                    comments: 1234,
+                    views: 8921
+                },
+                {
+                    id: '3',
+                    title: '深度解析《诡秘之主》的世界观和人物塑造',
+                    author: '书评达人',
+                    time: '昨天',
+                    content: '乌贼的《诡秘之主》真的是近年来最优秀的玄幻小说之一！从序列体系到人物成长，每一个细节都经得起推敲。',
+                    tags: ['书评', '分析'],
+                    likes: 8901,
+                    comments: 2345,
+                    views: 15678
+                }
+            ];
+            
+            allPosts = samplePosts;
+            renderPosts(samplePosts);
+            renderHotTopics(samplePosts);
+        }
+
+        function filterPosts(type) {
+            currentFilter = type;
+            
+            document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+            event.target.closest('a').classList.add('active');
+            
+            const titles = {
+                'all': '🔥 热门讨论',
+                'recommend': '📖 新书推荐',
+                'review': '💬 书评交流',
+                'activity': '🎁 福利活动',
+                'announcement': '📢 官方公告',
+                'fantasy': '⚔️ 玄幻专区',
+                'xianxia': '🗡️ 仙侠专区',
+                'urban': '🏙️ 都市专区',
+                'history': '📜 历史专区',
+                'scifi': '🚀 科幻专区',
+                'romance': '💕 言情专区'
+            };
+            
+            document.getElementById('postsSectionTitle').textContent = titles[type] || '🔥 热门讨论';
+            
+            const filteredPosts = type === 'all' ? allPosts : allPosts.filter(p => 
+                p.tags.some(tag => tag.toLowerCase().includes(type)) ||
+                type === 'recommend' && p.tags.includes('推荐') ||
+                type === 'review' && p.tags.includes('书评')
+            );
+            
+            renderPosts(filteredPosts);
+        }
+
+        function showCreatePost() {
+            document.getElementById('createPostForm').classList.add('active');
+        }
+
+        function hideCreatePost() {
+            document.getElementById('createPostForm').classList.remove('active');
+        }
+
+        document.getElementById('postForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                title: document.getElementById('postTitle').value,
+                type: document.getElementById('postType').value,
+                content: document.getElementById('postContent').value
+            };
+
+            try {
+                const response = await fetch('/api/community/posts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('帖子发布成功！');
+                    hideCreatePost();
+                    this.reset();
+                    loadPosts();
+                } else {
+                    alert('发布失败: ' + result.message);
+                }
+            } catch (error) {
+                alert('发布失败，请稍后重试');
+            }
+        });
+
+        function viewPost(postId) {
+            window.location.href = '/community/post/' + postId;
+        }
+
+        async function likePost(postId) {
+            try {
+                const response = await fetch('/api/community/posts/' + postId + '/like', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    loadPosts();
+                }
+            } catch (error) {
+                console.error('点赞失败:', error);
+            }
+        }
+
+        function commentPost(postId) {
+            const comment = prompt('请输入你的评论：');
+            if (comment) {
+                alert('评论功能开发中，敬请期待！');
+            }
+        }
+
+        function showSearch() {
+            const keyword = prompt('请输入搜索关键词：');
+            if (keyword) {
+                const filteredPosts = allPosts.filter(p => 
+                    p.title.includes(keyword) || p.content.includes(keyword)
+                );
+                renderPosts(filteredPosts);
+            }
+        }
+
+        loadCommunityStats();
+        loadPosts();
     </script>
 </body>
 </html>

@@ -33,6 +33,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            cursor: pointer;
         }
         .nav-links {
             display: flex;
@@ -44,6 +45,7 @@
             font-size: 16px;
             font-weight: 500;
             transition: all 0.3s;
+            cursor: pointer;
         }
         .nav-links a:hover, .nav-links a.active {
             color: #667eea;
@@ -278,6 +280,207 @@
             line-height: 1.7;
         }
 
+        .registration-form {
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            margin-bottom: 50px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        }
+        .registration-form h2 {
+            font-size: 28px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102,126,234,0.4);
+        }
+
+        .my-works-section {
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            margin-bottom: 50px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        }
+        .my-works-section h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .works-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .add-work-btn {
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .add-work-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+        }
+        .works-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .work-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f4f8 100%);
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .work-info h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .work-meta {
+            font-size: 14px;
+            color: #888;
+            display: flex;
+            gap: 20px;
+        }
+        .work-actions {
+            display: flex;
+            gap: 15px;
+        }
+        .work-action-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .edit-btn {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        .edit-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        .view-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+        }
+        .view-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.4);
+        }
+
+        .income-section {
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            margin-bottom: 50px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        }
+        .income-section h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .income-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .income-stat {
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f4f8 100%);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+        }
+        .income-stat-label {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .income-stat-value {
+            font-size: 28px;
+            font-weight: 900;
+            color: #667eea;
+        }
+        .withdraw-btn {
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .withdraw-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+        }
+
         .faq-section {
             background: white;
             border-radius: 24px;
@@ -310,40 +513,6 @@
             font-size: 15px;
             color: #666;
             line-height: 2;
-        }
-
-        .cta-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 24px;
-            padding: 60px;
-            text-align: center;
-            color: white;
-        }
-        .cta-section h2 {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-        .cta-section p {
-            font-size: 18px;
-            margin-bottom: 40px;
-            opacity: 0.95;
-        }
-        .cta-btn {
-            background: white;
-            color: #667eea;
-            padding: 16px 50px;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-        }
-        .cta-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
         }
 
         .footer {
@@ -379,6 +548,7 @@
             color: #aaa;
             text-decoration: none;
             font-size: 14px;
+            cursor: pointer;
         }
         .footer-bottom {
             border-top: 1px solid #2a2a3e;
@@ -387,14 +557,56 @@
             color: #777;
             font-size: 13px;
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+        }
+        .modal-close {
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+        }
+        .modal-close:hover {
+            color: #333;
+        }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="header-inner">
-            <div class="logo">📚 小说平台</div>
+            <div class="logo" onclick="goHome()">📚 小说平台</div>
             <div class="nav-links">
-                <a href="/">首页</a>
+                <a href="/" onclick="goHome()">首页</a>
                 <a href="/creator" class="active">创作者中心</a>
                 <a href="/community">社区论坛</a>
                 <a href="/payment">充值中心</a>
@@ -406,19 +618,19 @@
     <main class="main-content">
         <section class="hero-section">
             <h1>欢迎加入创作者中心</h1>
-            <p>在这里，你的故事将被百万读者阅读，你的创作将获得应有的回报</p>
+            <p>在这里，你的故事将被读者阅读，你的创作将获得应有的回报</p>
             <div class="hero-stats">
                 <div class="hero-stat-item">
-                    <div class="hero-stat-number">50,000+</div>
-                    <div class="hero-stat-label">签约作者</div>
+                    <div class="hero-stat-number" id="totalAuthors">-</div>
+                    <div class="hero-stat-label">注册作者</div>
                 </div>
                 <div class="hero-stat-item">
-                    <div class="hero-stat-number">50亿+</div>
-                    <div class="hero-stat-label">累计稿酬发放</div>
+                    <div class="hero-stat-number" id="totalWorks">-</div>
+                    <div class="hero-stat-label">作品总数</div>
                 </div>
                 <div class="hero-stat-item">
-                    <div class="hero-stat-number">98%</div>
-                    <div class="hero-stat-label">准时发放稿酬</div>
+                    <div class="hero-stat-number" id="totalIncome">-</div>
+                    <div class="hero-stat-label">累计稿酬</div>
                 </div>
             </div>
         </section>
@@ -426,29 +638,29 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">📝</div>
-                <div class="stat-value">200万+</div>
-                <div class="stat-label">作品总数</div>
+                <div class="stat-value" id="myWorksCount">0</div>
+                <div class="stat-label">我的作品</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">👥</div>
-                <div class="stat-value">50万+</div>
-                <div class="stat-label">作者人数</div>
+                <div class="stat-value" id="myReaders">0</div>
+                <div class="stat-label">我的读者</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">💰</div>
-                <div class="stat-value">50亿</div>
-                <div class="stat-label">稿酬总额</div>
+                <div class="stat-value" id="myIncome">0</div>
+                <div class="stat-label">我的收入</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">⭐</div>
-                <div class="stat-value">98%</div>
-                <div class="stat-label">作者满意度</div>
+                <div class="stat-value" id="myBalance">0</div>
+                <div class="stat-label">可提现余额</div>
             </div>
         </div>
 
         <div class="info-section">
             <div class="info-card">
-                <h3>📌 成为作者的好处</h3>
+                <h3>成为作者的好处</h3>
                 <ul>
                     <li>无门槛入驻，一键发布作品</li>
                     <li>高达50%的分成比例</li>
@@ -460,51 +672,50 @@
                 </ul>
             </div>
             <div class="info-card">
-                <h3>📈 创作数据统计</h3>
-                <p>平台每日新增作品超过5000部，平均每部作品拥有10万+阅读量。签约作者月均收入超过8000元，顶尖作者年收入可达数百万。</p>
-                <p>我们提供完善的数据后台，让你随时掌握作品的阅读量、收藏量、订阅量等关键数据，助力你的创作决策。</p>
-                <p>加入我们，开启你的创作之旅！</p>
+                <h3>如何开始创作</h3>
+                <p>只需要简单的四步，你就可以开始你的创作之旅。首先注册账号并完成实名认证，然后创建你的第一部作品，发布前三章内容供读者阅读。</p>
+                <p>当你积累了一定的读者基础后，可以申请签约获得更多权益。我们提供完善的数据后台，让你随时掌握作品的阅读量、收藏量、订阅量等关键数据。</p>
             </div>
         </div>
 
         <section class="benefits-section">
-            <h2>🎁 作者专属福利</h2>
+            <h2>作者专属福利</h2>
             <div class="benefits-grid">
                 <div class="benefit-card">
                     <div class="benefit-icon">💰</div>
                     <div class="benefit-title">优厚稿酬</div>
-                    <div class="benefit-desc">基础稿酬+全勤奖励+订阅分成+打赏分成，多劳多得，上不封顶</div>
+                    <div class="benefit-desc">基础稿酬+全勤奖励+订阅分成+打赏分成，多劳多得</div>
                 </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">🎯</div>
                     <div class="benefit-title">精准推荐</div>
-                    <div class="benefit-desc">智能算法推荐，让你的作品精准触达目标读者，提升曝光机会</div>
+                    <div class="benefit-desc">智能算法推荐，让你的作品精准触达目标读者</div>
                 </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">🏆</div>
                     <div class="benefit-title">签约奖励</div>
-                    <div class="benefit-desc">签约即享签约奖金，完本还有额外奖励，激励你的创作热情</div>
+                    <div class="benefit-desc">签约即享签约奖金，完本还有额外奖励</div>
                 </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">📚</div>
                     <div class="benefit-title">版权运营</div>
-                    <div class="benefit-desc">专业版权团队助力IP衍生开发，漫画、影视、游戏全方位拓展</div>
+                    <div class="benefit-desc">专业版权团队助力IP衍生开发</div>
                 </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">🎓</div>
                     <div class="benefit-title">培训支持</div>
-                    <div class="benefit-desc">定期举办写作培训、行业分享，帮助你不断提升写作水平</div>
+                    <div class="benefit-desc">定期举办写作培训、行业分享</div>
                 </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">🎁</div>
                     <div class="benefit-title">节日福利</div>
-                    <div class="benefit-desc">节假日专属福利、生日礼包、年度盛典，让你感受到家的温暖</div>
+                    <div class="benefit-desc">节假日专属福利、生日礼包</div>
                 </div>
             </div>
         </section>
 
         <section class="steps-section">
-            <h2>🚀 入驻流程</h2>
+            <h2>入驻流程</h2>
             <div class="steps-grid">
                 <div class="step-card">
                     <div class="step-number">1</div>
@@ -529,8 +740,75 @@
             </div>
         </section>
 
+        <section class="registration-form">
+            <h2>立即入驻</h2>
+            <form id="registrationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>笔名</label>
+                        <input type="text" id="penName" placeholder="请输入你的笔名" required>
+                    </div>
+                    <div class="form-group">
+                        <label>擅长题材</label>
+                        <select id="genre" required>
+                            <option value="">请选择</option>
+                            <option value="fantasy">玄幻</option>
+                            <option value="xianxia">仙侠</option>
+                            <option value="urban">都市</option>
+                            <option value="history">历史</option>
+                            <option value="game">游戏</option>
+                            <option value="mystery">悬疑</option>
+                            <option value="scifi">科幻</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>作品名称</label>
+                    <input type="text" id="workTitle" placeholder="请输入你的第一部作品名称">
+                </div>
+                <div class="form-group">
+                    <label>作品简介</label>
+                    <textarea id="workDesc" rows="4" placeholder="请简要描述你的作品（200字以内）"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">提交入驻申请</button>
+            </form>
+        </section>
+
+        <section class="my-works-section">
+            <div class="works-header">
+                <h2>我的作品</h2>
+                <button class="add-work-btn" onclick="showAddWorkModal()">+ 创建新作品</button>
+            </div>
+            <div class="works-list" id="worksList">
+                <p style="color: #888; text-align: center; padding: 40px;">暂无作品，立即创建你的第一部作品吧！</p>
+            </div>
+        </section>
+
+        <section class="income-section">
+            <h2>我的收益</h2>
+            <div class="income-stats">
+                <div class="income-stat">
+                    <div class="income-stat-label">累计收益</div>
+                    <div class="income-stat-value">0 书币</div>
+                </div>
+                <div class="income-stat">
+                    <div class="income-stat-label">本月收益</div>
+                    <div class="income-stat-value">0 书币</div>
+                </div>
+                <div class="income-stat">
+                    <div class="income-stat-label">可提现</div>
+                    <div class="income-stat-value">0 书币</div>
+                </div>
+                <div class="income-stat">
+                    <div class="income-stat-label">已提现</div>
+                    <div class="income-stat-value">0 书币</div>
+                </div>
+            </div>
+            <button class="withdraw-btn" onclick="showWithdrawModal()">申请提现</button>
+        </section>
+
         <section class="faq-section">
-            <h2>❓ 常见问题</h2>
+            <h2>常见问题</h2>
             <div class="faq-item">
                 <div class="faq-question">Q: 签约有什么要求？</div>
                 <div class="faq-answer">A: 作品字数达到3万字以上，内容优质，有一定的读者基础即可申请签约。我们看重作品的潜力和作者的创作态度。</div>
@@ -552,13 +830,64 @@
                 <div class="faq-answer">A: 签约后会分配专属责任编辑，可以通过作者后台私信联系，也可以加入作者交流群获取帮助。</div>
             </div>
         </section>
-
-        <section class="cta-section">
-            <h2>准备好了吗？开始你的创作之旅！</h2>
-            <p>立即入驻，成为百万作者中的一员，让你的故事被全世界看到！</p>
-            <button class="cta-btn">立即入驻</button>
-        </section>
     </main>
+
+    <div class="modal" id="addWorkModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">创建新作品</div>
+                <div class="modal-close" onclick="closeAddWorkModal()">×</div>
+            </div>
+            <form id="addWorkForm">
+                <div class="form-group">
+                    <label>作品名称</label>
+                    <input type="text" id="newWorkTitle" placeholder="请输入作品名称" required>
+                </div>
+                <div class="form-group">
+                    <label>作品类型</label>
+                    <select id="newWorkGenre" required>
+                        <option value="">请选择</option>
+                        <option value="fantasy">玄幻</option>
+                        <option value="xianxia">仙侠</option>
+                        <option value="urban">都市</option>
+                        <option value="history">历史</option>
+                        <option value="game">游戏</option>
+                        <option value="mystery">悬疑</option>
+                        <option value="scifi">科幻</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>作品简介</label>
+                    <textarea id="newWorkDesc" rows="4" placeholder="请输入作品简介（200字以内）" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">创建作品</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="withdrawModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">申请提现</div>
+                <div class="modal-close" onclick="closeWithdrawModal()">×</div>
+            </div>
+            <form id="withdrawForm">
+                <div class="form-group">
+                    <label>提现金额（书币）</label>
+                    <input type="number" id="withdrawAmount" placeholder="请输入提现金额" min="100" required>
+                </div>
+                <div class="form-group">
+                    <label>支付宝账号</label>
+                    <input type="text" id="alipayAccount" placeholder="请输入支付宝账号" required>
+                </div>
+                <div class="form-group">
+                    <label>真实姓名</label>
+                    <input type="text" id="realName" placeholder="请输入真实姓名" required>
+                </div>
+                <button type="submit" class="submit-btn">提交提现申请</button>
+            </form>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="footer-inner">
@@ -566,33 +895,33 @@
                 <div class="footer-section">
                     <h4>关于我们</h4>
                     <ul>
-                        <li><a href="/agreements">平台介绍</a></li>
-                        <li><a href="/agreements">联系我们</a></li>
-                        <li><a href="/agreements">加入我们</a></li>
+                        <li><a onclick="goTo('/agreements')">平台介绍</a></li>
+                        <li><a onclick="goTo('/agreements')">联系我们</a></li>
+                        <li><a onclick="goTo('/agreements')">加入我们</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>帮助中心</h4>
                     <ul>
-                        <li><a href="/agreements">常见问题</a></li>
-                        <li><a href="/agreements">创作指南</a></li>
-                        <li><a href="/agreements">稿酬说明</a></li>
+                        <li><a onclick="goTo('/agreements')">常见问题</a></li>
+                        <li><a onclick="goTo('/agreements')">创作指南</a></li>
+                        <li><a onclick="goTo('/agreements')">稿酬说明</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>作家服务</h4>
                     <ul>
-                        <li><a href="/creator">成为作家</a></li>
-                        <li><a href="/creator">签约申请</a></li>
-                        <li><a href="/creator">作家福利</a></li>
+                        <li><a onclick="goTo('/creator')">成为作家</a></li>
+                        <li><a onclick="goTo('/creator')">签约申请</a></li>
+                        <li><a onclick="goTo('/creator')">作家福利</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>法律声明</h4>
                     <ul>
-                        <li><a href="/agreements">用户协议</a></li>
-                        <li><a href="/agreements">隐私政策</a></li>
-                        <li><a href="/agreements">版权声明</a></li>
+                        <li><a onclick="goTo('/agreements')">用户协议</a></li>
+                        <li><a onclick="goTo('/agreements')">隐私政策</a></li>
+                        <li><a onclick="goTo('/agreements')">版权声明</a></li>
                     </ul>
                 </div>
             </div>
@@ -603,9 +932,185 @@
     </footer>
 
     <script>
-        function goBack() {
-            window.history.back();
+        function goHome() {
+            window.location.href = '/';
         }
+
+        function goBack() {
+            window.location.href = '/';
+        }
+
+        function goTo(url) {
+            window.location.href = url;
+        }
+
+        async function loadCreatorStats() {
+            try {
+                const response = await fetch('/api/creator/stats');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('totalAuthors').textContent = data.totalAuthors || 0;
+                    document.getElementById('totalWorks').textContent = data.totalWorks || 0;
+                    document.getElementById('totalIncome').textContent = (data.totalIncome || 0) + ' 书币';
+                }
+            } catch (error) {
+                console.error('加载创作者统计失败:', error);
+            }
+        }
+
+        async function loadMyWorks() {
+            try {
+                const response = await fetch('/api/creator/my-works');
+                const data = await response.json();
+                
+                if (data.success && data.works && data.works.length > 0) {
+                    const worksList = document.getElementById('worksList');
+                    worksList.innerHTML = data.works.map(work => `
+                        <div class="work-card">
+                            <div class="work-info">
+                                <h4>${work.title}</h4>
+                                <div class="work-meta">
+                                    <span>📚 ${work.chapters || 0} 章</span>
+                                    <span>👁 ${work.views || 0} 阅读</span>
+                                    <span>⭐ ${work.likes || 0} 收藏</span>
+                                </div>
+                            </div>
+                            <div class="work-actions">
+                                <button class="work-action-btn edit-btn" onclick="editWork('${work.id}')">编辑</button>
+                                <button class="work-action-btn view-btn" onclick="viewWork('${work.id}')">查看</button>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    document.getElementById('myWorksCount').textContent = data.works.length;
+                    document.getElementById('myReaders').textContent = data.works.reduce((sum, w) => sum + (w.views || 0), 0);
+                    document.getElementById('myIncome').textContent = (data.totalIncome || 0) + ' 书币';
+                    document.getElementById('myBalance').textContent = (data.balance || 0) + ' 书币';
+                }
+            } catch (error) {
+                console.error('加载我的作品失败:', error);
+            }
+        }
+
+        document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                penName: document.getElementById('penName').value,
+                genre: document.getElementById('genre').value,
+                workTitle: document.getElementById('workTitle').value,
+                workDesc: document.getElementById('workDesc').value
+            };
+
+            try {
+                const response = await fetch('/api/creator/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('入驻申请已提交！我们会尽快审核。');
+                    this.reset();
+                    loadMyWorks();
+                } else {
+                    alert('提交失败: ' + result.message);
+                }
+            } catch (error) {
+                alert('提交失败，请稍后重试');
+            }
+        });
+
+        function showAddWorkModal() {
+            document.getElementById('addWorkModal').classList.add('active');
+        }
+
+        function closeAddWorkModal() {
+            document.getElementById('addWorkModal').classList.remove('active');
+        }
+
+        document.getElementById('addWorkForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                title: document.getElementById('newWorkTitle').value,
+                genre: document.getElementById('newWorkGenre').value,
+                description: document.getElementById('newWorkDesc').value
+            };
+
+            try {
+                const response = await fetch('/api/creator/works', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('作品创建成功！');
+                    closeAddWorkModal();
+                    this.reset();
+                    loadMyWorks();
+                } else {
+                    alert('创建失败: ' + result.message);
+                }
+            } catch (error) {
+                alert('创建失败，请稍后重试');
+            }
+        });
+
+        function showWithdrawModal() {
+            document.getElementById('withdrawModal').classList.add('active');
+        }
+
+        function closeWithdrawModal() {
+            document.getElementById('withdrawModal').classList.remove('active');
+        }
+
+        document.getElementById('withdrawForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                amount: document.getElementById('withdrawAmount').value,
+                alipayAccount: document.getElementById('alipayAccount').value,
+                realName: document.getElementById('realName').value
+            };
+
+            try {
+                const response = await fetch('/api/creator/withdraw', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('提现申请已提交！我们会在1-3个工作日内处理。');
+                    closeWithdrawModal();
+                    this.reset();
+                } else {
+                    alert('提交失败: ' + result.message);
+                }
+            } catch (error) {
+                alert('提交失败，请稍后重试');
+            }
+        });
+
+        function editWork(workId) {
+            window.location.href = '/creator/work/' + workId;
+        }
+
+        function viewWork(workId) {
+            window.location.href = '/reader?bookId=' + workId;
+        }
+
+        loadCreatorStats();
+        loadMyWorks();
     </script>
 </body>
 </html>
