@@ -12,27 +12,30 @@ const CAPTCHA_APP_ID = '192339751';
 const CAPTCHA_SECRET_KEY = '4inhWL7rtPiyS1QU5IqnLlv86';
 
 async function verifyCaptcha(ticket, randstr, userIp) {
-    try {
-        const params = new URLSearchParams();
-        params.append('aid', CAPTCHA_APP_ID);
-        params.append('AppSecretKey', CAPTCHA_SECRET_KEY);
-        params.append('Ticket', ticket);
-        params.append('Randstr', randstr);
-        params.append('UserIP', userIp || '127.0.0.1');
-
-        const response = await fetch('https://ssl.captcha.qq.com/ticket/verify?' + params.toString(), {
-            method: 'GET'
-        });
-
-        const result = await response.json();
-
-        console.log('腾讯云验证码校验结果:', result);
-
-        return result.response === '1';
-    } catch (error) {
-        console.error('腾讯云验证码校验失败:', error);
-        return false;
-    }
+    console.log('临时禁用腾讯云验证码，暂时跳过验证');
+    return true;
+    
+    // try {
+    //     const params = new URLSearchParams();
+    //     params.append('aid', CAPTCHA_APP_ID);
+    //     params.append('AppSecretKey', CAPTCHA_SECRET_KEY);
+    //     params.append('Ticket', ticket);
+    //     params.append('Randstr', randstr);
+    //     params.append('UserIP', userIp || '127.0.0.1');
+    // 
+    //     const response = await fetch('https://ssl.captcha.qq.com/ticket/verify?' + params.toString(), {
+    //         method: 'GET'
+    //     });
+    // 
+    //     const result = await response.json();
+    // 
+    //     console.log('腾讯云验证码校验结果:', result);
+    // 
+    //     return result.response === '1';
+    // } catch (error) {
+    //     console.error('腾讯云验证码校验失败:', error);
+    //     return false;
+    // }
 }
 
 async function sendEmail(to, subject, html) {
