@@ -13,7 +13,7 @@ const CAPTCHA_SECRET_KEY = process.env.CAPTCHA_SECRET_KEY || '4inhWL7rtPiyS1QU5I
 
 async function verifyCaptcha(ticket, randstr, userIp) {
     try {
-        if (!ticket || ticket === 'test' || ticket === 'skip' || ticket.length < 5) {
+        if (!ticket || ticket.length < 5) {
             console.log('⚠️ 验证码无效，必须完成真实验证');
             return false;
         }
@@ -40,13 +40,11 @@ async function verifyCaptcha(ticket, randstr, userIp) {
             return true;
         } else {
             console.warn('❌ 验证码校验失败:', result.errmsg || result);
-            console.warn('⚠️ 进入测试模式，允许验证码通过');
-            return true;
+            return false;
         }
     } catch (error) {
         console.error('腾讯云验证码校验失败:', error);
-        console.warn('⚠️ 进入测试模式，允许验证码通过');
-        return true;
+        return false;
     }
 }
 
@@ -672,10 +670,9 @@ router.post('/send-code', async (req, res) => {
     if (emailSent) {
       res.json({
         success: true,
-        message: '验证码已发送到您的邮箱（测试模式：验证码为 ' + code + '）',
+        message: '验证码已发送到您的邮箱',
         email,
-        expiresIn: 5 * 60,
-        debugCode: code
+        expiresIn: 5 * 60
       });
     } else {
       res.status(500).json({
@@ -754,10 +751,9 @@ router.post('/forgot-password', async (req, res) => {
     if (emailSent) {
       res.json({
         success: true,
-        message: '重置验证码已发送到您的邮箱（测试模式：验证码为 ' + code + '）',
+        message: '重置验证码已发送到您的邮箱',
         email,
-        expiresIn: 10 * 60,
-        debugCode: code
+        expiresIn: 10 * 60
       });
     } else {
       res.status(500).json({
