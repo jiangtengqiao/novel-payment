@@ -3,75 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小说阅读平台 - 畅享海量正版小说</title>
+    <title>小说阅读平台 - 畅享海量正版小说 | 全网热门小说免费阅读</title>
+    <meta name="description" content="小说阅读平台是国内领先的网络文学阅读平台，汇聚百万精品小说，玄幻、仙侠、都市、言情、历史、游戏、悬疑、科幻等各类小说应有尽有，支持离线阅读，随时随地畅读好书！">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f5f5f5;
+            background: linear-gradient(180deg, #f8f6f0 0%, #f5f3eb 100%);
             color: #333;
-            line-height: 1.6;
+            line-height: 1.8;
         }
 
         /* 顶部导航 */
         .top-nav {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            padding: 12px 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 14px 0;
             color: white;
-            font-size: 13px;
+            font-size: 14px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
         }
         .top-nav-inner {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .top-nav a {
-            color: #ccc;
-            text-decoration: none;
-            margin-left: 20px;
-            transition: color 0.3s;
+        .top-nav .welcome-text {
+            font-weight: 500;
         }
-        .top-nav a:hover { color: #fff; }
+        .top-nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        .top-nav a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 6px 0;
+        }
+        .top-nav a:hover { color: #fff; text-shadow: 0 0 10px rgba(102,126,234,0.5); }
 
         /* 主导航 */
         .main-nav {
             background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
             position: sticky;
             top: 0;
             z-index: 1000;
+            backdrop-filter: blur(20px);
         }
         .main-nav-inner {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 30px;
             display: flex;
             align-items: center;
-            height: 70px;
+            height: 80px;
         }
         .logo {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 900;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-right: 50px;
+            margin-right: 60px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         .nav-links {
             display: flex;
-            gap: 40px;
+            gap: 50px;
             flex: 1;
         }
         .nav-links a {
             color: #333;
             text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            padding: 10px 0;
+            font-size: 17px;
+            font-weight: 600;
+            padding: 14px 0;
             border-bottom: 3px solid transparent;
             transition: all 0.3s;
         }
@@ -82,39 +96,52 @@
         .search-box {
             display: flex;
             align-items: center;
-            background: #f5f5f5;
-            border-radius: 25px;
-            padding: 8px 20px;
-            width: 320px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            border-radius: 50px;
+            padding: 10px 24px;
+            width: 380px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .search-box:focus-within {
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102,126,234,0.15);
         }
         .search-box input {
             border: none;
             background: none;
             outline: none;
             flex: 1;
-            font-size: 14px;
+            font-size: 15px;
+            color: #333;
         }
         .search-box button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
             color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
+            padding: 10px 28px;
+            border-radius: 25px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .search-box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.4);
         }
         .user-actions {
             display: flex;
-            gap: 15px;
-            margin-left: 30px;
+            gap: 18px;
+            margin-left: 35px;
         }
         .user-actions button {
-            padding: 10px 24px;
-            border-radius: 25px;
+            padding: 12px 30px;
+            border-radius: 50px;
             border: none;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 15px;
+            font-weight: 600;
             transition: all 0.3s;
         }
         .btn-login {
@@ -123,22 +150,24 @@
             border: 2px solid #667eea;
         }
         .btn-login:hover {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102,126,234,0.3);
         }
         .btn-register {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
         .btn-register:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.5);
         }
 
         /* 轮播图 */
         .banner-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 60px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            padding: 80px 0;
             position: relative;
             overflow: hidden;
         }
@@ -150,388 +179,588 @@
             right: 0;
             bottom: 0;
             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.05)"/></svg>');
-            background-size: 300px;
+            background-size: 400px;
+            animation: float 20s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .banner-inner {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 30px;
             display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 40px;
+            grid-template-columns: 1fr 450px;
+            gap: 60px;
             align-items: center;
             position: relative;
             z-index: 1;
         }
         .banner-content h1 {
-            font-size: 48px;
+            font-size: 56px;
             font-weight: 900;
             color: white;
-            margin-bottom: 20px;
-            line-height: 1.3;
+            margin-bottom: 24px;
+            line-height: 1.25;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.15);
         }
         .banner-content p {
-            font-size: 18px;
-            color: rgba(255,255,255,0.9);
-            margin-bottom: 30px;
+            font-size: 20px;
+            color: rgba(255,255,255,0.92);
+            margin-bottom: 24px;
+            line-height: 1.8;
         }
         .banner-stats {
             display: flex;
-            gap: 50px;
-            margin-top: 40px;
+            gap: 70px;
+            margin-top: 50px;
         }
         .stat-item {
             text-align: center;
+            background: rgba(255,255,255,0.12);
+            padding: 20px 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
         }
         .stat-number {
-            font-size: 36px;
+            font-size: 42px;
             font-weight: 900;
             color: white;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.1);
         }
         .stat-label {
-            font-size: 14px;
-            color: rgba(255,255,255,0.8);
-            margin-top: 5px;
+            font-size: 15px;
+            color: rgba(255,255,255,0.9);
+            margin-top: 8px;
+            font-weight: 500;
         }
         .banner-card {
             background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.25);
         }
         .banner-card h3 {
-            font-size: 20px;
-            margin-bottom: 20px;
+            font-size: 22px;
+            margin-bottom: 24px;
             color: #333;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .hot-books {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 18px;
         }
         .hot-book-item {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 10px;
-            border-radius: 10px;
+            gap: 18px;
+            padding: 14px;
+            border-radius: 14px;
             cursor: pointer;
             transition: all 0.3s;
         }
         .hot-book-item:hover {
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf4 100%);
+            transform: translateX(8px);
         }
         .hot-book-rank {
-            width: 28px;
-            height: 28px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 16px;
+            font-weight: 800;
             color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); }
         .rank-2 { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); }
         .rank-3 { background: linear-gradient(135deg, #CD7F32, #8B4513); }
-        .rank-other { background: #999; }
+        .rank-other { background: linear-gradient(135deg, #999, #777); }
         .hot-book-info {
             flex: 1;
         }
         .hot-book-title {
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 16px;
+            font-weight: 600;
             color: #333;
         }
         .hot-book-author {
-            font-size: 12px;
-            color: #999;
-            margin-top: 3px;
+            font-size: 13px;
+            color: #888;
+            margin-top: 4px;
         }
 
         /* 分类导航 */
         .category-nav {
             background: white;
-            padding: 20px 0;
-            border-bottom: 1px solid #eee;
+            padding: 28px 0;
+            border-bottom: 2px solid #eee;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         }
         .category-nav-inner {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 30px;
             display: flex;
-            gap: 30px;
+            gap: 20px;
             overflow-x: auto;
         }
         .category-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px 24px;
-            background: #f5f5f5;
-            border-radius: 25px;
+            gap: 12px;
+            padding: 16px 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f4f8 100%);
+            border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s;
             white-space: nowrap;
             text-decoration: none;
             color: #333;
+            font-weight: 600;
+            font-size: 15px;
+            border: 2px solid transparent;
         }
         .category-item:hover {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            transform: translateY(-3px);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(102,126,234,0.35);
         }
         .category-icon {
-            font-size: 20px;
+            font-size: 24px;
         }
 
         /* 主内容区 */
         .main-content {
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 24px;
+            max-width: 1440px;
+            margin: 50px auto;
+            padding: 0 30px;
         }
         .section {
-            margin-bottom: 50px;
+            margin-bottom: 70px;
         }
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 35px;
         }
         .section-title {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 28px;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
         .section-title::before {
             content: '';
-            width: 4px;
-            height: 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 2px;
+            width: 6px;
+            height: 32px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
         }
         .section-more {
             color: #667eea;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 10px 25px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            background: rgba(102,126,234,0.08);
+        }
+        .section-more:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
 
         /* 书籍网格 */
         .books-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 25px;
+            gap: 30px;
         }
         .book-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            transition: all 0.3s;
+            transition: all 0.4s;
             cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 2px solid transparent;
         }
         .book-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            transform: translateY(-12px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            border-color: #667eea;
         }
         .book-cover {
             width: 100%;
-            height: 240px;
+            height: 260px;
             object-fit: cover;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
         }
         .book-info {
-            padding: 15px;
+            padding: 20px;
         }
         .book-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            color: #333;
         }
         .book-author {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 12px;
+        }
+        .book-desc {
             font-size: 13px;
             color: #999;
-            margin-bottom: 8px;
+            line-height: 1.6;
+            margin-bottom: 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         .book-meta {
             display: flex;
             justify-content: space-between;
             font-size: 12px;
             color: #999;
+            align-items: center;
         }
         .book-category {
-            background: #f0f0f0;
-            padding: 3px 10px;
-            border-radius: 10px;
-            color: #666;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e8ff 100%);
+            padding: 5px 14px;
+            border-radius: 20px;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 12px;
         }
         .book-views {
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 5px;
+            color: #888;
         }
 
         /* 排行榜 */
         .ranking-section {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            gap: 40px;
         }
         .ranking-card {
             background: white;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 6px 30px rgba(0,0,0,0.06);
+            border: 2px solid #f0f0f0;
         }
         .ranking-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            gap: 14px;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #f0f0f0;
         }
         .ranking-icon {
-            font-size: 28px;
+            font-size: 34px;
         }
         .ranking-title {
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 22px;
+            font-weight: 800;
         }
         .ranking-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 16px;
         }
         .ranking-item {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 10px;
-            border-radius: 8px;
+            gap: 18px;
+            padding: 16px;
+            border-radius: 14px;
             cursor: pointer;
             transition: all 0.3s;
         }
         .ranking-item:hover {
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf4 100%);
+            transform: translateX(8px);
         }
         .ranking-num {
-            width: 30px;
-            height: 30px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 16px;
+            font-weight: 800;
             color: white;
             flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .ranking-info {
             flex: 1;
             min-width: 0;
         }
         .ranking-book-title {
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 15px;
+            font-weight: 600;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
         .ranking-book-author {
-            font-size: 12px;
+            font-size: 13px;
             color: #999;
-            margin-top: 3px;
+            margin-top: 4px;
+        }
+        .ranking-book-stats {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 4px;
+        }
+
+        /* 编辑推荐 */
+        .editor-picks {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 70px;
+            box-shadow: 0 6px 30px rgba(0,0,0,0.06);
+        }
+        .editor-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        .editor-item {
+            display: flex;
+            gap: 20px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #f0f4f8 100%);
+            border-radius: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .editor-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 40px rgba(102,126,234,0.15);
+        }
+        .editor-cover {
+            width: 80px;
+            height: 110px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .editor-content h4 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .editor-content p {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 12px;
+        }
+        .editor-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .editor-tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            background: white;
+            border-radius: 15px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* 特色专区 */
+        .features-section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 70px;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 6px 30px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+            border-color: #667eea;
+        }
+        .feature-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        .feature-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        .feature-desc {
+            font-size: 14px;
+            color: #888;
+            line-height: 1.7;
         }
 
         /* 底部 */
         .footer {
-            background: #1a1a2e;
+            background: linear-gradient(180deg, #1a1a2e 0%, #0f172a 100%);
             color: white;
-            padding: 60px 0 30px;
-            margin-top: 80px;
+            padding: 80px 0 40px;
+            margin-top: 100px;
         }
         .footer-inner {
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 30px;
         }
         .footer-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-            gap: 50px;
-            margin-bottom: 40px;
+            grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
         }
         .footer-brand h3 {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 900;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         .footer-brand p {
-            font-size: 14px;
-            color: #999;
-            line-height: 1.8;
+            font-size: 15px;
+            color: #aaa;
+            line-height: 2;
+            margin-bottom: 25px;
+        }
+        .footer-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .footer-stat-item {
+            background: rgba(102,126,234,0.1);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .footer-stat-number {
+            font-size: 22px;
+            font-weight: 800;
+            color: #667eea;
+        }
+        .footer-stat-label {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 5px;
         }
         .footer-section h4 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #fff;
         }
         .footer-section ul {
             list-style: none;
         }
         .footer-section li {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
         }
         .footer-section a {
-            color: #999;
+            color: #aaa;
             text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s;
+            font-size: 15px;
+            transition: all 0.3s;
         }
         .footer-section a:hover {
             color: #667eea;
+            padding-left: 8px;
         }
         .footer-bottom {
             border-top: 1px solid #2a2a3e;
-            padding-top: 30px;
+            padding-top: 35px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
-            color: #666;
+            font-size: 14px;
+            color: #777;
         }
         .footer-links {
             display: flex;
-            gap: 30px;
+            gap: 40px;
         }
         .footer-links a {
-            color: #999;
+            color: #aaa;
             text-decoration: none;
+            transition: all 0.3s;
         }
         .footer-links a:hover {
             color: #667eea;
+        }
+        .footer-copyright {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         /* 响应式 */
         @media (max-width: 1200px) {
             .books-grid { grid-template-columns: repeat(4, 1fr); }
             .ranking-section { grid-template-columns: repeat(2, 1fr); }
+            .editor-grid { grid-template-columns: repeat(2, 1fr); }
+            .features-section { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 768px) {
             .books-grid { grid-template-columns: repeat(2, 1fr); }
             .ranking-section { grid-template-columns: 1fr; }
+            .editor-grid { grid-template-columns: 1fr; }
+            .features-section { grid-template-columns: 1fr; }
             .banner-inner { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr; }
         }
@@ -541,11 +770,13 @@
     <!-- 顶部导航 -->
     <div class="top-nav">
         <div class="top-nav-inner">
-            <span>欢迎来到小说阅读平台，畅享海量正版小说！</span>
-            <div>
+            <span class="welcome-text">🎉 欢迎来到小说阅读平台！新人注册即送1000书币，首充享5折优惠！</span>
+            <div class="top-nav-links">
                 <a href="/agreements">用户协议</a>
                 <a href="/agreements">隐私政策</a>
                 <a href="/agreements">联系我们</a>
+                <a href="/agreements">帮助中心</a>
+                <a href="/agreements">意见反馈</a>
             </div>
         </div>
     </div>
@@ -558,11 +789,13 @@
                 <a href="/" class="active">首页</a>
                 <a href="#books">书库</a>
                 <a href="#ranking">排行榜</a>
-                <a href="/payment">充值</a>
+                <a href="#category">分类</a>
+                <a href="/payment">充值中心</a>
                 <a href="/creator">作家专区</a>
+                <a href="/community">社区论坛</a>
             </div>
             <div class="search-box">
-                <input type="text" placeholder="搜索书名、作者" id="searchInput">
+                <input type="text" placeholder="搜索书名、作者、主角、关键词..." id="searchInput">
                 <button onclick="handleSearch()">搜索</button>
             </div>
             <div class="user-actions">
@@ -577,44 +810,58 @@
         <div class="banner-inner">
             <div class="banner-content">
                 <h1>海量正版小说<br>畅享阅读乐趣</h1>
-                <p>汇聚百万精品小说，玄幻、仙侠、都市、言情应有尽有<br>支持离线阅读，随时随地畅读好书</p>
+                <p>汇聚百万精品小说，玄幻、仙侠、都市、言情、历史、游戏、悬疑、科幻等各类小说应有尽有<br>支持离线阅读，护眼模式，字体调节，随时随地畅读好书！</p>
                 <div class="banner-stats">
                     <div class="stat-item">
-                        <div class="stat-number">100万+</div>
+                        <div class="stat-number">200万+</div>
                         <div class="stat-label">精品小说</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">5000万+</div>
+                        <div class="stat-number">6000万+</div>
                         <div class="stat-label">注册用户</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number">10亿+</div>
+                        <div class="stat-number">15亿+</div>
                         <div class="stat-label">累计阅读</div>
                     </div>
                 </div>
             </div>
             <div class="banner-card">
-                <h3>🔥 热门推荐</h3>
+                <h3>🔥 热门推荐 TOP5</h3>
                 <div class="hot-books" id="hotBooks">
-                    <div class="hot-book-item">
+                    <div class="hot-book-item" onclick="goToBook('1')">
                         <div class="hot-book-rank rank-1">1</div>
                         <div class="hot-book-info">
                             <div class="hot-book-title">斗破苍穹</div>
-                            <div class="hot-book-author">天蚕土豆</div>
+                            <div class="hot-book-author">天蚕土豆 · 玄幻 · 530万字</div>
                         </div>
                     </div>
-                    <div class="hot-book-item">
+                    <div class="hot-book-item" onclick="goToBook('2')">
                         <div class="hot-book-rank rank-2">2</div>
                         <div class="hot-book-info">
                             <div class="hot-book-title">完美世界</div>
-                            <div class="hot-book-author">辰东</div>
+                            <div class="hot-book-author">辰东 · 玄幻 · 410万字</div>
                         </div>
                     </div>
-                    <div class="hot-book-item">
+                    <div class="hot-book-item" onclick="goToBook('3')">
                         <div class="hot-book-rank rank-3">3</div>
                         <div class="hot-book-info">
                             <div class="hot-book-title">遮天</div>
-                            <div class="hot-book-author">辰东</div>
+                            <div class="hot-book-author">辰东 · 玄幻 · 380万字</div>
+                        </div>
+                    </div>
+                    <div class="hot-book-item" onclick="goToBook('4')">
+                        <div class="hot-book-rank rank-other">4</div>
+                        <div class="hot-book-info">
+                            <div class="hot-book-title">凡人修仙传</div>
+                            <div class="hot-book-author">忘语 · 仙侠 · 780万字</div>
+                        </div>
+                    </div>
+                    <div class="hot-book-item" onclick="goToBook('5')">
+                        <div class="hot-book-rank rank-other">5</div>
+                        <div class="hot-book-info">
+                            <div class="hot-book-title">诡秘之主</div>
+                            <div class="hot-book-author">爱潜水的乌贼 · 玄幻 · 447万字</div>
                         </div>
                     </div>
                 </div>
@@ -623,31 +870,161 @@
     </section>
 
     <!-- 分类导航 -->
-    <div class="category-nav">
+    <div class="category-nav" id="category">
         <div class="category-nav-inner">
-            <a href="#" class="category-item"><span class="category-icon">⚔️</span>玄幻</a>
-            <a href="#" class="category-item"><span class="category-icon">🗡️</span>仙侠</a>
-            <a href="#" class="category-item"><span class="category-icon">🏙️</span>都市</a>
-            <a href="#" class="category-item"><span class="category-icon">📜</span>历史</a>
-            <a href="#" class="category-item"><span class="category-icon">🎮</span>游戏</a>
-            <a href="#" class="category-item"><span class="category-icon">🔍</span>悬疑</a>
-            <a href="#" class="category-item"><span class="category-icon">🚀</span>科幻</a>
-            <a href="#" class="category-item"><span class="category-icon">💕</span>言情</a>
+            <a href="#" class="category-item"><span class="category-icon">⚔️</span>玄幻魔法</a>
+            <a href="#" class="category-item"><span class="category-icon">🗡️</span>武侠仙侠</a>
+            <a href="#" class="category-item"><span class="category-icon">🏙️</span>都市言情</a>
+            <a href="#" class="category-item"><span class="category-icon">📜</span>历史军事</a>
+            <a href="#" class="category-item"><span class="category-icon">🎮</span>游戏竞技</a>
+            <a href="#" class="category-item"><span class="category-icon">🔍</span>悬疑推理</a>
+            <a href="#" class="category-item"><span class="category-icon">🚀</span>科幻末世</a>
+            <a href="#" class="category-item"><span class="category-icon">💕</span>青春校园</a>
             <a href="#" class="category-item"><span class="category-icon">🎭</span>轻小说</a>
-            <a href="#" class="category-item"><span class="category-icon">📚</span>更多分类</a>
+            <a href="#" class="category-item"><span class="category-icon">📚</span>全部小说</a>
         </div>
     </div>
 
     <!-- 主内容区 -->
-    <main class="main-content">
+    <main class="main-content" id="books">
+        
         <!-- 热门推荐 -->
-        <section class="section" id="books">
+        <section class="section">
             <div class="section-header">
                 <div class="section-title">🔥 热门推荐</div>
-                <a href="#" class="section-more">查看更多 ></a>
+                <a href="#" class="section-more">查看更多精品小说 ></a>
             </div>
             <div class="books-grid" id="hotBooksGrid">
-                <!-- 动态加载 -->
+                <div class="book-card" onclick="goToBook('1')">
+                    <div class="book-cover">📕</div>
+                    <div class="book-info">
+                        <div class="book-title">斗破苍穹</div>
+                        <div class="book-author">天蚕土豆</div>
+                        <div class="book-desc">这里是属于斗气的世界，没有花俏艳丽的魔法，有的，仅仅是繁衍到巅峰的斗气！</div>
+                        <div class="book-meta">
+                            <span class="book-category">玄幻</span>
+                            <span class="book-views">👁 9800万</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-card" onclick="goToBook('2')">
+                    <div class="book-cover">📗</div>
+                    <div class="book-info">
+                        <div class="book-title">完美世界</div>
+                        <div class="book-author">辰东</div>
+                        <div class="book-desc">一粒尘可填海，一根草斩尽日月星辰，弹指间轰杀诸天强者！</div>
+                        <div class="book-meta">
+                            <span class="book-category">玄幻</span>
+                            <span class="book-views">👁 7200万</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-card" onclick="goToBook('3')">
+                    <div class="book-cover">📘</div>
+                    <div class="book-info">
+                        <div class="book-title">遮天</div>
+                        <div class="book-author">辰东</div>
+                        <div class="book-desc">冰冷与黑暗并存的宇宙深处，九具龙尸拉着一座铜棺急速飞掠...</div>
+                        <div class="book-meta">
+                            <span class="book-category">玄幻</span>
+                            <span class="book-views">👁 6500万</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-card" onclick="goToBook('4')">
+                    <div class="book-cover">📙</div>
+                    <div class="book-info">
+                        <div class="book-title">凡人修仙传</div>
+                        <div class="book-author">忘语</div>
+                        <div class="book-desc">凡人流开山之作，讲述一个普通山村少年的修仙之路！</div>
+                        <div class="book-meta">
+                            <span class="book-category">仙侠</span>
+                            <span class="book-views">👁 5800万</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-card" onclick="goToBook('5')">
+                    <div class="book-cover">📔</div>
+                    <div class="book-info">
+                        <div class="book-title">诡秘之主</div>
+                        <div class="book-author">爱潜水的乌贼</div>
+                        <div class="book-desc">蒸汽与机械的浪潮中，谁能触及非凡？一个愚者的传说！</div>
+                        <div class="book-meta">
+                            <span class="book-category">玄幻</span>
+                            <span class="book-views">👁 8900万</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-card" onclick="goToBook('6')">
+                    <div class="book-cover">📓</div>
+                    <div class="book-info">
+                        <div class="book-title">全职高手</div>
+                        <div class="book-author">蝴蝶蓝</div>
+                        <div class="book-desc">网游竞技经典之作，电竞小说的巅峰！荣耀永不散场！</div>
+                        <div class="book-meta">
+                            <span class="book-category">游戏</span>
+                            <span class="book-views">👁 7600万</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 编辑推荐 -->
+        <section class="editor-picks">
+            <div class="section-header">
+                <div class="section-title">✨ 编辑精选推荐</div>
+                <a href="#" class="section-more">发现更多好书 ></a>
+            </div>
+            <div class="editor-grid">
+                <div class="editor-item" onclick="goToBook('7')">
+                    <div class="editor-cover">📖</div>
+                    <div class="editor-content">
+                        <h4>大主宰</h4>
+                        <p>天蚕土豆 · 玄幻热血</p>
+                        <div class="editor-tags">
+                            <span class="editor-tag">热血</span>
+                            <span class="editor-tag">升级流</span>
+                            <span class="editor-tag">爽文</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="editor-item" onclick="goToBook('8')">
+                    <div class="editor-cover">📖</div>
+                    <div class="editor-content">
+                        <h4>斗罗大陆</h4>
+                        <p>唐家三少 · 玄幻魔法</p>
+                        <div class="editor-tags">
+                            <span class="editor-tag">玄幻</span>
+                            <span class="editor-tag">经典</span>
+                            <span class="editor-tag">武魂</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="editor-item" onclick="goToBook('9')">
+                    <div class="editor-cover">📖</div>
+                    <div class="editor-content">
+                        <h4>盗墓笔记</h4>
+                        <p>南派三叔 · 悬疑冒险</p>
+                        <div class="editor-tags">
+                            <span class="editor-tag">悬疑</span>
+                            <span class="editor-tag">盗墓</span>
+                            <span class="editor-tag">冒险</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="editor-item" onclick="goToBook('10')">
+                    <div class="editor-cover">📖</div>
+                    <div class="editor-content">
+                        <h4>鬼吹灯</h4>
+                        <p>天下霸唱 · 悬疑惊悚</p>
+                        <div class="editor-tags">
+                            <span class="editor-tag">盗墓</span>
+                            <span class="editor-tag">探险</span>
+                            <span class="editor-tag">经典</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -655,17 +1032,113 @@
         <section class="section">
             <div class="section-header">
                 <div class="section-title">📖 新书上架</div>
-                <a href="#" class="section-more">查看更多 ></a>
+                <a href="#" class="section-more">发现更多新书 ></a>
             </div>
             <div class="books-grid" id="newBooksGrid">
-                <!-- 动态加载 -->
+                <div class="book-card" onclick="goToBook('11')">
+                    <div class="book-cover">📕</div>
+                    <div class="book-info">
+                        <div class="book-title">我在精神病院学斩神</div>
+                        <div class="book-author">三九音域</div>
+                        <div class="book-desc">你是否想过，在这个世界的角落，有一群人在默默守护着...</div>
+                        <div class="book-meta">
+                            <span class="book-category">都市</span>
+                            <span class="book-views">👁 3200万</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-card" onclick="goToBook('12')">
+                    <div class="book-cover">📗</div>
+                    <div class="book-info">
+                        <div class="book-title">夜的命名术</div>
+                        <div class="book-author">会说话的肘子</div>
+                        <div class="book-desc">蓝与紫的霓虹中，是钢铁与科技的繁华世界！</div>
+                        <div class="book-meta">
+                            <span class="book-category">都市</span>
+                            <span class="book-views">👁 2800万</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-card" onclick="goToBook('13')">
+                    <div class="book-cover">📘</div>
+                    <div class="book-info">
+                        <div class="book-title">深空彼岸</div>
+                        <div class="book-author">辰东</div>
+                        <div class="book-desc">浩瀚的宇宙中，究竟隐藏着怎样的秘密？</div>
+                        <div class="book-meta">
+                            <span class="book-category">科幻</span>
+                            <span class="book-views">👁 2100万</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-card" onclick="goToBook('14')">
+                    <div class="book-cover">📙</div>
+                    <div class="book-info">
+                        <div class="book-title">不科学御兽</div>
+                        <div class="book-author">轻泉流响</div>
+                        <div class="book-desc">宠兽世界，御兽为王！这是一本不一样的御兽小说！</div>
+                        <div class="book-meta">
+                            <span class="book-category">科幻</span>
+                            <span class="book-views">👁 1800万</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-card" onclick="goToBook('15')">
+                    <div class="book-cover">📔</div>
+                    <div class="book-info">
+                        <div class="book-title">星门</div>
+                        <div class="book-author">老鹰吃小鸡</div>
+                        <div class="book-desc">传说，在那古老的星门背后，有一个全新的世界！</div>
+                        <div class="book-meta">
+                            <span class="book-category">玄幻</span>
+                            <span class="book-views">👁 2500万</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-card" onclick="goToBook('16')">
+                    <div class="book-cover">📓</div>
+                    <div class="book-info">
+                        <div class="book-title">从红月开始</div>
+                        <div class="book-author">黑山老鬼</div>
+                        <div class="book-desc">红月降临，世界异变，而我有一个特别的家庭...</div>
+                        <div class="book-meta">
+                            <span class="book-category">悬疑</span>
+                            <span class="book-views">👁 1600万</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特色专区 -->
+        <section class="features-section">
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <div class="feature-title">多端同步</div>
+                <div class="feature-desc">支持手机、平板、电脑多端阅读，进度自动同步，随时随地想读就读</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌙</div>
+                <div class="feature-title">护眼模式</div>
+                <div class="feature-desc">多种阅读主题，护眼绿色模式，夜间模式，保护您的视力健康</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📥</div>
+                <div class="feature-title">离线下载</div>
+                <div class="feature-desc">支持整本下载，离线阅读，没有网络也能畅快阅读小说</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎧</div>
+                <div class="feature-title">有声阅读</div>
+                <div class="feature-desc">AI智能朗读，解放双眼，用耳朵聆听精彩故事</div>
             </div>
         </section>
 
         <!-- 排行榜 -->
         <section class="section" id="ranking">
             <div class="section-header">
-                <div class="section-title">🏆 排行榜</div>
+                <div class="section-title">🏆 权威排行榜</div>
+                <a href="#" class="section-more">查看完整榜单 ></a>
             </div>
             <div class="ranking-section">
                 <div class="ranking-card">
@@ -673,8 +1146,47 @@
                         <span class="ranking-icon">🔥</span>
                         <span class="ranking-title">热门榜</span>
                     </div>
-                    <div class="ranking-list" id="hotRanking">
-                        <!-- 动态加载 -->
+                    <div class="ranking-list">
+                        <div class="ranking-item" onclick="goToBook('1')">
+                            <div class="ranking-num rank-1">1</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">斗破苍穹</div>
+                                <div class="ranking-book-author">天蚕土豆</div>
+                                <div class="ranking-book-stats">🔥 9800万阅读 · 530万字</div>
+                            </div>
+                        </div>
+                        <div class="ranking-item" onclick="goToBook('5')">
+                            <div class="ranking-num rank-2">2</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">诡秘之主</div>
+                                <div class="ranking-book-author">爱潜水的乌贼</div>
+                                <div class="ranking-book-stats">🔥 8900万阅读 · 447万字</div>
+                            </div>
+                        </div>
+                        <div class="ranking-item" onclick="goToBook('6')">
+                            <div class="ranking-num rank-3">3</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">全职高手</div>
+                                <div class="ranking-book-author">蝴蝶蓝</div>
+                                <div class="ranking-book-stats">🔥 7600万阅读 · 548万字</div>
+                            </div>
+                        </div>
+                        <div class="ranking-item" onclick="goToBook('2')">
+                            <div class="ranking-num rank-other">4</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">完美世界</div>
+                                <div class="ranking-book-author">辰东</div>
+                                <div class="ranking-book-stats">🔥 7200万阅读 · 410万字</div>
+                            </div>
+                        </div>
+                        <div class="ranking-item" onclick="goToBook('4')">
+                            <div class="ranking-num rank-other">5</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">凡人修仙传</div>
+                                <div class="ranking-book-author">忘语</div>
+                                <div class="ranking-book-stats">🔥 5800万阅读 · 780万字</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="ranking-card">
@@ -682,8 +1194,47 @@
                         <span class="ranking-icon">⭐</span>
                         <span class="ranking-title">收藏榜</span>
                     </div>
-                    <div class="ranking-list" id="collectRanking">
-                        <!-- 动态加载 -->
+                    <div class="ranking-list">
+                        <div class="ranking-item" onclick="goToBook('1')">
+                            <div class="ranking-num rank-1">1</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">斗破苍穹</div>
+                                <div class="ranking-book-author">天蚕土豆</div>
+                                <div class="ranking-book-stats">⭐ 560万收藏</div>
+                            </div>
+                        </div>
+                        <div class="ranking-item" onclick="goToBook('7')">
+                            <div class="ranking-num rank-2">2</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">大主宰</div>
+                                <div class="ranking-book-author">天蚕土豆</div>
+                                <div class="ranking-book-stats">⭐ 480万收藏</div>
+                            </div>
+                        </div>
+                        <div class="ranking-item" onclick="goToBook('6')">
+                            <div class="ranking-num rank-3">3</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">全职高手</div>
+                                <div class="ranking-book-author">蝴蝶蓝</div>
+                                <div class="ranking-book-stats">⭐ 420万收藏</div>
+                            </div>
+                        </div>
+                        <div class="ranking-item" onclick="goToBook('8')">
+                            <div class="ranking-num rank-other">4</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">斗罗大陆</div>
+                                <div class="ranking-book-author">唐家三少</div>
+                                <div class="ranking-book-stats">⭐ 390万收藏</div>
+                            </div>
+                        </div>
+                        <div class="ranking-item" onclick="goToBook('9')">
+                            <div class="ranking-num rank-other">5</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">盗墓笔记</div>
+                                <div class="ranking-book-author">南派三叔</div>
+                                <div class="ranking-book-stats">⭐ 350万收藏</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="ranking-card">
@@ -691,12 +1242,52 @@
                         <span class="ranking-icon">💰</span>
                         <span class="ranking-title">畅销榜</span>
                     </div>
-                    <div class="ranking-list" id="sellRanking">
-                        <!-- 动态加载 -->
+                    <div class="ranking-list">
+                        <div class="ranking-item" onclick="goToBook('1')">
+                            <div class="ranking-num rank-1">1</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">斗破苍穹</div>
+                                <div class="ranking-book-author">天蚕土豆</div>
+                                <div class="ranking-book-stats">💰 9800万书币</div>
+                            </div>
+                        </div>
+                        <div class="ranking-item" onclick="goToBook('5')">
+                            <div class="ranking-num rank-2">2</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">诡秘之主</div>
+                                <div class="ranking-book-author">爱潜水的乌贼</div>
+                                <div class="ranking-book-stats">💰 8200万书币</div>
+                            </div>
+                        </div>
+                        <div class="ranking-item" onclick="goToBook('2')">
+                            <div class="ranking-num rank-3">3</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">完美世界</div>
+                                <div class="ranking-book-author">辰东</div>
+                                <div class="ranking-book-stats">💰 7100万书币</div>
+                            </div>
+                        </div>
+                        <div class="ranking-item" onclick="goToBook('11')">
+                            <div class="ranking-num rank-other">4</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">我在精神病院学斩神</div>
+                                <div class="ranking-book-author">三九音域</div>
+                                <div class="ranking-book-stats">💰 6500万书币</div>
+                            </div>
+                        </div>
+                        <div class="ranking-item" onclick="goToBook('12')">
+                            <div class="ranking-num rank-other">5</div>
+                            <div class="ranking-info">
+                                <div class="ranking-book-title">夜的命名术</div>
+                                <div class="ranking-book-author">会说话的肘子</div>
+                                <div class="ranking-book-stats">💰 5800万书币</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
+
     </main>
 
     <!-- 底部 -->
@@ -704,13 +1295,34 @@
         <div class="footer-inner">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <h3>📚 小说平台</h3>
-                    <p>小说平台是一个专业的网络文学阅读平台，汇聚百万精品小说，为读者提供优质的阅读体验。我们致力于打造最好的网络文学平台，让每一位读者都能找到自己喜欢的作品。</p>
+                    <h3>📚 小说阅读平台</h3>
+                    <p>小说阅读平台是国内领先的网络文学阅读平台，自2015年创立以来，始终致力于为读者提供最优质的阅读体验。我们汇聚了全网超过200万部精品小说，与500余家知名版权方建立了深度合作关系，拥有超过6000万注册用户，是网络文学领域的领军品牌。</p>
+                    <p>在这里，您可以找到玄幻、仙侠、都市、言情、历史、军事、游戏、竞技、悬疑、科幻等各类题材的精彩小说。我们支持离线下载、护眼模式、字体调节、多端同步等众多贴心功能，让您随时随地畅享阅读乐趣！</p>
+                    <div class="footer-stats">
+                        <div class="footer-stat-item">
+                            <div class="footer-stat-number">200万+</div>
+                            <div class="footer-stat-label">精选小说</div>
+                        </div>
+                        <div class="footer-stat-item">
+                            <div class="footer-stat-number">6000万+</div>
+                            <div class="footer-stat-label">注册用户</div>
+                        </div>
+                        <div class="footer-stat-item">
+                            <div class="footer-stat-number">500+</div>
+                            <div class="footer-stat-label">合作伙伴</div>
+                        </div>
+                        <div class="footer-stat-item">
+                            <div class="footer-stat-number">8年</div>
+                            <div class="footer-stat-label">行业经验</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="footer-section">
                     <h4>关于我们</h4>
                     <ul>
                         <li><a href="/agreements">平台介绍</a></li>
+                        <li><a href="/agreements">发展历程</a></li>
+                        <li><a href="/agreements">团队介绍</a></li>
                         <li><a href="/agreements">联系我们</a></li>
                         <li><a href="/agreements">加入我们</a></li>
                         <li><a href="/agreements">合作伙伴</a></li>
@@ -719,10 +1331,12 @@
                 <div class="footer-section">
                     <h4>帮助中心</h4>
                     <ul>
+                        <li><a href="/agreements">新手指南</a></li>
                         <li><a href="/agreements">常见问题</a></li>
                         <li><a href="/agreements">充值说明</a></li>
                         <li><a href="/agreements">会员权益</a></li>
                         <li><a href="/agreements">意见反馈</a></li>
+                        <li><a href="/agreements">投诉建议</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -732,6 +1346,8 @@
                         <li><a href="/creator">创作指南</a></li>
                         <li><a href="/creator">稿费说明</a></li>
                         <li><a href="/creator">作家福利</a></li>
+                        <li><a href="/creator">签约申请</a></li>
+                        <li><a href="/creator">作家后台</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -741,103 +1357,28 @@
                         <li><a href="/agreements">隐私政策</a></li>
                         <li><a href="/agreements">版权声明</a></li>
                         <li><a href="/agreements">免责声明</a></li>
+                        <li><a href="/agreements">社区规范</a></li>
+                        <li><a href="/agreements">知识产权</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <div>© 2026 小说阅读平台 版权所有</div>
+                <div class="footer-copyright">
+                    <span>© 2015-2026 小说阅读平台 版权所有</span>
+                    <span>ICP备12345678号-1 | 京公网安备 11010102001234号</span>
+                </div>
                 <div class="footer-links">
                     <a href="/agreements">用户协议</a>
                     <a href="/agreements">隐私政策</a>
                     <a href="/agreements">社区规范</a>
+                    <a href="/agreements">版权保护</a>
+                    <a href="/agreements">帮助中心</a>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
-        // 加载书籍数据
-        async function loadBooks() {
-            try {
-                const response = await fetch('/api/books/list?limit=12');
-                const data = await response.json();
-                
-                if (data.success && data.books) {
-                    renderBooks('hotBooksGrid', data.books.slice(0, 6));
-                    renderBooks('newBooksGrid', data.books.slice(6, 12));
-                    renderRankings(data.books);
-                }
-            } catch (error) {
-                console.error('加载书籍失败:', error);
-            }
-        }
-
-        function renderBooks(containerId, books) {
-            const container = document.getElementById(containerId);
-            if (!container || !books) return;
-
-            container.innerHTML = books.map(book => `
-                <div class="book-card" onclick="goToBook('${book.id}')">
-                    <img class="book-cover" src="${book.cover || 'https://via.placeholder.com/200x300?text=Book'}" alt="${book.title}">
-                    <div class="book-info">
-                        <div class="book-title">${book.title}</div>
-                        <div class="book-author">${book.author}</div>
-                        <div class="book-meta">
-                            <span class="book-category">${book.category}</span>
-                            <span class="book-views">👁 ${(book.views / 10000).toFixed(1)}万</span>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function renderRankings(books) {
-            if (!books) return;
-            
-            const hotRanking = document.getElementById('hotRanking');
-            const collectRanking = document.getElementById('collectRanking');
-            const sellRanking = document.getElementById('sellRanking');
-
-            const sortedByViews = [...books].sort((a, b) => b.views - a.views).slice(0, 5);
-            const sortedByLikes = [...books].sort((a, b) => b.likes - a.likes).slice(0, 5);
-
-            if (hotRanking) {
-                hotRanking.innerHTML = sortedByViews.map((book, index) => `
-                    <div class="ranking-item" onclick="goToBook('${book.id}')">
-                        <div class="ranking-num ${index < 3 ? 'rank-' + (index + 1) : 'rank-other'}">${index + 1}</div>
-                        <div class="ranking-info">
-                            <div class="ranking-book-title">${book.title}</div>
-                            <div class="ranking-book-author">${book.author}</div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            if (collectRanking) {
-                collectRanking.innerHTML = sortedByLikes.map((book, index) => `
-                    <div class="ranking-item" onclick="goToBook('${book.id}')">
-                        <div class="ranking-num ${index < 3 ? 'rank-' + (index + 1) : 'rank-other'}">${index + 1}</div>
-                        <div class="ranking-info">
-                            <div class="ranking-book-title">${book.title}</div>
-                            <div class="ranking-book-author">${book.author}</div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            if (sellRanking) {
-                sellRanking.innerHTML = books.slice(0, 5).map((book, index) => `
-                    <div class="ranking-item" onclick="goToBook('${book.id}')">
-                        <div class="ranking-num ${index < 3 ? 'rank-' + (index + 1) : 'rank-other'}">${index + 1}</div>
-                        <div class="ranking-info">
-                            <div class="ranking-book-title">${book.title}</div>
-                            <div class="ranking-book-author">${book.author}</div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
         function goToBook(bookId) {
             window.location.href = `/reader?bookId=${bookId}`;
         }
@@ -856,9 +1397,6 @@
         function showRegister() {
             window.location.href = '/payment';
         }
-
-        // 页面加载时获取数据
-        loadBooks();
     </script>
 </body>
 </html>
